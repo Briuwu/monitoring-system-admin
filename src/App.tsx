@@ -6,6 +6,7 @@ import DashboardHome from "@/pages/dashboard/dashboard-home";
 import RequirementsPage from "@/pages/dashboard/requirements";
 import CalendarPage from "@/pages/dashboard/calendar";
 import SettingsPage from "./pages/dashboard/settings";
+import UsersPage from "./pages/dashboard/users";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route index element={<DashboardHome />} />
         <Route path="/dashboard/requirements" element={<RequirementsPage />} />
         <Route path="/dashboard/calendar" element={<CalendarPage />} />
+        <Route path="/dashboard/users" element={<UsersPage />} />
         <Route path="/dashboard/settings" element={<SettingsPage />} />
       </Route>
     </Routes>

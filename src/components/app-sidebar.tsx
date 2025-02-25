@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Calendar, Home, Inbox, Settings } from "lucide-react";
+import { Calendar, Home, Inbox, Settings, User } from "lucide-react";
 import { Link } from "react-router";
 
 const items = [
@@ -27,6 +27,11 @@ const items = [
     title: "Calendar",
     url: "calendar",
     icon: Calendar,
+  },
+  {
+    title: "Users",
+    url: "users",
+    icon: User,
   },
   {
     title: "Settings",
