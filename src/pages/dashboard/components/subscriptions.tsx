@@ -50,7 +50,7 @@ export const Subscriptions = ({ item: { id, title, value, color } }: Props) => {
           </DialogContent>
         </Dialog>
       </div>
-      <p className="text-lg font-bold">{value}</p>
+      <p className="text-xl font-bold">{value}</p>
     </div>
   );
 };

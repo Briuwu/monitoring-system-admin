@@ -51,7 +51,7 @@ export function BarChartOverview() {
             data={chartData}
             layout="vertical"
             margin={{
-              left: 0,
+              left: 20,
             }}
           >
             <YAxis
