@@ -19,7 +19,7 @@ const items = [
     icon: Home,
   },
   {
-    title: "Requirements",
+    title: "Requirements Table",
     url: "requirements",
     icon: Inbox,
   },

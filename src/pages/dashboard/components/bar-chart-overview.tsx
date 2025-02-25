@@ -1,16 +1,8 @@
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  LabelList,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -22,26 +14,35 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 const chartData = [
-  { type: "Annual", value: 1 },
-  { type: "Semi-annual", value: 2 },
-  { type: "Quarterly", value: 0 },
-  { type: "Monthly", value: 3 },
+  { date: "annual", value: 1, fill: "var(--color-annual)" },
+  { date: "semiAnnual", value: 2, fill: "var(--color-semiAnnual)" },
+  { date: "quarterly", value: 0, fill: "var(--color-quarterly)" },
+  { date: "monthly", value: 3, fill: "var(--color-monthly)" },
 ];
 
 const chartConfig = {
   value: {
-    label: "Users",
+    label: "Total",
+  },
+  annual: {
+    label: "Annual",
+  },
+  semiAnnual: {
+    label: "Semi Annual",
+  },
+  quarterly: {
+    label: "Quarterly",
+  },
+  monthly: {
+    label: "Monthly",
   },
 } satisfies ChartConfig;
 
 export function BarChartOverview() {
   return (
-    <Card className="shadow-none">
+    <Card>
       <CardHeader>
         <CardTitle>Subscription Overview</CardTitle>
-        <CardDescription>
-          Total subscription overview for this month
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -50,51 +51,31 @@ export function BarChartOverview() {
             data={chartData}
             layout="vertical"
             margin={{
-              right: 16,
+              left: 0,
             }}
           >
-            <CartesianGrid horizontal={false} />
             <YAxis
-              dataKey="type"
+              dataKey="date"
               type="category"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-              hide
+              tickFormatter={(value) =>
+                chartConfig[value as keyof typeof chartConfig]?.label
+              }
             />
             <XAxis dataKey="value" type="number" hide />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
+              content={<ChartTooltipContent hideLabel />}
             />
-            <Bar
-              dataKey="value"
-              layout="vertical"
-              fill="var(--color-value)"
-              radius={4}
-            >
-              <LabelList
-                dataKey="type"
-                position="insideLeft"
-                offset={8}
-                className=""
-                fontSize={12}
-              />
-              <LabelList
-                dataKey="value"
-                position="right"
-                offset={8}
-                className="fill-foreground"
-                fontSize={12}
-              />
-            </Bar>
+            <Bar dataKey="value" layout="vertical" radius={5} />
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-xs">
+      <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="leading-none text-muted-foreground">
-          Showing total subscription for this month
+          Showing total subscription value
         </div>
       </CardFooter>
     </Card>
