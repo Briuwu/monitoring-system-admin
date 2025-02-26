@@ -1,10 +1,13 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { User } from "./constant";
+import { DataTableColumnHeader } from "../components/data-table-column-header";
 
 export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "id",
-    header: "ID",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ID" />
+    ),
   },
   {
     accessorKey: "firstName",
