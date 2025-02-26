@@ -41,7 +41,7 @@ function UsersPage() {
   const departmentOptions = Array.from(
     new Set(users.map((user) => user.department))
   ).map((department) => ({
-    value: department,
+    value: department.toLowerCase(),
     label: department,
   }));
 
@@ -65,7 +65,7 @@ function UsersPage() {
         <ComboboxFilter
           onFilter={setDepartmentFilter}
           options={departmentOptions}
-          placeholder="Search by dept..."
+          placeholder="Filter by dept..."
         />
       </div>
       <DataTable columns={columns} data={filteredData} />
