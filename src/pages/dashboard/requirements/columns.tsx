@@ -1,4 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "../components/data-table-column-header";
 
 type Requirements = {
   id: string;
@@ -39,7 +40,9 @@ export const columns: ColumnDef<Requirements>[] = [
   },
   {
     accessorKey: "date_submitted",
-    header: "Date Submitted",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Date Submitted" />
+    ),
     cell: ({ row }) => {
       const date = row.getValue("date_submitted") as Date;
       const formattedDate = date.toLocaleDateString("en-US", {
@@ -51,8 +54,10 @@ export const columns: ColumnDef<Requirements>[] = [
     },
   },
   {
-    header: "Expiration",
     accessorKey: "expiration",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Expiration" />
+    ),
     cell: ({ row }) => {
       const date = row.getValue("expiration") as Date;
       const formattedDate = date.toLocaleDateString("en-US", {
@@ -65,12 +70,14 @@ export const columns: ColumnDef<Requirements>[] = [
     },
   },
   {
-    header: "Remaining Days",
     accessorKey: "remaining_days",
+    header: "Remaining Days",
   },
   {
-    header: "Renewal",
     accessorKey: "renewal",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Renewal" />
+    ),
     cell: ({ row }) => {
       const date = row.getValue("renewal") as Date;
       const formattedDate = date.toLocaleDateString("en-US", {

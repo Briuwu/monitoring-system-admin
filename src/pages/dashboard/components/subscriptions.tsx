@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -25,8 +26,10 @@ export const Subscriptions = ({ item: { id, title, value, color } }: Props) => {
       <div className="flex items-center justify-between">
         <p className="text-sm font-semibold">{title}</p>
         <Dialog>
-          <DialogTrigger>
-            <Users className="w-5" />
+          <DialogTrigger asChild>
+            <Button variant={"ghost"}>
+              <Users className="w-5" />
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
