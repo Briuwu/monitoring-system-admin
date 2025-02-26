@@ -55,8 +55,8 @@ export const columns: ColumnDef<User>[] = [
               <UserIcon />
               View Details
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Trash />
+            <DropdownMenuItem className="text-red-500">
+              <Trash color="#fb2c36" />
               Delete Account
             </DropdownMenuItem>
           </DropdownMenuContent>
