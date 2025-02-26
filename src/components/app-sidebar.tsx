@@ -42,10 +42,10 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarHeader className="flex gap-2 items-center flex-row py-4">
         <div className="w-8 h-8 rounded-full bg-neutral-400"></div>
-        <h1 className="text-black text-xs font-semibold uppercase">
+        <h1 className="text-black text-xs font-semibold uppercase group-data-[collapsible=icon]:hidden">
           Seiwa Kaiun Monitoring System
         </h1>
       </SidebarHeader>

@@ -1,5 +1,14 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../components/data-table-column-header";
+import { Ellipsis, FileText, Upload } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type Requirements = {
   id: string;
@@ -100,5 +109,29 @@ export const columns: ColumnDef<Requirements>[] = [
   {
     header: "Document Reference",
     accessorKey: "document_reference",
+    cell: ({ row }) => {
+      const document = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={"ghost"}>
+              <span>{document.document_reference}</span>
+              <Ellipsis />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <FileText />
+              Open Document
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Upload />
+              Upload Document
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
 ];
