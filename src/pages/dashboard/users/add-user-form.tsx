@@ -27,6 +27,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { departmentList } from "@/lib/constant";
 
 const formSchema = z
   .object({
@@ -49,40 +50,6 @@ const formSchema = z
   });
 
 export const AddUserForm = () => {
-  const departmentList = [
-    {
-      label: "HR",
-      value: "hr",
-    },
-    {
-      label: "GA",
-      value: "ga",
-    },
-    {
-      label: "Safety",
-      value: "safety",
-    },
-    {
-      label: "MIS",
-      value: "mis",
-    },
-    {
-      label: "Finance",
-      value: "finance",
-    },
-    {
-      label: "QA",
-      value: "qa",
-    },
-    {
-      label: "OOF",
-      value: "oof",
-    },
-    {
-      label: "OJS",
-      value: "ojs",
-    },
-  ] as const;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });

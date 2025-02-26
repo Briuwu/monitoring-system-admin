@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { ComboboxFilter } from "../components/combobox-filter";
+import { Separator } from "@/components/ui/separator";
 
 function UsersPage() {
   const [filteredData, setFilteredData] = useState(users);
@@ -45,12 +46,13 @@ function UsersPage() {
   }));
 
   return (
-    <div className="space-y-5">
+    <div>
       <div className="flex items-center justify-between">
         <h2 className="font-bold uppercase text-xl">Users</h2>
         <AddUser />
       </div>
-      <div className="flex gap-5 items-center">
+      <Separator className="my-5" />
+      <div className="flex gap-5 mb-5 items-center">
         <div className="relative max-w-xs flex-1">
           <Input
             placeholder="Search..."

@@ -5,6 +5,8 @@ import { DataTable } from "./data-table";
 import { ComboboxFilter } from "../components/combobox-filter";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { AddRequirement } from "./add-requirement";
 
 function RequirementsPage() {
   const [filteredData, setFilteredData] = useState(requirements);
@@ -39,10 +41,12 @@ function RequirementsPage() {
 
     if (globalSearch) {
       result = result.filter((requirement) =>
-        ["compliance_list", "entity", "person_in_charge"].some((value) => {
-          const data = requirement[value as keyof Requirements] as string;
-          return data.toLowerCase().includes(globalSearch.toLowerCase());
-        })
+        ["compliance_list", "entity", "person_in_charge", "department"].some(
+          (value) => {
+            const data = requirement[value as keyof Requirements] as string;
+            return data.toLowerCase().includes(globalSearch.toLowerCase());
+          }
+        )
       );
     }
 
@@ -70,10 +74,14 @@ function RequirementsPage() {
 
   return (
     <div>
-      <h2 className="font-bold text-xl uppercase text-center">
-        Legal and other requirement documents
-      </h2>
-      <div className="mt-10 mb-5 flex gap-5 items-center">
+      <div className="flex items-center justify-between">
+        <h2 className="font-bold text-xl uppercase">
+          Legal and other requirement documents
+        </h2>
+        <AddRequirement />
+      </div>
+      <Separator className="my-5" />
+      <div className="mb-5 flex gap-5 items-center">
         <div className="max-w-sm flex-1 relative">
           <Input
             placeholder="Search by compliance, entity, or person in charge..."

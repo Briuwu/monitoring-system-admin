@@ -7,22 +7,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AddUserForm } from "./add-user-form";
+import { AddRequirementForm } from "./add-requirement-form";
 
-export const AddUser = () => {
+export const AddRequirement = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>+ Add User</Button>
+        <Button>+ Add Requirement</Button>
       </DialogTrigger>
-      <DialogContent className="space-y-5 md:max-w-3xl">
+      <DialogContent className="space-y-5 md:max-w-6xl">
         <DialogHeader>
-          <DialogTitle>Create a new user</DialogTitle>
+          <DialogTitle>Create a new requirement document</DialogTitle>
           <DialogDescription>
-            Fill out the form below to add a new user.
+            Fill out the form below to add a new requirement document.
           </DialogDescription>
         </DialogHeader>
-        <AddUserForm />
+        <AddRequirementForm />
       </DialogContent>
     </Dialog>
   );
