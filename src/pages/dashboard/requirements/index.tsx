@@ -6,7 +6,8 @@ import { ComboboxFilter } from "../components/combobox-filter";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { AddRequirement } from "./add-requirement";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 function RequirementsPage() {
   const [filteredData, setFilteredData] = useState(requirements);
@@ -78,7 +79,9 @@ function RequirementsPage() {
         <h2 className="font-bold text-xl uppercase">
           Legal and other requirement documents
         </h2>
-        <AddRequirement />
+        <Button asChild>
+          <Link to="/dashboard/requirements/add">+ Add Document</Link>
+        </Button>
       </div>
       <Separator className="my-5" />
       <div className="mb-5 flex gap-5 items-center">

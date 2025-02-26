@@ -28,16 +28,16 @@ type Requirements = {
 
 export const columns: ColumnDef<Requirements>[] = [
   {
+    header: "Entity",
+    accessorKey: "entity",
+  },
+  {
     header: "Compliance List",
     accessorKey: "compliance_list",
   },
   {
     header: "Department",
     accessorKey: "department",
-  },
-  {
-    header: "Entity",
-    accessorKey: "entity",
   },
   {
     header: "Frequency of Compliance",
