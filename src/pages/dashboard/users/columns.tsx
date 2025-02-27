@@ -6,18 +6,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { User } from "./constant";
-import { DataTableColumnHeader } from "../components/data-table-column-header";
 import { Button } from "@/components/ui/button";
 import { Ellipsis, Trash, User as UserIcon } from "lucide-react";
+import { User } from "@/hooks/use-user";
 
 export const columns: ColumnDef<User>[] = [
-  {
-    accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID" />
-    ),
-  },
   {
     accessorKey: "firstName",
     header: "First Name",
@@ -41,11 +34,9 @@ export const columns: ColumnDef<User>[] = [
   {
     header: "Actions",
     cell: ({ row }) => {
-      const user = row.original as User;
-
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm">
               <Ellipsis />
             </Button>

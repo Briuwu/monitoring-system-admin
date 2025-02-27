@@ -1,5 +1,4 @@
 import { columns } from "./columns";
-import { User, users } from "./constant";
 import { DataTable } from "./data-table";
 import { AddUser } from "./add-user";
 import { useCallback, useEffect, useState } from "react";
@@ -7,14 +6,16 @@ import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { ComboboxFilter } from "../components/combobox-filter";
 import { Separator } from "@/components/ui/separator";
+import { useUser, User } from "@/hooks/use-user";
 
 function UsersPage() {
-  const [filteredData, setFilteredData] = useState(users);
+  const { userList } = useUser();
+  const [filteredData, setFilteredData] = useState<User[]>(userList);
   const [globalSearch, setGlobalSearch] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
 
   const handleFilter = useCallback(() => {
-    let result = users;
+    let result = userList;
 
     if (departmentFilter) {
       result = result.filter((user) => user.department === departmentFilter);
@@ -32,14 +33,14 @@ function UsersPage() {
     }
 
     setFilteredData(result);
-  }, [globalSearch, departmentFilter]);
+  }, [globalSearch, departmentFilter, userList]);
 
   useEffect(() => {
     handleFilter();
   }, [handleFilter]);
 
   const departmentOptions = Array.from(
-    new Set(users.map((user) => user.department))
+    new Set(userList.map((user) => user.department))
   ).map((department) => ({
     value: department.toLowerCase(),
     label: department,
