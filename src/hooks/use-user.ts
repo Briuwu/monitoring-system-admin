@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { auth, db } from "@/firebase";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export type User = {
@@ -35,6 +35,18 @@ export const useUser = () => {
     getUserList();
   }, []);
 
+  const getUser = async (id: string) => {
+    const docRef = doc(usersCollectionRef, id);
+    try {
+      const data = await getDoc(docRef);
+      const userData = data.data() as User;
+
+      return userData;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   type CreateUser = Omit<User, "id">;
   const createUser = async (userData: CreateUser & { password: string }) => {
     const userCredential = await createUserWithEmailAndPassword(
@@ -61,5 +73,6 @@ export const useUser = () => {
     userList,
     createUser,
     getUserList,
+    getUser,
   };
 };

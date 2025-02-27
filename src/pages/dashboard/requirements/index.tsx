@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { columns } from "./columns";
-import { Requirements, requirements } from "./constant";
 import { DataTable } from "./data-table";
 import { ComboboxFilter } from "../components/combobox-filter";
 import { Input } from "@/components/ui/input";
@@ -8,16 +7,19 @@ import { SearchIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import { Requirement, useRequirement } from "@/hooks/use-requirement";
 
 function RequirementsPage() {
-  const [filteredData, setFilteredData] = useState(requirements);
+  const { requirementList } = useRequirement();
+  const [filteredData, setFilteredData] =
+    useState<Requirement[]>(requirementList);
   const [statusFilter, setStatusFilter] = useState("");
   const [entityFilter, setEntityFilter] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
   const [globalSearch, setGlobalSearch] = useState("");
 
   const handleFilter = useCallback(() => {
-    let result = requirements;
+    let result = requirementList;
     if (statusFilter) {
       result = result.filter(
         (requirement) =>
@@ -42,9 +44,9 @@ function RequirementsPage() {
 
     if (globalSearch) {
       result = result.filter((requirement) =>
-        ["compliance_list", "entity", "person_in_charge", "department"].some(
+        ["complianceList", "entity", "personInCharge", "department"].some(
           (value) => {
-            const data = requirement[value as keyof Requirements] as string;
+            const data = requirement[value as keyof Requirement] as string;
             return data.toLowerCase().includes(globalSearch.toLowerCase());
           }
         )
@@ -52,21 +54,33 @@ function RequirementsPage() {
     }
 
     setFilteredData(result);
-  }, [statusFilter, entityFilter, globalSearch, departmentFilter]);
+  }, [
+    statusFilter,
+    entityFilter,
+    globalSearch,
+    departmentFilter,
+    requirementList,
+  ]);
 
-  const statusOptions = requirements.map((requirement) => ({
-    value: requirement.status.toLowerCase(),
-    label: requirement.status,
+  const statusOptions = Array.from(
+    new Set(requirementList.map((requirement) => requirement.status))
+  ).map((status) => ({
+    value: status,
+    label: status,
   }));
 
-  const entityOptions = requirements.map((requirement) => ({
-    value: requirement.entity.toLowerCase(),
-    label: requirement.entity,
+  const entityOptions = Array.from(
+    new Set(requirementList.map((requirement) => requirement.entity))
+  ).map((entity) => ({
+    value: entity,
+    label: entity,
   }));
 
-  const departmentOptions = requirements.map((requirement) => ({
-    value: requirement.department.toLowerCase(),
-    label: requirement.department,
+  const departmentOptions = Array.from(
+    new Set(requirementList.map((requirement) => requirement.department))
+  ).map((department) => ({
+    value: department,
+    label: department,
   }));
 
   useEffect(() => {

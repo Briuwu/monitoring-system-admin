@@ -10,31 +10,16 @@ import { DataTableColumnHeader } from "../components/data-table-column-header";
 import { Ellipsis, FileText, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import { Requirement } from "@/hooks/use-requirement";
 
-type Requirements = {
-  id: string;
-  compliance_list: string;
-  department: string;
-  entity: string;
-  frequency_of_compliance: string;
-  type_of_compliance: string;
-  date_submitted: Date;
-  expiration: Date;
-  remaining_days: number;
-  renewal: Date;
-  person_in_charge: string;
-  status: string;
-  document_reference: string;
-};
-
-export const columns: ColumnDef<Requirements>[] = [
+export const columns: ColumnDef<Requirement>[] = [
   {
     header: "Entity",
     accessorKey: "entity",
   },
   {
     header: "Compliance List",
-    accessorKey: "compliance_list",
+    accessorKey: "complianceList",
   },
   {
     header: "Department",
@@ -42,66 +27,51 @@ export const columns: ColumnDef<Requirements>[] = [
   },
   {
     header: "Frequency of Compliance",
-    accessorKey: "frequency_of_compliance",
+    accessorKey: "frequencyOfCompliance",
   },
   {
     header: "Type of Compliance",
-    accessorKey: "type_of_compliance",
+    accessorKey: "typeOfCompliance",
   },
   {
-    accessorKey: "date_submitted",
+    accessorKey: "dateSubmitted",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Date Submitted" />
     ),
-    cell: ({ row }) => {
-      const date = row.getValue("date_submitted") as Date;
-      const formattedDate = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      });
-      return formattedDate;
-    },
   },
   {
     accessorKey: "expiration",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Expiration" />
     ),
-    cell: ({ row }) => {
-      const date = row.getValue("expiration") as Date;
-      const formattedDate = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      });
-
-      return formattedDate;
-    },
   },
   {
-    accessorKey: "remaining_days",
     header: "Remaining Days",
+    cell: ({ row }) => {
+      const dateSubmitted = row.original.dateSubmitted;
+      const expiration = row.original.expiration;
+      const calculateRemainingDays = (
+        dateSubmitted: string,
+        expiration: string
+      ) => {
+        const submittedDate = new Date(dateSubmitted);
+        const expirationDate = new Date(expiration);
+        const timeDiff = expirationDate.getTime() - submittedDate.getTime();
+        return Math.ceil(timeDiff / (1000 * 3600 * 24));
+      };
+
+      return calculateRemainingDays(dateSubmitted, expiration);
+    },
   },
   {
     accessorKey: "renewal",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Renewal" />
     ),
-    cell: ({ row }) => {
-      const date = row.getValue("renewal") as Date;
-      const formattedDate = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      });
-
-      return formattedDate;
-    },
   },
   {
     header: "Person in Charge",
-    accessorKey: "person_in_charge",
+    accessorKey: "personInCharge",
   },
   {
     header: "Status",
@@ -109,7 +79,7 @@ export const columns: ColumnDef<Requirements>[] = [
   },
   {
     header: "Document Reference",
-    accessorKey: "document_reference",
+    accessorKey: "documentReference",
     cell: ({ row }) => {
       const document = row.original;
 
@@ -117,7 +87,7 @@ export const columns: ColumnDef<Requirements>[] = [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant={"ghost"}>
-              <span>{document.document_reference}</span>
+              <span>{document.documentReference}</span>
               <Ellipsis />
             </Button>
           </DropdownMenuTrigger>

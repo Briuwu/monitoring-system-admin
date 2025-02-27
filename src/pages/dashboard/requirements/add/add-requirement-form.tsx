@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  // FormDescription,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -34,60 +34,88 @@ import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-// import { CloudUpload, Paperclip } from "lucide-react";
-// import {
-//   FileInput,
-//   FileUploader,
-//   FileUploaderContent,
-//   FileUploaderItem,
-// } from "@/components/ui/file-upload";
+import { CloudUpload, Paperclip } from "lucide-react";
+import {
+  FileInput,
+  FileUploader,
+  FileUploaderContent,
+  FileUploaderItem,
+} from "@/components/ui/file-upload";
 import {
   complianceTypeList,
   departmentList,
   frequencyList,
 } from "@/lib/constant";
+import { uploadToCloudinary } from "@/cloudinary-config";
+import { useRequirement } from "@/hooks/use-requirement";
+import { format as formatDate } from "date-fns";
+import { useNavigate } from "react-router";
 
 const formSchema = z.object({
   entity: z.string().min(1),
   complianceList: z.string(),
-  complianceFrequency: z.string(),
-  complianceType: z.string(),
-  submittedDate: z.coerce.date(),
-  renewalSched: z.coerce.date(),
+  frequencyOfCompliance: z.string(),
+  typeOfCompliance: z.string(),
+  dateSubmitted: z.coerce.date(),
+  renewal: z.coerce.date(),
+  expiration: z.coerce.date(),
   personInCharge: z.string().min(1),
   department: z.string(),
   status: z.string(),
-  document: z.string(),
+  documentReference: z.string(),
 });
 
 export const AddRequirementForm = () => {
-  // const [files, setFiles] = useState<File[] | null>(null);
+  const navigate = useNavigate();
+  const [isPending, startTransition] = useTransition();
+  const { addNewRequirement } = useRequirement();
+  const [files, setFiles] = useState<File[] | null>(null);
 
-  // const dropZoneConfig = {
-  //   maxFiles: 5,
-  //   maxSize: 1024 * 1024 * 4,
-  //   multiple: true,
-  // };
+  const dropZoneConfig = {
+    maxFiles: 5,
+    maxSize: 1024 * 1024 * 4,
+    multiple: false,
+  };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      submittedDate: new Date(),
-      renewalSched: new Date(),
+      dateSubmitted: new Date(),
+      entity: "",
+      complianceList: "",
+      frequencyOfCompliance: "",
+      typeOfCompliance: "",
+      personInCharge: "",
+      department: "",
+      status: "",
+      documentReference: "",
     },
   });
 
+  const generateToken = () => {
+    const year = new Date().getFullYear();
+    const randomKey = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `T-${year}-${randomKey}`;
+  };
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
+    const { dateSubmitted, expiration, renewal, ...data } = values;
+    startTransition(async () => {
+      try {
+        await addNewRequirement({
+          ...data,
+          dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
+          expiration: formatDate(expiration, "yyyy-MM-dd"),
+          renewal: formatDate(renewal, "yyyy-MM-dd"),
+          documentReference: generateToken(),
+        });
+
+        await uploadToCloudinary(files![0]);
+        navigate("/dashboard/requirements");
+      } catch (error) {
+        console.error("Form submission error", error);
+        toast.error("Failed to submit the form. Please try again.");
+      }
+    });
   }
 
   return (
@@ -107,6 +135,7 @@ export const AddRequirementForm = () => {
                   placeholder="enter the entity name..."
                   type="text"
                   {...field}
+                  disabled={isPending}
                 />
               </FormControl>
 
@@ -127,6 +156,7 @@ export const AddRequirementForm = () => {
                   className="resize-none"
                   {...field}
                   rows={7}
+                  disabled={isPending}
                 />
               </FormControl>
 
@@ -136,7 +166,7 @@ export const AddRequirementForm = () => {
         />
         <FormField
           control={form.control}
-          name="complianceFrequency"
+          name="frequencyOfCompliance"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Frequency of Compliance</FormLabel>
@@ -150,6 +180,7 @@ export const AddRequirementForm = () => {
                         "w-[200px] justify-between",
                         !field.value && "text-muted-foreground"
                       )}
+                      disabled={isPending}
                     >
                       {field.value
                         ? frequencyList.find(
@@ -171,8 +202,12 @@ export const AddRequirementForm = () => {
                             value={freq.label}
                             key={freq.value}
                             onSelect={() => {
-                              form.setValue("complianceFrequency", freq.value);
+                              form.setValue(
+                                "frequencyOfCompliance",
+                                freq.value
+                              );
                             }}
+                            disabled={isPending}
                           >
                             <Check
                               className={cn(
@@ -197,7 +232,7 @@ export const AddRequirementForm = () => {
         />
         <FormField
           control={form.control}
-          name="complianceType"
+          name="typeOfCompliance"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Type of Compliance</FormLabel>
@@ -211,6 +246,7 @@ export const AddRequirementForm = () => {
                         "w-[200px] justify-between",
                         !field.value && "text-muted-foreground"
                       )}
+                      disabled={isPending}
                     >
                       {field.value
                         ? complianceTypeList.find(
@@ -232,8 +268,9 @@ export const AddRequirementForm = () => {
                             value={type.label}
                             key={type.value}
                             onSelect={() => {
-                              form.setValue("complianceType", type.value);
+                              form.setValue("typeOfCompliance", type.value);
                             }}
+                            disabled={isPending}
                           >
                             <Check
                               className={cn(
@@ -259,7 +296,7 @@ export const AddRequirementForm = () => {
 
         <FormField
           control={form.control}
-          name="submittedDate"
+          name="dateSubmitted"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Date Submitted / Conducted</FormLabel>
@@ -272,6 +309,7 @@ export const AddRequirementForm = () => {
                         "w-[240px] pl-3 text-left font-normal",
                         !field.value && "text-muted-foreground"
                       )}
+                      disabled={isPending}
                     >
                       {field.value ? (
                         format(field.value, "PPP")
@@ -299,7 +337,48 @@ export const AddRequirementForm = () => {
 
         <FormField
           control={form.control}
-          name="renewalSched"
+          name="expiration"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Expiration Date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                      disabled={isPending}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="renewal"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Schedule of Renewal / Submission</FormLabel>
@@ -312,6 +391,7 @@ export const AddRequirementForm = () => {
                         "w-[240px] pl-3 text-left font-normal",
                         !field.value && "text-muted-foreground"
                       )}
+                      disabled={isPending}
                     >
                       {field.value ? (
                         format(field.value, "PPP")
@@ -348,6 +428,7 @@ export const AddRequirementForm = () => {
                   placeholder="type the person in charge for renewal..."
                   type=""
                   {...field}
+                  disabled={isPending}
                 />
               </FormControl>
 
@@ -371,6 +452,7 @@ export const AddRequirementForm = () => {
                         "w-[200px] justify-between",
                         !field.value && "text-muted-foreground"
                       )}
+                      disabled={isPending}
                     >
                       {field.value
                         ? departmentList.find(
@@ -426,18 +508,23 @@ export const AddRequirementForm = () => {
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
-                  className="flex flex-col space-y-1"
+                  className="space-y-1 grid grid-cols-2"
                 >
                   {[
                     ["Active", "active"],
                     ["Inactive", "inactive"],
+                    ["Pending", "pending"],
+                    ["Expired", "expired"],
                   ].map((option, index) => (
                     <FormItem
                       className="flex items-center space-x-3 space-y-0"
                       key={index}
                     >
                       <FormControl>
-                        <RadioGroupItem value={option[1]} />
+                        <RadioGroupItem
+                          value={option[1]}
+                          disabled={isPending}
+                        />
                       </FormControl>
                       <FormLabel className="font-normal">{option[0]}</FormLabel>
                     </FormItem>
@@ -449,12 +536,12 @@ export const AddRequirementForm = () => {
           )}
         />
 
-        {/* <FormField
+        <FormField
           control={form.control}
-          name="document"
-          render={({ field }) => (
+          name="documentReference"
+          render={() => (
             <FormItem className="col-span-full">
-              <FormLabel>Upload Document</FormLabel>
+              <FormLabel>Upload documentReference</FormLabel>
               <FormControl>
                 <FileUploader
                   value={files}
@@ -473,7 +560,7 @@ export const AddRequirementForm = () => {
                         &nbsp; or drag and drop
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        SVG, PNG, JPG or GIF
+                        PDF, DOCX, XLSX, or PPTX
                       </p>
                     </div>
                   </FileInput>
@@ -493,8 +580,8 @@ export const AddRequirementForm = () => {
               <FormMessage />
             </FormItem>
           )}
-        /> */}
-        <Button type="submit" className="col-span-full">
+        />
+        <Button type="submit" className="col-span-full" disabled={isPending}>
           Submit
         </Button>
       </form>

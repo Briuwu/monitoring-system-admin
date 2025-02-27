@@ -43,7 +43,7 @@ function UsersPage() {
   const departmentOptions = Array.from(
     new Set(userList.map((user) => user.department))
   ).map((department) => ({
-    value: department.toLowerCase(),
+    value: department,
     label: department,
   }));
 
