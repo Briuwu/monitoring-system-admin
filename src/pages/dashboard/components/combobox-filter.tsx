@@ -75,7 +75,7 @@ export function ComboboxFilter({
                       value === option.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {option.label}
+                  {option.label.toUpperCase()}
                 </CommandItem>
               ))}
             </CommandGroup>

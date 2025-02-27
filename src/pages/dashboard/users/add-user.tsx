@@ -8,10 +8,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { AddUserForm } from "./add-user-form";
+import { useState } from "react";
 
 export const AddUser = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => setOpen(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>+ Add User</Button>
       </DialogTrigger>
@@ -22,7 +26,7 @@ export const AddUser = () => {
             Fill out the form below to add a new user.
           </DialogDescription>
         </DialogHeader>
-        <AddUserForm />
+        <AddUserForm handleClose={handleClose} />
       </DialogContent>
     </Dialog>
   );

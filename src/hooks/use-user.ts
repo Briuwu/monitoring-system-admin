@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { db } from "@/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { auth, db } from "@/firebase";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export type User = {
   id: string;
@@ -8,7 +9,7 @@ export type User = {
   email: string;
   firstName: string;
   lastName: string;
-  middleName: string;
+  middleName?: string;
 };
 
 export const useUser = () => {
@@ -34,7 +35,31 @@ export const useUser = () => {
     getUserList();
   }, []);
 
+  type CreateUser = Omit<User, "id">;
+  const createUser = async (userData: CreateUser & { password: string }) => {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      userData.email,
+      userData.password
+    );
+    const user = userCredential.user;
+    try {
+      await addDoc(usersCollectionRef, {
+        firstName: userData.firstName,
+        middleName: userData.middleName || "N/A",
+        lastName: userData.lastName,
+        email: userData.email,
+        department: userData.department,
+        uid: user.uid,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     userList,
+    createUser,
+    getUserList,
   };
 };

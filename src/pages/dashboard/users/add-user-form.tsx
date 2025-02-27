@@ -1,3 +1,4 @@
+import { useTransition } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +29,7 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { departmentList } from "@/lib/constant";
+import { useUser } from "@/hooks/use-user";
 
 const formSchema = z
   .object({
@@ -49,23 +51,36 @@ const formSchema = z
     }
   });
 
-export const AddUserForm = () => {
+export const AddUserForm = ({ handleClose }: { handleClose: () => void }) => {
+  const [isPending, startTransition] = useTransition();
+  const { createUser } = useUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    values: {
+      firstName: "",
+      lastName: "",
+      middleName: "",
+      email: "",
+      department: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      console.log(values);
-      toast.success(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword, ...data } = values;
+    startTransition(async () => {
+      try {
+        await createUser({ ...data });
+        toast.success("User created successfully");
+        form.reset();
+        handleClose();
+      } catch (error) {
+        console.error("Form submission error", error);
+        toast.error("Failed to submit the form. Please try again.");
+      }
+    });
   }
 
   return (
@@ -81,7 +96,12 @@ export const AddUserForm = () => {
             <FormItem>
               <FormLabel>First Name</FormLabel>
               <FormControl>
-                <Input placeholder="John" type="text" {...field} />
+                <Input
+                  placeholder="John"
+                  type="text"
+                  {...field}
+                  disabled={isPending}
+                />
               </FormControl>
 
               <FormMessage />
@@ -96,7 +116,12 @@ export const AddUserForm = () => {
             <FormItem>
               <FormLabel>Last Name</FormLabel>
               <FormControl>
-                <Input placeholder="Doe" type="text" {...field} />
+                <Input
+                  placeholder="Doe"
+                  type="text"
+                  {...field}
+                  disabled={isPending}
+                />
               </FormControl>
 
               <FormMessage />
@@ -111,7 +136,12 @@ export const AddUserForm = () => {
             <FormItem>
               <FormLabel>Middle Name</FormLabel>
               <FormControl>
-                <Input placeholder="Fren" type="text" {...field} />
+                <Input
+                  placeholder="Fren"
+                  type="text"
+                  {...field}
+                  disabled={isPending}
+                />
               </FormControl>
 
               <FormMessage />
@@ -130,6 +160,7 @@ export const AddUserForm = () => {
                   placeholder="johndoe@email.com"
                   type="email"
                   {...field}
+                  disabled={isPending}
                 />
               </FormControl>
 
@@ -144,7 +175,12 @@ export const AddUserForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="********" type="password" {...field} />
+                <Input
+                  placeholder="********"
+                  type="password"
+                  {...field}
+                  disabled={isPending}
+                />
               </FormControl>
 
               <FormMessage />
@@ -158,7 +194,12 @@ export const AddUserForm = () => {
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <Input placeholder="*******" type="password" {...field} />
+                <Input
+                  placeholder="*******"
+                  type="password"
+                  {...field}
+                  disabled={isPending}
+                />
               </FormControl>
 
               <FormMessage />
@@ -175,6 +216,7 @@ export const AddUserForm = () => {
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
+                      disabled={isPending}
                       variant="outline"
                       role="combobox"
                       className={cn(
@@ -226,7 +268,7 @@ export const AddUserForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="col-span-full">
+        <Button type="submit" className="col-span-full" disabled={isPending}>
           Submit
         </Button>
       </form>

@@ -30,6 +30,7 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "department",
     header: "Department",
+    cell: ({ row }) => <span>{row.original.department.toUpperCase()}</span>,
   },
   {
     header: "Actions",

@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { useUser, User } from "@/hooks/use-user";
 
 function UsersPage() {
-  const { userList } = useUser();
+  const { userList, getUserList } = useUser();
   const [filteredData, setFilteredData] = useState<User[]>(userList);
   const [globalSearch, setGlobalSearch] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
@@ -37,6 +37,7 @@ function UsersPage() {
 
   useEffect(() => {
     handleFilter();
+    getUserList();
   }, [handleFilter]);
 
   const departmentOptions = Array.from(
