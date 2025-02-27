@@ -1,5 +1,4 @@
-"use client";
-import { useState } from "react";
+// import { useState } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
+  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -35,13 +34,18 @@ import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CloudUpload, Paperclip } from "lucide-react";
+// import { CloudUpload, Paperclip } from "lucide-react";
+// import {
+//   FileInput,
+//   FileUploader,
+//   FileUploaderContent,
+//   FileUploaderItem,
+// } from "@/components/ui/file-upload";
 import {
-  FileInput,
-  FileUploader,
-  FileUploaderContent,
-  FileUploaderItem,
-} from "@/components/ui/file-upload";
+  complianceTypeList,
+  departmentList,
+  frequencyList,
+} from "@/lib/constant";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -57,52 +61,13 @@ const formSchema = z.object({
 });
 
 export const AddRequirementForm = () => {
-  const languages = [
-    {
-      label: "English",
-      value: "en",
-    },
-    {
-      label: "French",
-      value: "fr",
-    },
-    {
-      label: "German",
-      value: "de",
-    },
-    {
-      label: "Spanish",
-      value: "es",
-    },
-    {
-      label: "Portuguese",
-      value: "pt",
-    },
-    {
-      label: "Russian",
-      value: "ru",
-    },
-    {
-      label: "Japanese",
-      value: "ja",
-    },
-    {
-      label: "Korean",
-      value: "ko",
-    },
-    {
-      label: "Chinese",
-      value: "zh",
-    },
-  ] as const;
+  // const [files, setFiles] = useState<File[] | null>(null);
 
-  const [files, setFiles] = useState<File[] | null>(null);
-
-  const dropZoneConfig = {
-    maxFiles: 5,
-    maxSize: 1024 * 1024 * 4,
-    multiple: true,
-  };
+  // const dropZoneConfig = {
+  //   maxFiles: 5,
+  //   maxSize: 1024 * 1024 * 4,
+  //   multiple: true,
+  // };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -187,40 +152,37 @@ export const AddRequirementForm = () => {
                       )}
                     >
                       {field.value
-                        ? languages.find(
-                            (language) => language.value === field.value
+                        ? frequencyList.find(
+                            (dept) => dept.value === field.value
                           )?.label
-                        : "Select language"}
+                        : "Select frequency"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
                   <Command>
-                    <CommandInput placeholder="Search language..." />
+                    <CommandInput placeholder="Search compliance..." />
                     <CommandList>
-                      <CommandEmpty>No language found.</CommandEmpty>
+                      <CommandEmpty>No compliance found.</CommandEmpty>
                       <CommandGroup>
-                        {languages.map((language) => (
+                        {frequencyList.map((freq) => (
                           <CommandItem
-                            value={language.label}
-                            key={language.value}
+                            value={freq.label}
+                            key={freq.value}
                             onSelect={() => {
-                              form.setValue(
-                                "complianceFrequency",
-                                language.value
-                              );
+                              form.setValue("complianceFrequency", freq.value);
                             }}
                           >
                             <Check
                               className={cn(
                                 "mr-2 h-4 w-4",
-                                language.value === field.value
+                                freq.value === field.value
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}
                             />
-                            {language.label}
+                            {freq.label}
                           </CommandItem>
                         ))}
                       </CommandGroup>
@@ -251,37 +213,37 @@ export const AddRequirementForm = () => {
                       )}
                     >
                       {field.value
-                        ? languages.find(
-                            (language) => language.value === field.value
+                        ? complianceTypeList.find(
+                            (dept) => dept.value === field.value
                           )?.label
-                        : "Select language"}
+                        : "Select type"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
                   <Command>
-                    <CommandInput placeholder="Search language..." />
+                    <CommandInput placeholder="Search department..." />
                     <CommandList>
-                      <CommandEmpty>No language found.</CommandEmpty>
+                      <CommandEmpty>No type found.</CommandEmpty>
                       <CommandGroup>
-                        {languages.map((language) => (
+                        {complianceTypeList.map((type) => (
                           <CommandItem
-                            value={language.label}
-                            key={language.value}
+                            value={type.label}
+                            key={type.value}
                             onSelect={() => {
-                              form.setValue("complianceType", language.value);
+                              form.setValue("complianceType", type.value);
                             }}
                           >
                             <Check
                               className={cn(
                                 "mr-2 h-4 w-4",
-                                language.value === field.value
+                                type.value === field.value
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}
                             />
-                            {language.label}
+                            {type.label}
                           </CommandItem>
                         ))}
                       </CommandGroup>
@@ -411,37 +373,37 @@ export const AddRequirementForm = () => {
                       )}
                     >
                       {field.value
-                        ? languages.find(
-                            (language) => language.value === field.value
+                        ? departmentList.find(
+                            (department) => department.value === field.value
                           )?.label
-                        : "Select language"}
+                        : "Select department"}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
                   <Command>
-                    <CommandInput placeholder="Search language..." />
+                    <CommandInput placeholder="Search department..." />
                     <CommandList>
-                      <CommandEmpty>No language found.</CommandEmpty>
+                      <CommandEmpty>No department found.</CommandEmpty>
                       <CommandGroup>
-                        {languages.map((language) => (
+                        {departmentList.map((department) => (
                           <CommandItem
-                            value={language.label}
-                            key={language.value}
+                            value={department.label}
+                            key={department.value}
                             onSelect={() => {
-                              form.setValue("department", language.value);
+                              form.setValue("department", department.value);
                             }}
                           >
                             <Check
                               className={cn(
                                 "mr-2 h-4 w-4",
-                                language.value === field.value
+                                department.value === field.value
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}
                             />
-                            {language.label}
+                            {department.label}
                           </CommandItem>
                         ))}
                       </CommandGroup>
@@ -487,7 +449,7 @@ export const AddRequirementForm = () => {
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="document"
           render={({ field }) => (
@@ -531,7 +493,7 @@ export const AddRequirementForm = () => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
         <Button type="submit" className="col-span-full">
           Submit
         </Button>

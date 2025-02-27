@@ -7,8 +7,9 @@ import {
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Ellipsis, Trash, User as UserIcon } from "lucide-react";
+import { Ellipsis, User as UserIcon } from "lucide-react";
 import { User } from "@/hooks/use-user";
+import { Link } from "react-router";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -44,12 +45,13 @@ export const columns: ColumnDef<User>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
-              <UserIcon />
-              View Details
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-500">
-              <Trash color="#fb2c36" />
-              Delete Account
+              <Link
+                to={`/dashboard/users/${row.original.id}`}
+                className="flex items-center gap-2"
+              >
+                <UserIcon />
+                View Details
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

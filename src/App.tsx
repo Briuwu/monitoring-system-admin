@@ -5,9 +5,10 @@ import DashboardLayout from "@/pages/dashboard";
 import DashboardHome from "@/pages/dashboard/dashboard-home";
 import RequirementsPage from "@/pages/dashboard/requirements";
 import CalendarPage from "@/pages/dashboard/calendar";
-import SettingsPage from "./pages/dashboard/settings";
-import UsersPage from "./pages/dashboard/users";
-import AddRequirementPage from "./pages/dashboard/requirements/add";
+import SettingsPage from "@/pages/dashboard/settings";
+import UsersPage from "@/pages/dashboard/users";
+import AddRequirementPage from "@/pages/dashboard/requirements/add";
+import UserDetails from "@/pages/dashboard/users/user-details";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         />
         <Route path="/dashboard/calendar" element={<CalendarPage />} />
         <Route path="/dashboard/users" element={<UsersPage />} />
+        <Route path="/dashboard/users/:userId" element={<UserDetails />} />
         <Route path="/dashboard/settings" element={<SettingsPage />} />
       </Route>
     </Routes>
