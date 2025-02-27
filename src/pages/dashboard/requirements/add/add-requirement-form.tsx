@@ -110,6 +110,7 @@ export const AddRequirementForm = () => {
         });
 
         await uploadToCloudinary(files![0]);
+        toast.success("Requirement Document added successfully.");
         navigate("/dashboard/requirements");
       } catch (error) {
         console.error("Form submission error", error);

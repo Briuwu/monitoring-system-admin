@@ -48,19 +48,15 @@ export const columns: ColumnDef<Requirement>[] = [
   {
     header: "Remaining Days",
     cell: ({ row }) => {
-      const dateSubmitted = row.original.dateSubmitted;
-      const expiration = row.original.expiration;
-      const calculateRemainingDays = (
-        dateSubmitted: string,
-        expiration: string
-      ) => {
-        const submittedDate = new Date(dateSubmitted);
-        const expirationDate = new Date(expiration);
-        const timeDiff = expirationDate.getTime() - submittedDate.getTime();
+      const renewal = row.original.renewal;
+      const calculateRemainingDays = (renewal: string) => {
+        const currentDate = new Date();
+        const renewalDate = new Date(renewal);
+        const timeDiff = renewalDate.getTime() - currentDate.getTime();
         return Math.ceil(timeDiff / (1000 * 3600 * 24));
       };
 
-      return calculateRemainingDays(dateSubmitted, expiration);
+      return calculateRemainingDays(renewal);
     },
   },
   {
