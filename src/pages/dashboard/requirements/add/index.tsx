@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { AddRequirementForm } from "../add-requirement-form";
+import { AddRequirementForm } from "./add-requirement-form";
 import { Link } from "react-router";
 
 function AddRequirementPage() {

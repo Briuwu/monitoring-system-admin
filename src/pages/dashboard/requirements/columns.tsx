@@ -9,6 +9,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../components/data-table-column-header";
 import { Ellipsis, FileText, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 type Requirements = {
   id: string;
@@ -122,8 +123,13 @@ export const columns: ColumnDef<Requirements>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
-              <FileText />
-              Open Document
+              <Link
+                to={`/dashboard/requirements/${row.original.id}`}
+                className="flex items-center gap-2"
+              >
+                <FileText />
+                Open Document
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Upload />

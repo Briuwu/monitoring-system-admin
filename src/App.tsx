@@ -9,6 +9,7 @@ import SettingsPage from "@/pages/dashboard/settings";
 import UsersPage from "@/pages/dashboard/users";
 import AddRequirementPage from "@/pages/dashboard/requirements/add";
 import UserDetails from "@/pages/dashboard/users/user-details";
+import RequirementDetails from "./pages/dashboard/requirements/requirement-details";
 
 function App() {
   return (
@@ -16,14 +17,22 @@ function App() {
       <Route path="/" element={<LoginPage />} />
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<DashboardHome />} />
+
         <Route path="/dashboard/requirements" element={<RequirementsPage />} />
         <Route
           path="/dashboard/requirements/add"
           element={<AddRequirementPage />}
         />
+        <Route
+          path="/dashboard/requirements/:requirementId"
+          element={<RequirementDetails />}
+        />
+
         <Route path="/dashboard/calendar" element={<CalendarPage />} />
+
         <Route path="/dashboard/users" element={<UsersPage />} />
         <Route path="/dashboard/users/:userId" element={<UserDetails />} />
+
         <Route path="/dashboard/settings" element={<SettingsPage />} />
       </Route>
     </Routes>
