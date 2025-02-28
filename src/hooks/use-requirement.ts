@@ -22,6 +22,7 @@ export type Requirement = {
   dateSubmitted: string;
   personInCharge: string;
   status: string;
+  uploadedFileUrl: string;
 };
 
 export const useRequirement = () => {
@@ -59,7 +60,7 @@ export const useRequirement = () => {
     }
   };
 
-  type CreateRequirement = Omit<Requirement, "id">;
+  type CreateRequirement = Omit<Requirement, "id" | "uploadedFileUrl">;
 
   const addNewRequirement = async (requirements: CreateRequirement) => {
     try {

@@ -23,6 +23,12 @@ function RequirementDetails() {
   const { getSingleRequirement, deleteRequirement } = useRequirement();
   const [requirement, setRequirement] = useState<Requirement>();
 
+  // Handle viewing the document
+  const handleViewDocument = (fileUrl: string) => {
+    window.open(fileUrl, "_blank"); // Open the file in a new tab
+  };
+
+  console.log(requirement)
   useEffect(() => {
     const fetch = async () => {
       const data = await getSingleRequirement(params.requirementId!);
@@ -131,12 +137,9 @@ function RequirementDetails() {
           </div>
         </div>
         <Separator />
-        <div className="grid grid-cols-2 gap-5">
-          <Button className="min-h-[100px] bg-blue-500 font-black uppercase text-lg">
-            View Document
-          </Button>
-          <Button className="min-h-[100px] bg-emerald-500 uppercase text-lg">
-            Download Document
+        <div className="grid gap-5">
+          <Button className="min-h-[100px] bg-blue-500 font-black uppercase text-lg" onClick={() => handleViewDocument(requirement.uploadedFileUrl)}>
+            Open Document
           </Button>
         </div>
       </div>
