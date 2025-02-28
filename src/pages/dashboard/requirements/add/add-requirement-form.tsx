@@ -113,10 +113,11 @@ export const AddRequirementForm = () => {
     },
   });
 
-  const generateToken = () => {
+  const generateToken = (department: string) => {
     const year = new Date().getFullYear();
     const randomKey = Math.random().toString(36).substring(2, 6).toUpperCase();
-    return `T-${year}-${randomKey}`;
+    const departmentPrefix = department.substring(0, 2).toUpperCase(); // Get first 2 letters of the department
+    return `${departmentPrefix}-${year}-${randomKey}`;
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -127,15 +128,16 @@ export const AddRequirementForm = () => {
     );
     startTransition(async () => {
       try {
+        const fileUrl = await uploadToCloudinary(files![0]);
         await addNewRequirement({
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
           expiration: formatDate(expiration, "yyyy-MM-dd"),
           renewal: formatDate(renewal, "yyyy-MM-dd"),
-          documentReference: generateToken(),
+          documentReference: generateToken(values.department),
+          uploadedFileUrl: fileUrl
         });
 
-        await uploadToCloudinary(files![0]);
         toast.success("Requirement Document added successfully.");
         navigate("/dashboard/requirements");
       } catch (error) {
