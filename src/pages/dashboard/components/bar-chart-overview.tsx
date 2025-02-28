@@ -13,32 +13,34 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { date: "annual", value: 1, fill: "var(--color-annual)" },
-  { date: "semiAnnual", value: 2, fill: "var(--color-semiAnnual)" },
-  { date: "quarterly", value: 0, fill: "var(--color-quarterly)" },
-  { date: "monthly", value: 3, fill: "var(--color-monthly)" },
-];
 
 const chartConfig = {
   value: {
     label: "Total",
   },
-  annual: {
+  Annual: {
     label: "Annual",
   },
-  semiAnnual: {
+  "Semi Annual": {
     label: "Semi Annual",
   },
-  quarterly: {
+  Quarterly: {
     label: "Quarterly",
   },
-  monthly: {
+  Monthly: {
     label: "Monthly",
   },
 } satisfies ChartConfig;
 
-export function BarChartOverview() {
+type Props = {
+  chartData: {
+    date: string;
+    value: number;
+    fill: string;
+  }[];
+};
+
+export function BarChartOverview({ chartData }: Props) {
   return (
     <Card>
       <CardHeader>

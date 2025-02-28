@@ -2,64 +2,46 @@ import { BarChartOverview } from "./components/bar-chart-overview";
 import DueSoon from "./components/due-soon";
 import { Button } from "@/components/ui/button";
 import { Subscriptions } from "./components/subscriptions";
-// import { useRequirement } from "@/hooks/use-requirement";
-
-const items = [
-  {
-    id: 1,
-    title: "Total Subscriptions",
-    value: 5,
-    color: "bg-neutral-800",
-  },
-  {
-    id: 2,
-    title: "Active Subscriptions",
-    value: 3,
-    color: "bg-green-500",
-  },
-  {
-    id: 3,
-    title: "Inactive Subscriptions",
-    value: 2,
-    color: "bg-red-500",
-  },
-  {
-    id: 4,
-    title: "Pending Subscriptions",
-    value: 0,
-    color: "bg-yellow-500",
-  },
-];
+import { useRequirement } from "@/hooks/use-requirement";
 
 function DashboardHome() {
-  // const { requirementList } = useRequirement();
+  const { requirementList } = useRequirement();
 
-  // const subscriptionCounts = {
-  //   active: requirementList.filter((item) => item.status.toLowerCase() === "active"),
-  //   inactive: requirementList.filter((item) => item.status.toLowerCase() === "inactive"),
-  //   pending: requirementList.filter((item) => item.status.toLowerCase() === "pending"),
-  //   total: requirementList.length,
-  // };
-  // <Subscriptions
-  //         title="Total Subscriptions"
-  //         count={subscriptionCounts.total}
-  //         color="blue"
-  //       />
-  //       <Subscriptions
-  //         title="Active Subscriptions"
-  //         count={subscriptionCounts.active.length}
-  //         color="green"
-  //       />
-  //       <Subscriptions
-  //         title="Inactive Subscriptions"
-  //         count={subscriptionCounts.inactive.length}
-  //         color="red"
-  //       />
-  //       <Subscriptions
-  //         title="Pending Subscriptions"
-  //         count={subscriptionCounts.pending.length}
-  //         color="yellow"
-  //       />
+  const subscriptionCounts = {
+    active: requirementList.filter(
+      (item) => item.status.toLowerCase() === "active"
+    ),
+    inactive: requirementList.filter(
+      (item) => item.status.toLowerCase() === "inactive"
+    ),
+    pending: requirementList.filter(
+      (item) => item.status.toLowerCase() === "pending"
+    ),
+    total: requirementList,
+  };
+
+  const chartData = [
+    {
+      date: "Annual",
+      value: subscriptionCounts.active.length,
+      fill: "#10B981",
+    },
+    {
+      date: "Semi Annual",
+      value: subscriptionCounts.inactive.length,
+      fill: "#EF4444",
+    },
+    {
+      date: "Quarterly",
+      value: subscriptionCounts.pending.length,
+      fill: "#F59E0B",
+    },
+    {
+      date: "Monthly",
+      value: subscriptionCounts.total.length,
+      fill: "#3B82F6",
+    },
+  ];
 
   return (
     <div className="w-full space-y-5">
@@ -68,12 +50,29 @@ function DashboardHome() {
         <Button>Generate Reports</Button>
       </div>
       <div className="grid lg:grid-cols-4 gap-2 w-full">
-        {items.map((item) => (
-          <Subscriptions key={item.id} item={item} />
-        ))}
+        <Subscriptions
+          title="Total Subscriptions"
+          item={subscriptionCounts.total}
+          color="bg-blue-500"
+        />
+        <Subscriptions
+          title="Active Subscriptions"
+          item={subscriptionCounts.active}
+          color="bg-green-500"
+        />
+        <Subscriptions
+          title="Inactive Subscriptions"
+          item={subscriptionCounts.inactive}
+          color="bg-red-500"
+        />
+        <Subscriptions
+          title="Pending Subscriptions"
+          item={subscriptionCounts.pending}
+          color="bg-yellow-500"
+        />
       </div>
       <div className="grid lg:grid-cols-2 gap-5">
-        <BarChartOverview />
+        <BarChartOverview chartData={chartData} />
         <DueSoon />
       </div>
     </div>
