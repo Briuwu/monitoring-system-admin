@@ -3,6 +3,7 @@ import DueSoon from "./components/due-soon";
 import { Button } from "@/components/ui/button";
 import { Subscriptions } from "./components/subscriptions";
 import { useRequirement } from "@/hooks/use-requirement";
+import { generateReport } from '@/pages/dashboard/components/generate-reports';
 
 function DashboardHome() {
   const { requirementList } = useRequirement();
@@ -47,7 +48,7 @@ function DashboardHome() {
     <div className="w-full space-y-5">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold">Dashboard Overview</h2>
-        <Button>Generate Reports</Button>
+        <Button onClick={() => generateReport(requirementList)}>Generate Reports</Button>
       </div>
       <div className="grid lg:grid-cols-4 gap-2 w-full">
         <Subscriptions
