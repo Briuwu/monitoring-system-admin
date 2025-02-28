@@ -44,12 +44,16 @@ function RequirementsPage() {
 
     if (globalSearch) {
       result = result.filter((requirement) =>
-        ["complianceList", "entity", "personInCharge", "department"].some(
-          (value) => {
-            const data = requirement[value as keyof Requirement] as string;
-            return data.toLowerCase().includes(globalSearch.toLowerCase());
-          }
-        )
+        [
+          "complianceList",
+          "entity",
+          "personInCharge",
+          "department",
+          "documentReference",
+        ].some((value) => {
+          const data = requirement[value as keyof Requirement] as string;
+          return data.toLowerCase().includes(globalSearch.toLowerCase());
+        })
       );
     }
 
