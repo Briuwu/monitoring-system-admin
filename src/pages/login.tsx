@@ -1,7 +1,23 @@
 import bg from "@/assets/bg.png";
 import LoginForm from "@/components/login-form";
+import useAuth from "@/context/use-auth";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [navigate, user]);
+
+  if (user) {
+    return null;
+  }
+
   return (
     <main className="grid grid-cols-2 min-h-screen">
       <img src={bg} alt="" className="h-full object-cover" />
