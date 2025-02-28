@@ -28,7 +28,6 @@ function RequirementDetails() {
     window.open(fileUrl, "_blank"); // Open the file in a new tab
   };
 
-  console.log(requirement)
   useEffect(() => {
     const fetch = async () => {
       const data = await getSingleRequirement(params.requirementId!);
@@ -89,17 +88,22 @@ function RequirementDetails() {
             <p className="text-xl text-neutral-500 font-medium">
               {requirement.entity}
             </p>
-            <p
-              className={cn(
-                "p-2 px-4 uppercase rounded-full text-white bg-black",
-                requirement.status === "Pending" && "bg-yellow-500",
-                requirement.status === "Active" && "bg-green-500",
-                requirement.status === "Inactive" && "bg-red-500",
-                requirement.status === "Expired" && "bg-red-500"
-              )}
-            >
-              {requirement.status}
-            </p>
+            <div className="flex items-center gap-4">
+              <p className="font-bold underline text-lg">
+                {requirement.documentReference}
+              </p>
+              <p
+                className={cn(
+                  "p-2 px-4 uppercase rounded-full text-white bg-black",
+                  requirement.status === "Pending" && "bg-yellow-500",
+                  requirement.status === "Active" && "bg-green-500",
+                  requirement.status === "Inactive" && "bg-red-500",
+                  requirement.status === "Expired" && "bg-red-500"
+                )}
+              >
+                {requirement.status}
+              </p>
+            </div>
           </div>
           <h2 className="text-2xl font-bold">
             {requirement.complianceList} - {requirement.typeOfCompliance}
@@ -138,7 +142,10 @@ function RequirementDetails() {
         </div>
         <Separator />
         <div className="grid gap-5">
-          <Button className="min-h-[100px] bg-blue-500 font-black uppercase text-lg" onClick={() => handleViewDocument(requirement.uploadedFileUrl)}>
+          <Button
+            className="min-h-[100px] bg-blue-500 font-black uppercase text-lg"
+            onClick={() => handleViewDocument(requirement.uploadedFileUrl)}
+          >
             Open Document
           </Button>
         </div>
