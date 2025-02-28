@@ -10,32 +10,38 @@ import UsersPage from "@/pages/dashboard/users";
 import AddRequirementPage from "@/pages/dashboard/requirements/add";
 import UserDetails from "@/pages/dashboard/users/user-details";
 import RequirementDetails from "./pages/dashboard/requirements/requirement-details";
+import AuthProvider from "./context/auth-provider";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route index element={<DashboardHome />} />
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<DashboardHome />} />
 
-        <Route path="/dashboard/requirements" element={<RequirementsPage />} />
-        <Route
-          path="/dashboard/requirements/add"
-          element={<AddRequirementPage />}
-        />
-        <Route
-          path="/dashboard/requirements/:requirementId"
-          element={<RequirementDetails />}
-        />
+          <Route
+            path="/dashboard/requirements"
+            element={<RequirementsPage />}
+          />
+          <Route
+            path="/dashboard/requirements/add"
+            element={<AddRequirementPage />}
+          />
+          <Route
+            path="/dashboard/requirements/:requirementId"
+            element={<RequirementDetails />}
+          />
 
-        <Route path="/dashboard/calendar" element={<CalendarPage />} />
+          <Route path="/dashboard/calendar" element={<CalendarPage />} />
 
-        <Route path="/dashboard/users" element={<UsersPage />} />
-        <Route path="/dashboard/users/:userId" element={<UserDetails />} />
+          <Route path="/dashboard/users" element={<UsersPage />} />
+          <Route path="/dashboard/users/:userId" element={<UserDetails />} />
 
-        <Route path="/dashboard/settings" element={<SettingsPage />} />
-      </Route>
-    </Routes>
+          <Route path="/dashboard/settings" element={<SettingsPage />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 export default App;

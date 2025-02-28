@@ -1,28 +1,22 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Outlet } from "react-router";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
-import { onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "@/firebase";
+import { useNavigate, Outlet } from "react-router";
+import useAuth from "@/context/use-auth";
+import { useEffect } from "react";
 
 function DashboardLayout() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const [user, setUser] = useState<User | null>();
-  
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-        setUser(user)
-    });
+    if (!user) {
+      navigate("/");
+    }
+  }, [navigate, user]);
 
-    return () => unsubscribe()    
-  }, [])
-
-
-  // if(!user) {
-  //   navigate('/');
-  // }
+  if (!user) {
+    return null;
+  }
 
   return (
     <SidebarProvider>
