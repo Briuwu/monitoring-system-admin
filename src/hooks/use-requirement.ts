@@ -60,7 +60,7 @@ export const useRequirement = () => {
     }
   };
 
-  type CreateRequirement = Omit<Requirement, "id" | "uploadedFileUrl">;
+  type CreateRequirement = Omit<Requirement, "id">;
 
   const addNewRequirement = async (requirements: CreateRequirement) => {
     try {
@@ -76,6 +76,7 @@ export const useRequirement = () => {
         renewal: requirements.renewal,
         status: requirements.status,
         typeOfCompliance: requirements.typeOfCompliance,
+        uploadedFileUrl: requirements.uploadedFileUrl
       });
     } catch (error) {
       console.error(error);
