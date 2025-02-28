@@ -74,7 +74,6 @@ export const columns: ColumnDef<Requirement>[] = [
           <Link
             to={`/dashboard/requirements/${row.original.id}`}
             className="flex items-center gap-2"
-            target="_blank"
           >
             {row.original.documentReference}
           </Link>
