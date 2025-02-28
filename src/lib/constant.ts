@@ -1,72 +1,72 @@
 export const departmentList = [
   {
     label: "HR",
-    value: "hr",
+    value: "HR",
   },
   {
     label: "GA",
-    value: "ga",
+    value: "GA",
   },
   {
     label: "Safety",
-    value: "safety",
+    value: "Safety",
   },
   {
     label: "MIS",
-    value: "mis",
+    value: "MIS",
   },
   {
     label: "Finance",
-    value: "finance",
+    value: "Finance",
   },
   {
     label: "QA",
-    value: "qa",
+    value: "QA",
   },
   {
     label: "OOF",
-    value: "oof",
+    value: "OOF",
   },
   {
     label: "OJS",
-    value: "ojs",
+    value: "OJS",
   },
 ] as const;
 
 export const frequencyList = [
   {
     label: "Monthly",
-    value: "monthly",
+    value: "Monthly",
   },
   {
     label: "Quarterly",
-    value: "quarterly",
+    value: "Quarterly",
   },
   {
     label: "Semi Annual",
-    value: "semiAnnual",
+    value: "Semi Annual",
   },
   {
     label: "Annual",
-    value: "annual",
+    value: "Annual",
   },
 ] as const;
 
 export const complianceTypeList = [
   {
     label: "Report",
-    value: "report",
+    value: "Report",
   },
   {
     label: "Permit",
-    value: "permit",
+    value: "Permit",
   },
   {
     label: "Contract",
-    value: "contract",
+    value: "Contract",
   },
   {
     label: "Certificate",
-    value: "certificate",
+    value: "Certificate",
   },
 ] as const;

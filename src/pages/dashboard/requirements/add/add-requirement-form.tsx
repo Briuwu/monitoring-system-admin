@@ -65,6 +65,27 @@ const formSchema = z.object({
   documentReference: z.string(),
 });
 
+const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
+  const date = new Date(dateSubmitted);
+  switch (frequency) {
+    case "Monthly":
+      date.setMonth(date.getMonth() + 1);
+      break;
+    case "Quarterly":
+      date.setMonth(date.getMonth() + 3);
+      break;
+    case "Semi Annual":
+      date.setMonth(date.getMonth() + 6);
+      break;
+    case "Annual":
+      date.setFullYear(date.getFullYear() + 1);
+      break;
+    default:
+      break;
+  }
+  return date;
+};
+
 export const AddRequirementForm = () => {
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
@@ -88,6 +109,7 @@ export const AddRequirementForm = () => {
       department: "",
       status: "",
       documentReference: "",
+      expiration: calculateExpirationDate(new Date(), ""),
     },
   });
 
@@ -98,7 +120,11 @@ export const AddRequirementForm = () => {
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const { dateSubmitted, expiration, renewal, ...data } = values;
+    const { dateSubmitted, renewal, ...data } = values;
+    const expiration = calculateExpirationDate(
+      dateSubmitted,
+      values.frequencyOfCompliance
+    );
     startTransition(async () => {
       try {
         await addNewRequirement({
@@ -336,46 +362,37 @@ export const AddRequirementForm = () => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="expiration"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Expiration Date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                      disabled={isPending}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="space-y-1">
+          <p className="text-sm">Expiration Date</p>
+          <Popover>
+            <PopoverTrigger asChild>
+              <FormControl>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[240px] pl-3 text-left font-normal bg-neutral-300"
+                  )}
+                  disabled
+                >
+                  <span>
+                    {
+                      calculateExpirationDate(
+                        form.watch("dateSubmitted"),
+                        form.watch("frequencyOfCompliance")
+                      )
+                        .toISOString()
+                        .split("T")[0]
+                    }
+                  </span>
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                </Button>
+              </FormControl>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar mode="single" initialFocus />
+            </PopoverContent>
+          </Popover>
+        </div>
 
         <FormField
           control={form.control}
@@ -512,10 +529,10 @@ export const AddRequirementForm = () => {
                   className="space-y-1 grid grid-cols-2"
                 >
                   {[
-                    ["Active", "active"],
-                    ["Inactive", "inactive"],
-                    ["Pending", "pending"],
-                    ["Expired", "expired"],
+                    ["Active", "Active"],
+                    ["Inactive", "Inactive"],
+                    ["Pending", "Pending"],
+                    ["Expired", "Expired"],
                   ].map((option, index) => (
                     <FormItem
                       className="flex items-center space-x-3 space-y-0"
@@ -542,7 +559,7 @@ export const AddRequirementForm = () => {
           name="documentReference"
           render={() => (
             <FormItem className="col-span-full">
-              <FormLabel>Upload documentReference</FormLabel>
+              <FormLabel>Upload Document Reference</FormLabel>
               <FormControl>
                 <FileUploader
                   value={files}
