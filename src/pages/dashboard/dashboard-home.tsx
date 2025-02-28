@@ -3,7 +3,7 @@ import DueSoon from "./components/due-soon";
 import { Button } from "@/components/ui/button";
 import { Subscriptions } from "./components/subscriptions";
 import { useRequirement } from "@/hooks/use-requirement";
-import { generateReport } from '@/pages/dashboard/components/generate-reports';
+import { generateReport } from "@/pages/dashboard/components/generate-reports";
 
 function DashboardHome() {
   const { requirementList } = useRequirement();
@@ -21,26 +21,42 @@ function DashboardHome() {
     total: requirementList,
   };
 
+  const annualValue = requirementList.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "annual"
+  ).length;
+
+  const semiAnnualValue = requirementList.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "semi annual"
+  ).length;
+
+  const quarterlyValue = requirementList.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "quarterly"
+  ).length;
+
+  const monthlyValue = requirementList.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "monthly"
+  ).length;
+
   const chartData = [
     {
-      date: "Annual",
-      value: subscriptionCounts.active.length,
-      fill: "#10B981",
-    },
-    {
-      date: "Semi Annual",
-      value: subscriptionCounts.inactive.length,
-      fill: "#EF4444",
+      date: "Monthly",
+      value: monthlyValue,
+      fill: "#DE3163",
     },
     {
       date: "Quarterly",
-      value: subscriptionCounts.pending.length,
-      fill: "#F59E0B",
+      value: quarterlyValue,
+      fill: "#A6F1E0",
     },
     {
-      date: "Monthly",
-      value: subscriptionCounts.total.length,
-      fill: "#3B82F6",
+      date: "SemiAnnual",
+      value: semiAnnualValue,
+      fill: "#3D8D7A",
+    },
+    {
+      date: "Annual",
+      value: annualValue,
+      fill: "#FDB7EA",
     },
   ];
 
@@ -48,7 +64,9 @@ function DashboardHome() {
     <div className="w-full space-y-5">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold">Dashboard Overview</h2>
-        <Button onClick={() => generateReport(requirementList)}>Generate Reports</Button>
+        <Button onClick={() => generateReport(requirementList)}>
+          Generate Reports
+        </Button>
       </div>
       <div className="grid lg:grid-cols-4 gap-2 w-full">
         <Subscriptions

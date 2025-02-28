@@ -21,7 +21,7 @@ const chartConfig = {
   Annual: {
     label: "Annual",
   },
-  "Semi Annual": {
+  SemiAnnual: {
     label: "Semi Annual",
   },
   Quarterly: {
