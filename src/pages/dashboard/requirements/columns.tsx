@@ -1,13 +1,5 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../components/data-table-column-header";
-import { Ellipsis, FileText, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { Requirement } from "@/hooks/use-requirement";
@@ -77,32 +69,16 @@ export const columns: ColumnDef<Requirement>[] = [
     header: "Document Reference",
     accessorKey: "documentReference",
     cell: ({ row }) => {
-      const document = row.original;
-
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant={"ghost"}>
-              <span>{document.documentReference}</span>
-              <Ellipsis />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <Link
-                to={`/dashboard/requirements/${row.original.id}`}
-                className="flex items-center gap-2"
-              >
-                <FileText />
-                Open Document
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Upload />
-              Upload Document
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button asChild variant={"outline"}>
+          <Link
+            to={`/dashboard/requirements/${row.original.id}`}
+            className="flex items-center gap-2"
+            target="_blank"
+          >
+            {row.original.documentReference}
+          </Link>
+        </Button>
       );
     },
   },
