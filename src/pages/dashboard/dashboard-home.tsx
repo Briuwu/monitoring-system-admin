@@ -69,16 +69,36 @@ function DashboardHome() {
     },
   ];
 
-  const dueSoon = requirementList.filter((item) => {
-    const remainingDays = getRemainingDays(item.dateSubmitted, item.expiration);
-    return (
-      (item.frequencyOfCompliance.toLowerCase() === "annual" && remainingDays <= 90) ||
-      (item.frequencyOfCompliance.toLowerCase() === "semi annual" && remainingDays <= 60) ||
-      (item.frequencyOfCompliance.toLowerCase() === "quarterly" && remainingDays <= 40) ||
-      (item.frequencyOfCompliance.toLowerCase() === "monthly" && remainingDays <= 15)
-    );
-  });
+  const annualDueSoon = requirementList.filter(
+    (item) =>
+      item.frequencyOfCompliance.toLowerCase() === "annual" &&
+      getRemainingDays(item.expiration) < 90
+  );
 
+  const semiAnnualDueSoon = requirementList.filter(
+    (item) =>
+      item.frequencyOfCompliance.toLowerCase() === "semi annual" &&
+      getRemainingDays(item.expiration) < 60
+  );
+
+  const quarterlyDueSoon = requirementList.filter(
+    (item) =>
+      item.frequencyOfCompliance.toLowerCase() === "quarterly" &&
+      getRemainingDays(item.expiration) < 40
+  );
+
+  const monthlyDueSoon = requirementList.filter(
+    (item) =>
+      item.frequencyOfCompliance.toLowerCase() === "monthly" &&
+      getRemainingDays(item.expiration) < 30
+  );
+
+  const dueSoon = [
+    ...annualDueSoon,
+    ...semiAnnualDueSoon,
+    ...quarterlyDueSoon,
+    ...monthlyDueSoon,
+  ];
 
   return (
     <div className="w-full space-y-5">

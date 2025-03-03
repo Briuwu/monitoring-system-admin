@@ -23,15 +23,15 @@ export function expirationDate(dateSubmitted: string, foc: string): string {
     default:
       throw new Error("Invalid frequency of change");
   }
-  return date.toISOString().split('T')[0];
+  return date.toISOString().split("T")[0];
 }
 
-export function getRemainingDays(dateSubmitted: string, expirationDate: string) {
-  const submitted = new Date(dateSubmitted);
+export function getRemainingDays(expirationDate: string) {
+  const currentDate = new Date();
   const expiration = new Date(expirationDate);
 
-  const timeDifference = expiration.getTime() - submitted.getTime();
-  const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  const timeDifference = expiration.getTime() - currentDate.getTime();
+  const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
   return daysDifference;
 }
