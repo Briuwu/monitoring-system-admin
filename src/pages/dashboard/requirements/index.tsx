@@ -20,8 +20,6 @@ function RequirementsPage() {
   const [departmentFilter, setDepartmentFilter] = useState("");
   const [globalSearch, setGlobalSearch] = useState("");
 
-  console.log(requirementList);
-
   const handleFilter = useCallback(() => {
     let result = requirementList!;
     if (statusFilter) {

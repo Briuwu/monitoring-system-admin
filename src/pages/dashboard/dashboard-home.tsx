@@ -8,8 +8,6 @@ import { generateReport } from "@/pages/dashboard/components/generate-reports";
 function DashboardHome() {
   const { data: requirementList, isLoading } = useFetchRequirements();
 
-  console.log(requirementList);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

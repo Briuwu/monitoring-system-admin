@@ -6,11 +6,14 @@ import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { ComboboxFilter } from "../components/combobox-filter";
 import { Separator } from "@/components/ui/separator";
-import { useUser, User } from "@/hooks/use-user";
+import { useFetchUsers } from "@/hooks/users";
+import { User } from "@/lib/types";
 
 function UsersPage() {
-  const { userList, getUserList } = useUser();
-  const [filteredData, setFilteredData] = useState<User[]>(userList);
+  const { data: userList, isLoading } = useFetchUsers();
+  const [filteredData, setFilteredData] = useState<User[] | undefined>(
+    userList
+  );
   const [globalSearch, setGlobalSearch] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
 
@@ -18,11 +21,11 @@ function UsersPage() {
     let result = userList;
 
     if (departmentFilter) {
-      result = result.filter((user) => user.department === departmentFilter);
+      result = result!.filter((user) => user.department === departmentFilter);
     }
 
     if (globalSearch) {
-      result = result.filter((user) =>
+      result = result!.filter((user) =>
         ["firstName", "middleName", "lastName", "email", "department"].some(
           (value) => {
             const data = user[value as keyof User] as string;
@@ -37,11 +40,18 @@ function UsersPage() {
 
   useEffect(() => {
     handleFilter();
-    getUserList();
   }, [handleFilter]);
 
+  if (isLoading) {
+    return <div>Loading users...</div>;
+  }
+
+  if (!userList) {
+    return <div>No users found</div>;
+  }
+
   const departmentOptions = Array.from(
-    new Set(userList.map((user) => user.department))
+    new Set(userList!.map((user) => user.department))
   ).map((department) => ({
     value: department,
     label: department,
@@ -70,7 +80,7 @@ function UsersPage() {
           placeholder="Filter by dept..."
         />
       </div>
-      <DataTable columns={columns} data={filteredData} />
+      <DataTable columns={columns} data={filteredData!} />
     </div>
   );
 }

@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { departmentList } from "@/lib/constant";
-import { useUser } from "@/hooks/use-user";
+import { useAddUser } from "@/hooks/users";
 
 const formSchema = z
   .object({
@@ -53,7 +53,7 @@ const formSchema = z
 
 export const AddUserForm = ({ handleClose }: { handleClose: () => void }) => {
   const [isPending, startTransition] = useTransition();
-  const { createUser } = useUser();
+  const { mutate: createUser } = useAddUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     values: {

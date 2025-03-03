@@ -8,8 +8,8 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Ellipsis, User as UserIcon } from "lucide-react";
-import { User } from "@/hooks/use-user";
 import { Link } from "react-router";
+import { User } from "@/lib/types";
 
 export const columns: ColumnDef<User>[] = [
   {

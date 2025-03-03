@@ -1,4 +1,4 @@
-import { User, UserCredentials } from "@/lib/types";
+import { AddUser, User, UserCredentials } from "@/lib/types";
 import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL;
@@ -19,7 +19,7 @@ export const getUser = async (id: string) => {
   return await axiosClient.get(`/users/${id}`);
 };
 
-export const addUser = async (user: User) => {
+export const addUser = async (user: AddUser) => {
   return await axiosClient.post("/users", user);
 };
 
