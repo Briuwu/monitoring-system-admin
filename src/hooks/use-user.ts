@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { auth, db } from "@/firebase";
+import { db } from "@/firebase";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export type User = {
   id: string;
@@ -49,12 +48,6 @@ export const useUser = () => {
 
   type CreateUser = Omit<User, "id">;
   const createUser = async (userData: CreateUser & { password: string }) => {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      userData.email,
-      userData.password
-    );
-    const user = userCredential.user;
     try {
       await addDoc(usersCollectionRef, {
         firstName: userData.firstName,
@@ -62,7 +55,7 @@ export const useUser = () => {
         lastName: userData.lastName,
         email: userData.email,
         department: userData.department,
-        uid: user.uid,
+        // uid: user.uid,
       });
     } catch (error) {
       console.error(error);
