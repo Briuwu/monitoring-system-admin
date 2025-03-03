@@ -25,3 +25,13 @@ export function expirationDate(dateSubmitted: string, foc: string): string {
   }
   return date.toISOString().split('T')[0];
 }
+
+export function getRemainingDays(dateSubmitted: string, expirationDate: string) {
+  const submitted = new Date(dateSubmitted);
+  const expiration = new Date(expirationDate);
+
+  const timeDifference = expiration.getTime() - submitted.getTime();
+  const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+  return daysDifference;
+}
