@@ -1,4 +1,4 @@
-import { AddUser, User, UserCredentials } from "@/lib/types";
+import { AddUser, User } from "@/lib/types";
 import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL;
@@ -6,10 +6,6 @@ const axiosClient = axios.create({
   baseURL: url,
   timeout: 100000,
 });
-
-export const loginUser = async (user: UserCredentials) => {
-  return await axiosClient.post("/users/login", user);
-};
 
 export const getAllUsers = async () => {
   return await axiosClient.get("/users");

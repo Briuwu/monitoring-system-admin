@@ -26,8 +26,3 @@ export type User = {
 };
 
 export type AddUser = Omit<User, "id">;
-
-export type UserCredentials = {
-  email: string;
-  password: string;
-};
