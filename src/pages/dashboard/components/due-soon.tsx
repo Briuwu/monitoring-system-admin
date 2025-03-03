@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Requirement } from "@/lib/types";
 import { getRemainingDays } from "@/lib/utils";
+import { Link } from "react-router";
 
 function DueSoon({ data }: { data: Requirement[] }) {
   return (
@@ -20,14 +21,18 @@ function DueSoon({ data }: { data: Requirement[] }) {
           subscriptions due soon.
         </CardDescription>
       </CardHeader>
-      <CardContent className="divide-y-2">
+      <CardContent className="divide-y-2 overflow-y-auto sm:max-h-[325px]">
         {data.map((item) => (
-          <div key={item.id} className="flex items-center justify-between py-4">
+          <Link
+            to={`/dashboard/requirements/${item.id}`}
+            key={item.id}
+            className="flex items-center justify-between py-4"
+          >
             <p className="text-sm font-semibold">{item.entity}</p>
             <p className="text-sm text-muted-foreground">
               Due in {getRemainingDays(item.expiration)} days
             </p>
-          </div>
+          </Link>
         ))}
       </CardContent>
     </Card>
