@@ -11,7 +11,7 @@ import { useFetchRequirements } from "@/hooks/requirements";
 import { Requirement } from "@/lib/types";
 
 function RequirementsPage() {
-  const { data: requirementList } = useFetchRequirements();
+  const { data: requirementList, isLoading } = useFetchRequirements();
   const [filteredData, setFilteredData] = useState<Requirement[] | undefined>(
     requirementList
   );
@@ -71,6 +71,10 @@ function RequirementsPage() {
   useEffect(() => {
     handleFilter();
   }, [handleFilter]);
+
+  if (isLoading) {
+    return <div>Loading requirements...</div>;
+  }
 
   if (!requirementList) {
     return <div>No data found</div>;
