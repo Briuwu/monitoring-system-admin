@@ -1,15 +1,7 @@
 import { useState, useEffect } from "react";
 import { db } from "@/firebase";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-
-export type User = {
-  id: string;
-  department: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  middleName?: string;
-};
+import { User } from "@/lib/types";
 
 export const useUser = () => {
   const [userList, setUserList] = useState<User[]>([]);

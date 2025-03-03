@@ -13,3 +13,17 @@ export type Requirement = {
   status: string;
   uploadedFileUrl: string;
 };
+
+export type User = {
+  id: string;
+  department: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  middleName?: string;
+};
+
+export type UserCredentials = {
+  email: string;
+  password: string;
+}
