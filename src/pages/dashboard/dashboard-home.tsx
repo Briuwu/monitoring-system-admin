@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Subscriptions } from "./components/subscriptions";
 import { useFetchRequirements } from "@/hooks/requirements";
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
+import { getRemainingDays } from "@/lib/utils";
 
 function DashboardHome() {
   const { data: requirementList, isLoading } = useFetchRequirements();
@@ -68,6 +69,17 @@ function DashboardHome() {
     },
   ];
 
+  const dueSoon = requirementList.filter((item) => {
+    const remainingDays = getRemainingDays(item.dateSubmitted, item.expiration);
+    return (
+      (item.frequencyOfCompliance.toLowerCase() === "annual" && remainingDays <= 90) ||
+      (item.frequencyOfCompliance.toLowerCase() === "semi annual" && remainingDays <= 60) ||
+      (item.frequencyOfCompliance.toLowerCase() === "quarterly" && remainingDays <= 40) ||
+      (item.frequencyOfCompliance.toLowerCase() === "monthly" && remainingDays <= 15)
+    );
+  });
+
+
   return (
     <div className="w-full space-y-5">
       <div className="flex items-center justify-between">
@@ -100,7 +112,7 @@ function DashboardHome() {
       </div>
       <div className="grid lg:grid-cols-2 gap-5">
         <BarChartOverview chartData={chartData} />
-        <DueSoon />
+        <DueSoon data={dueSoon} />
       </div>
     </div>
   );
