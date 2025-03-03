@@ -1,4 +1,5 @@
 import { db } from "@/firebase";
+import { Requirement } from "@/lib/types";
 import {
   addDoc,
   collection,
@@ -8,22 +9,6 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-
-export type Requirement = {
-  id: string;
-  entity: string;
-  department: string;
-  complianceList: string;
-  documentReference: string;
-  typeOfCompliance: string;
-  frequencyOfCompliance: string;
-  expiration: string;
-  renewal: string;
-  dateSubmitted: string;
-  personInCharge: string;
-  status: string;
-  uploadedFileUrl: string;
-};
 
 export const useRequirement = () => {
   const [requirementList, setRequirementList] = useState<Requirement[]>([]);
@@ -76,7 +61,7 @@ export const useRequirement = () => {
         renewal: requirements.renewal,
         status: requirements.status,
         typeOfCompliance: requirements.typeOfCompliance,
-        uploadedFileUrl: requirements.uploadedFileUrl
+        uploadedFileUrl: requirements.uploadedFileUrl,
       });
     } catch (error) {
       console.error(error);
