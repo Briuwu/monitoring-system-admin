@@ -49,20 +49,31 @@ import {
 import { uploadToCloudinary } from "@/cloudinary-config";
 import { useAddRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
-import { useNavigate } from "react-router";
 
 const formSchema = z.object({
   entity: z.string().min(1),
-  complianceList: z.string(),
-  frequencyOfCompliance: z.string(),
-  typeOfCompliance: z.string(),
+  complianceList: z.string().min(1, {
+    message: "Please enter a compliance list.",
+  }),
+  frequencyOfCompliance: z.string().min(1, {
+    message: "Please select a frequency of compliance.",
+  }),
+  typeOfCompliance: z.string().min(1, {
+    message: "Please select a type of compliance.",
+  }),
   dateSubmitted: z.coerce.date(),
   renewal: z.coerce.date(),
   expiration: z.coerce.date(),
   personInCharge: z.string().min(1),
-  department: z.string(),
-  status: z.string(),
-  documentReference: z.string(),
+  department: z.string().min(1, {
+    message: "Please select a department.",
+  }),
+  status: z.string().min(1, {
+    message: "Please select a status.",
+  }),
+  documentReference: z.string().min(1, {
+    message: "Please upload a document reference.",
+  }),
 });
 
 const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
@@ -87,7 +98,6 @@ const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
 };
 
 export const AddRequirementForm = () => {
-  const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
   const { mutate: addRequirement } = useAddRequirement();
   const [files, setFiles] = useState<File[] | null>(null);
@@ -129,7 +139,7 @@ export const AddRequirementForm = () => {
     startTransition(async () => {
       try {
         const fileUrl = await uploadToCloudinary(files![0]);
-        await addRequirement({
+        addRequirement({
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
           expiration: formatDate(expiration, "yyyy-MM-dd"),
@@ -139,7 +149,6 @@ export const AddRequirementForm = () => {
         });
 
         toast.success("Requirement Document added successfully.");
-        navigate("/dashboard/requirements");
       } catch (error) {
         console.error("Form submission error", error);
         toast.error("Failed to submit the form. Please try again.");

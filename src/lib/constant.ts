@@ -31,6 +31,10 @@ export const departmentList = [
     label: "OJS",
     value: "OJS",
   },
+  {
+    label: "IT",
+    value: "IT",
+  },
 ] as const;
 
 export const frequencyList = [
