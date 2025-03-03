@@ -47,8 +47,10 @@ import {
   frequencyList,
 } from "@/lib/constant";
 import { uploadToCloudinary } from "@/cloudinary-config";
-import { useAddRequirement } from "@/hooks/requirements";
+import { useUpdateRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
+import { Requirement } from "@/lib/types";
+import { useNavigate } from "react-router";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -95,9 +97,14 @@ const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
   return date;
 };
 
-export const AddRequirementForm = () => {
+type Props = {
+  requirement: Requirement;
+};
+
+export const UpdateRequirementForm = ({ requirement }: Props) => {
+  const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
-  const { mutate: addRequirement } = useAddRequirement();
+  const { mutate: updateRequirement } = useUpdateRequirement(requirement.id);
   const [files, setFiles] = useState<File[] | null>(null);
 
   const dropZoneConfig = {
@@ -108,16 +115,17 @@ export const AddRequirementForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      dateSubmitted: new Date(),
-      entity: "",
-      complianceList: "",
-      frequencyOfCompliance: "",
-      typeOfCompliance: "",
-      personInCharge: "",
-      department: "",
-      status: "",
+      dateSubmitted: new Date(requirement.dateSubmitted),
+      entity: requirement.entity,
+      complianceList: requirement.complianceList,
+      frequencyOfCompliance: requirement.frequencyOfCompliance,
+      typeOfCompliance: requirement.typeOfCompliance,
+      personInCharge: requirement.personInCharge,
+      department: requirement.department,
+      expiration: new Date(requirement.expiration),
+      renewal: new Date(requirement.renewal),
       documentReference: "",
-      expiration: calculateExpirationDate(new Date(), ""),
+      status: "",
     },
   });
 
@@ -137,7 +145,7 @@ export const AddRequirementForm = () => {
     startTransition(async () => {
       try {
         const fileUrl = await uploadToCloudinary(files![0]);
-        addRequirement({
+        updateRequirement({
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
           expiration: formatDate(expiration, "yyyy-MM-dd"),
@@ -146,7 +154,10 @@ export const AddRequirementForm = () => {
           uploadedFileUrl: fileUrl,
         });
 
-        toast.success("Requirement Document added successfully.");
+        toast.success("Requirement Document updated successfully.");
+        navigate(`/dashboard/requirements`, {
+          replace: true,
+        });
       } catch (error) {
         console.error("Form submission error", error);
         toast.error("Failed to submit the form. Please try again.");

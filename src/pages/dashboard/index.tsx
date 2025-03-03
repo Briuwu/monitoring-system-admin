@@ -12,7 +12,7 @@ function DashboardLayout() {
     if (!user) {
       navigate("/");
     }
-  }, [navigate, user]);
+  }, [user]);
 
   if (!user) {
     return null;

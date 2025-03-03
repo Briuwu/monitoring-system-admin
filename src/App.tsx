@@ -11,6 +11,7 @@ import AddRequirementPage from "@/pages/dashboard/requirements/add";
 import UserDetails from "@/pages/dashboard/users/user-details";
 import RequirementDetails from "./pages/dashboard/requirements/requirement-details";
 import AuthProvider from "./context/auth-provider";
+import UpdateRequirementPage from "./pages/dashboard/requirements/update";
 
 function App() {
   return (
@@ -27,6 +28,10 @@ function App() {
           <Route
             path="/dashboard/requirements/add"
             element={<AddRequirementPage />}
+          />
+          <Route
+            path="/dashboard/requirements/update/:requirementId"
+            element={<UpdateRequirementPage />}
           />
           <Route
             path="/dashboard/requirements/:requirementId"

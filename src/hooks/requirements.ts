@@ -3,6 +3,7 @@ import {
   deleteRequirement,
   getAllRequirements,
   getRequirement,
+  updateRequirement,
 } from "@/actions/requirements";
 import { AddRequirement, Requirement } from "@/lib/types";
 import {
@@ -22,6 +23,7 @@ export const useFetchRequirements = (): QueryObserverResult<Requirement[]> => {
       return data;
     },
     queryKey: ["requirements"],
+    select: (data: Requirement[]) => [...data],
   });
 };
 
@@ -67,6 +69,28 @@ export const useAddRequirement = (): UseBaseMutationResult<
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["requirements"] });
       navigate("/dashboard/requirements", { replace: true });
+    },
+  });
+};
+
+export const useUpdateRequirement = (
+  requirementId: string
+): UseBaseMutationResult<
+  AxiosResponse<AddRequirement>,
+  unknown,
+  AddRequirement,
+  unknown
+> => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (requirement: AddRequirement) =>
+      updateRequirement(requirement, requirementId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["requirements"],
+      });
+      navigate(`/dashboard/requirements/${requirementId}`, { replace: true });
     },
   });
 };

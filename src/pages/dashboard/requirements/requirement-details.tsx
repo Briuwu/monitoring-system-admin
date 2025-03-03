@@ -79,7 +79,11 @@ function RequirementDetails() {
             </AlertDialogContent>
           </AlertDialog>
 
-          <Button>Update Details</Button>
+          <Button asChild>
+            <Link to={`/dashboard/requirements/update/${params.requirementId}`}>
+              Edit Document
+            </Link>
+          </Button>
         </div>
       </div>
       <div className="space-y-10 border p-4 rounded-xl border-black">
