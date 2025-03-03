@@ -80,7 +80,7 @@ function UsersPage() {
           placeholder="Filter by dept..."
         />
       </div>
-      <DataTable columns={columns} data={filteredData!} />
+      <DataTable columns={columns} data={filteredData || []} />
     </div>
   );
 }
