@@ -1,5 +1,5 @@
 import * as XLSX from "xlsx";
-import { Requirement } from "@/hooks/use-requirement";
+import { Requirement } from "@/lib/types";
 
 export function generateReport(requirements: Requirement[]) {
   const exportToExcel = () => {
