@@ -8,26 +8,31 @@ import {
   CalendarViewTrigger,
   CalendarYearView,
 } from "@/components/full-calendar";
+import { useFetchRequirements } from "@/hooks/requirements";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function CalendarPage() {
+  const { data: requirements, isLoading } = useFetchRequirements();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!requirements) {
+    return <div>Add some requirements first</div>;
+  }
+
+  type ColorVariant = "green" | "pink" | "blue" | "purple";
+
+  const events = requirements.map((requirement) => ({
+    id: requirement.id,
+    start: new Date(requirement.expiration),
+    title: requirement.entity,
+    color: (requirement.status === "Active" ? "green" : "pink") as ColorVariant,
+  }));
+
   return (
-    <Calendar
-      events={[
-        {
-          id: "1",
-          start: new Date(),
-          title: "event A",
-          color: "pink",
-        },
-        {
-          id: "2",
-          start: new Date(),
-          title: "event B",
-          color: "blue",
-        },
-      ]}
-    >
+    <Calendar events={events}>
       <div className="h-dvh flex flex-col">
         <div className="flex px-6 items-center gap-2 mb-6">
           <CalendarViewTrigger

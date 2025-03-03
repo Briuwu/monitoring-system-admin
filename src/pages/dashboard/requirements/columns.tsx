@@ -40,15 +40,15 @@ export const columns: ColumnDef<Requirement>[] = [
   {
     header: "Remaining Days",
     cell: ({ row }) => {
-      const renewal = row.original.renewal;
-      const calculateRemainingDays = (renewal: string) => {
+      const expiration = row.original.expiration;
+      const calculateRemainingDays = (expiration: string) => {
         const currentDate = new Date();
-        const renewalDate = new Date(renewal);
-        const timeDiff = renewalDate.getTime() - currentDate.getTime();
+        const expirationDate = new Date(expiration);
+        const timeDiff = expirationDate.getTime() - currentDate.getTime();
         return Math.ceil(timeDiff / (1000 * 3600 * 24));
       };
 
-      return calculateRemainingDays(renewal);
+      return calculateRemainingDays(expiration);
     },
   },
   {
