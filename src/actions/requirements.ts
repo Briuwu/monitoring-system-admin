@@ -1,32 +1,28 @@
-import { Requirement } from "@/lib/types";
-import axios from 'axios'
+import { AddRequirement, Requirement } from "@/lib/types";
+import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL;
 const axiosClient = axios.create({
-    baseURL: url,
-    timeout: 100000,
-})
+  baseURL: url,
+  timeout: 100000,
+});
 
 export const getAllRequirements = async () => {
-    const response = await axiosClient.get('/requirements');
-    const data = await response.data;
-    return data;
+  return await axiosClient.get("/requirements");
 };
 
 export const getRequirement = async (id: string) => {
-    const response = await axiosClient.get(`/requirements/${id}`);
-    const data = await response.data;
-    return data;
+  return await axiosClient.get(`/requirements/${id}`);
 };
 
-export const addRequirement = async (requirement: Requirement) => {
-    return await axiosClient.post("/requirements", requirement);
+export const addRequirement = async (requirement: AddRequirement) => {
+  return await axiosClient.post("/requirements", requirement);
 };
 
 export const updateRequirement = async (requirement: Requirement) => {
-    return await axiosClient.put(`/requirements/${requirement.id}`, requirement)
+  return await axiosClient.put(`/requirements/${requirement.id}`, requirement);
 };
 
 export const deleteRequirement = async (id: string) => {
-    return await axiosClient.delete(`/requirements/${id}`);
+  return await axiosClient.delete(`/requirements/${id}`);
 };

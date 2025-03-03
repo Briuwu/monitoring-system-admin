@@ -12,38 +12,38 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Requirement, useRequirement } from "@/hooks/requirements";
+import {
+  useDeleteRequirement,
+  useFetchRequirement,
+} from "@/hooks/requirements";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 
 function RequirementDetails() {
   const params = useParams();
   const navigate = useNavigate();
-  const { getSingleRequirement, deleteRequirement } = useRequirement();
-  const [requirement, setRequirement] = useState<Requirement>();
+  const {
+    data: requirement,
+    isLoading,
+    isError,
+  } = useFetchRequirement(params.requirementId!);
+  const { mutate: deleteRequirement } = useDeleteRequirement();
 
   // Handle viewing the document
   const handleViewDocument = (fileUrl: string) => {
     window.open(fileUrl, "_blank"); // Open the file in a new tab
   };
 
-  useEffect(() => {
-    const fetch = async () => {
-      const data = await getSingleRequirement(params.requirementId!);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-      if (!data) {
-        return navigate("/dashboard/requirements");
-      }
-
-      setRequirement(data);
-    };
-
-    fetch();
-  }, []);
+  if (isError) {
+    return <div>Error fetching data</div>;
+  }
 
   if (!requirement) {
-    return <div>Loading...</div>;
+    return <div>No data found</div>;
   }
 
   return (

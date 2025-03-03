@@ -2,11 +2,21 @@ import { BarChartOverview } from "./components/bar-chart-overview";
 import DueSoon from "./components/due-soon";
 import { Button } from "@/components/ui/button";
 import { Subscriptions } from "./components/subscriptions";
-import { useRequirement } from "@/hooks/requirements";
+import { useFetchRequirements } from "@/hooks/requirements";
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
 
 function DashboardHome() {
-  const { requirementList } = useRequirement();
+  const { data: requirementList, isLoading } = useFetchRequirements();
+
+  console.log(requirementList);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!requirementList) {
+    return <div>No data found</div>;
+  }
 
   const subscriptionCounts = {
     active: requirementList.filter(

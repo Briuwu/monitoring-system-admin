@@ -47,7 +47,7 @@ import {
   frequencyList,
 } from "@/lib/constant";
 import { uploadToCloudinary } from "@/cloudinary-config";
-import { useRequirement } from "@/hooks/requirements";
+import { useAddRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
 import { useNavigate } from "react-router";
 
@@ -89,7 +89,7 @@ const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
 export const AddRequirementForm = () => {
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
-  const { addNewRequirement } = useRequirement();
+  const { mutate: addRequirement } = useAddRequirement();
   const [files, setFiles] = useState<File[] | null>(null);
 
   const dropZoneConfig = {
@@ -129,7 +129,7 @@ export const AddRequirementForm = () => {
     startTransition(async () => {
       try {
         const fileUrl = await uploadToCloudinary(files![0]);
-        await addNewRequirement({
+        await addRequirement({
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
           expiration: formatDate(expiration, "yyyy-MM-dd"),

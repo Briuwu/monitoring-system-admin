@@ -14,6 +14,8 @@ export type Requirement = {
   uploadedFileUrl: string;
 };
 
+export type AddRequirement = Omit<Requirement, "id">;
+
 export type User = {
   id: string;
   department: string;
@@ -26,4 +28,4 @@ export type User = {
 export type UserCredentials = {
   email: string;
   password: string;
-}
+};

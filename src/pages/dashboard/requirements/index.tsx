@@ -7,19 +7,23 @@ import { SearchIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { Requirement, useRequirement } from "@/hooks/requirements";
+import { useFetchRequirements } from "@/hooks/requirements";
+import { Requirement } from "@/lib/types";
 
 function RequirementsPage() {
-  const { requirementList } = useRequirement();
-  const [filteredData, setFilteredData] =
-    useState<Requirement[]>(requirementList);
+  const { data: requirementList } = useFetchRequirements();
+  const [filteredData, setFilteredData] = useState<Requirement[] | undefined>(
+    requirementList
+  );
   const [statusFilter, setStatusFilter] = useState("");
   const [entityFilter, setEntityFilter] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
   const [globalSearch, setGlobalSearch] = useState("");
 
+  console.log(requirementList);
+
   const handleFilter = useCallback(() => {
-    let result = requirementList;
+    let result = requirementList!;
     if (statusFilter) {
       result = result.filter(
         (requirement) =>
@@ -66,30 +70,34 @@ function RequirementsPage() {
     requirementList,
   ]);
 
+  useEffect(() => {
+    handleFilter();
+  }, [handleFilter]);
+
+  if (!requirementList) {
+    return <div>No data found</div>;
+  }
+
   const statusOptions = Array.from(
-    new Set(requirementList.map((requirement) => requirement.status))
+    new Set(requirementList!.map((requirement) => requirement.status))
   ).map((status) => ({
     value: status,
     label: status,
   }));
 
   const entityOptions = Array.from(
-    new Set(requirementList.map((requirement) => requirement.entity))
+    new Set(requirementList!.map((requirement) => requirement.entity))
   ).map((entity) => ({
     value: entity,
     label: entity,
   }));
 
   const departmentOptions = Array.from(
-    new Set(requirementList.map((requirement) => requirement.department))
+    new Set(requirementList!.map((requirement) => requirement.department))
   ).map((department) => ({
     value: department,
     label: department,
   }));
-
-  useEffect(() => {
-    handleFilter();
-  }, [handleFilter]);
 
   return (
     <div>
@@ -128,7 +136,7 @@ function RequirementsPage() {
           placeholder="Filter by dept..."
         />
       </div>
-      <DataTable columns={columns} data={filteredData} />
+      <DataTable columns={columns} data={filteredData!} />
     </div>
   );
 }
