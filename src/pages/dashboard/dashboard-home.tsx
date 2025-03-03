@@ -98,7 +98,9 @@ function DashboardHome() {
     ...semiAnnualDueSoon,
     ...quarterlyDueSoon,
     ...monthlyDueSoon,
-  ];
+  ].sort((a, b) => {
+    return getRemainingDays(a.expiration) - getRemainingDays(b.expiration);
+  });
 
   return (
     <div className="w-full space-y-5">
