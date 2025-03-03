@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../components/data-table-column-header";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { Requirement } from "@/hooks/use-requirement";
+import { Requirement } from "@/hooks/requirements";
 
 export const columns: ColumnDef<Requirement>[] = [
   {

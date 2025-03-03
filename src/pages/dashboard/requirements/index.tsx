@@ -7,7 +7,7 @@ import { SearchIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { Requirement, useRequirement } from "@/hooks/use-requirement";
+import { Requirement, useRequirement } from "@/hooks/requirements";
 
 function RequirementsPage() {
   const { requirementList } = useRequirement();

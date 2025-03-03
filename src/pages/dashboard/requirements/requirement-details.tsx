@@ -12,7 +12,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Requirement, useRequirement } from "@/hooks/use-requirement";
+import { Requirement, useRequirement } from "@/hooks/requirements";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";

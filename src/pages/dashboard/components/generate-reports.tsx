@@ -1,20 +1,20 @@
 import * as XLSX from "xlsx";
-import { Requirement } from "@/hooks/use-requirement";
+import { Requirement } from "@/hooks/requirements";
 
 export function generateReport(requirements: Requirement[]) {
   const exportToExcel = () => {
     // Prepare the data for export
     const exportData = requirements.map((requirement) => ({
       "Compliance List": requirement.complianceList,
-      "Department": requirement.department,
-      "Entity": requirement.entity,
+      Department: requirement.department,
+      Entity: requirement.entity,
       "Frequency of Compliance": requirement.frequencyOfCompliance,
       "Type of Compliance": requirement.typeOfCompliance,
       "Date Submitted": requirement.dateSubmitted,
-      "Expiration": requirement.expiration,
-      "Renewal": requirement.renewal,
+      Expiration: requirement.expiration,
+      Renewal: requirement.renewal,
       "Person in Charge": requirement.personInCharge,
-      "Status": requirement.status,
+      Status: requirement.status,
       "Document Reference": requirement.documentReference,
     }));
 

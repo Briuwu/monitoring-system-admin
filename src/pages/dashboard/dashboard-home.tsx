@@ -2,7 +2,7 @@ import { BarChartOverview } from "./components/bar-chart-overview";
 import DueSoon from "./components/due-soon";
 import { Button } from "@/components/ui/button";
 import { Subscriptions } from "./components/subscriptions";
-import { useRequirement } from "@/hooks/use-requirement";
+import { useRequirement } from "@/hooks/requirements";
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
 
 function DashboardHome() {

@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Requirement } from "@/hooks/use-requirement";
+import { Requirement } from "@/hooks/requirements";
 
 import { cn } from "@/lib/utils";
 import { Users } from "lucide-react";

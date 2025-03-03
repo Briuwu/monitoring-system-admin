@@ -47,7 +47,7 @@ import {
   frequencyList,
 } from "@/lib/constant";
 import { uploadToCloudinary } from "@/cloudinary-config";
-import { useRequirement } from "@/hooks/use-requirement";
+import { useRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
 import { useNavigate } from "react-router";
 
@@ -135,7 +135,7 @@ export const AddRequirementForm = () => {
           expiration: formatDate(expiration, "yyyy-MM-dd"),
           renewal: formatDate(renewal, "yyyy-MM-dd"),
           documentReference: generateToken(values.department),
-          uploadedFileUrl: fileUrl
+          uploadedFileUrl: fileUrl,
         });
 
         toast.success("Requirement Document added successfully.");
