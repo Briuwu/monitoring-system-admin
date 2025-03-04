@@ -72,7 +72,7 @@ export const AddUserForm = ({ handleClose }: { handleClose: () => void }) => {
     const { confirmPassword, ...data } = values;
     startTransition(async () => {
       try {
-        await createUser({ ...data });
+        createUser({ ...data });
         toast.success("User created successfully");
         form.reset();
         handleClose();

@@ -23,6 +23,7 @@ export type User = {
   firstName: string;
   lastName: string;
   middleName?: string;
+  role?: string;
 };
 
 export type AddUser = Omit<User, "id">;

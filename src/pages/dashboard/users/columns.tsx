@@ -34,6 +34,11 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => <span>{row.original.department.toUpperCase()}</span>,
   },
   {
+    accessorKey: "role",
+    header: "Role",
+    cell: ({ row }) => <span>{row.original.role?.toUpperCase() || "N/A"}</span>,
+  },
+  {
     header: "Actions",
     cell: ({ row }) => {
       return (
