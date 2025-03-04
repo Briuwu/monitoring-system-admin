@@ -64,7 +64,9 @@ const formSchema = z.object({
   dateSubmitted: z.coerce.date(),
   renewal: z.coerce.date(),
   expiration: z.coerce.date(),
-  personInCharge: z.string().min(1),
+  personInCharge: z.string().min(1, {
+    message: "Please enter a person in charge email",
+  }),
   department: z.string().min(1, {
     message: "Please select a department.",
   }),
@@ -452,8 +454,8 @@ export const AddRequirementForm = () => {
               <FormLabel>Person in-charge for renewal</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="type the person in charge for renewal..."
-                  type=""
+                  placeholder="personInCharge@email.com"
+                  type="email"
                   {...field}
                   disabled={isPending}
                 />
