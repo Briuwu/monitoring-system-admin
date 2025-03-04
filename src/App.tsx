@@ -13,6 +13,8 @@ import RequirementDetails from "./pages/dashboard/requirements/requirement-detai
 import AuthProvider from "./context/auth-provider";
 import UpdateRequirementPage from "./pages/dashboard/requirements/update";
 import ClientPage from "./pages/client";
+import AddRequirementClientPage from "./pages/client/add";
+import RequirementClientDetails from "./pages/client/requirement-details";
 
 function App() {
   return (
@@ -47,6 +49,11 @@ function App() {
           <Route path="/dashboard/settings" element={<SettingsPage />} />
         </Route>
         <Route path="/client" element={<ClientPage />} />
+        <Route path="/client/add" element={<AddRequirementClientPage />} />
+        <Route
+          path="/client/requirements/:requirementId"
+          element={<RequirementClientDetails />}
+        />
       </Routes>
     </AuthProvider>
   );

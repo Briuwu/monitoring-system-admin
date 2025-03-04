@@ -2,6 +2,7 @@ import {
   addRequirement,
   deleteRequirement,
   getAllRequirements,
+  getAllRequirementsByDept,
   getRequirement,
   updateRequirement,
 } from "@/actions/requirements";
@@ -23,6 +24,19 @@ export const useFetchRequirements = (): QueryObserverResult<Requirement[]> => {
       return data;
     },
     queryKey: ["requirements"],
+    select: (data: Requirement[]) => [...data],
+  });
+};
+
+export const useFetchRequirementsByDept = (
+  dept: string
+): QueryObserverResult<Requirement[]> => {
+  return useQuery<Requirement[]>({
+    queryFn: async () => {
+      const { data } = await getAllRequirementsByDept(dept);
+      return data;
+    },
+    queryKey: ["requirements", dept],
     select: (data: Requirement[]) => [...data],
   });
 };

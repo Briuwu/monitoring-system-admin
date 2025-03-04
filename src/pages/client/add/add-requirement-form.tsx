@@ -41,11 +41,7 @@ import {
   FileUploaderContent,
   FileUploaderItem,
 } from "@/components/ui/file-upload";
-import {
-  complianceTypeList,
-  departmentList,
-  frequencyList,
-} from "@/lib/constant";
+import { complianceTypeList, frequencyList } from "@/lib/constant";
 import { uploadToCloudinary } from "@/cloudinary-config";
 import { useAddRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
@@ -64,9 +60,6 @@ const formSchema = z.object({
   dateSubmitted: z.coerce.date(),
   expiration: z.coerce.date(),
   personInCharge: z.string().min(1),
-  department: z.string().min(1, {
-    message: "Please select a department.",
-  }),
   status: z.string().min(1, {
     message: "Please select a status.",
   }),
@@ -94,7 +87,7 @@ const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
   return date;
 };
 
-export const AddRequirementForm = () => {
+export const AddRequirementForm = ({ department }: { department: string }) => {
   const [isPending, startTransition] = useTransition();
   const { mutate: addRequirement } = useAddRequirement();
   const [files, setFiles] = useState<File[] | null>(null);
@@ -113,7 +106,6 @@ export const AddRequirementForm = () => {
       frequencyOfCompliance: "",
       typeOfCompliance: "",
       personInCharge: "",
-      department: "",
       status: "",
       documentReference: "",
       expiration: calculateExpirationDate(new Date(), ""),
@@ -140,8 +132,9 @@ export const AddRequirementForm = () => {
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
           expiration: formatDate(expiration, "yyyy-MM-dd"),
-          documentReference: generateToken(values.department),
+          documentReference: generateToken(department),
           uploadedFileUrl: fileUrl,
+          department: department,
           renewal: "",
         });
 
@@ -455,68 +448,6 @@ export const AddRequirementForm = () => {
                   disabled={isPending}
                 />
               </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="department"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Department</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        "w-[200px] justify-between",
-                        !field.value && "text-muted-foreground"
-                      )}
-                      disabled={isPending}
-                    >
-                      {field.value
-                        ? departmentList.find(
-                            (department) => department.value === field.value
-                          )?.label
-                        : "Select department"}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
-                    <CommandInput placeholder="Search department..." />
-                    <CommandList>
-                      <CommandEmpty>No department found.</CommandEmpty>
-                      <CommandGroup>
-                        {departmentList.map((department) => (
-                          <CommandItem
-                            value={department.label}
-                            key={department.value}
-                            onSelect={() => {
-                              form.setValue("department", department.value);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                department.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            {department.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
 
               <FormMessage />
             </FormItem>

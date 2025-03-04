@@ -11,6 +11,10 @@ export const getAllRequirements = async () => {
   return await axiosClient.get("/requirements");
 };
 
+export const getAllRequirementsByDept = async (dept: string) => {
+  return await axiosClient.get(`/requirements?dept=${dept}`);
+};
+
 export const getRequirement = async (id: string) => {
   return await axiosClient.get(`/requirements/${id}`);
 };

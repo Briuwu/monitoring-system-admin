@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export const useFetchUsers = (): QueryObserverResult<User[]> => {
   return useQuery<User[]>({
@@ -60,6 +61,10 @@ export const useAddUser = (): UseBaseMutationResult<
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       navigate("/dashboard/users", { replace: true });
+    },
+    onError: (error) => {
+      toast.error("Failed to add user. Please try again.");
+      console.error("Error adding user", error);
     },
   });
 };

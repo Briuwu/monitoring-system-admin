@@ -10,12 +10,6 @@ function DashboardLayout() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/");
-    }
-  }, [navigate, user]);
-
   if (user) {
     localStorage.setItem("user", JSON.stringify(user));
   }
@@ -26,10 +20,14 @@ function DashboardLayout() {
   const { data: userData } = useFetchUser(userObj.uid);
 
   useEffect(() => {
-    if (!userData) {
-      navigate("/client");
+    if (!user) {
+      navigate("/");
+    } else {
+      if (userData?.role !== "admin") {
+        navigate("/client");
+      }
     }
-  }, [navigate, userData]);
+  }, [navigate, userData, user]);
 
   return (
     <SidebarProvider>
