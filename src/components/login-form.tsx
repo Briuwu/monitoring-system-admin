@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { auth } from "@/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router";
 
 const formSchema = z.object({
   email: z
@@ -30,6 +31,7 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,6 +43,8 @@ export default function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
+
+      navigate("/dashboard");
       toast.success("Login successful");
     } catch (error) {
       console.error("Form submission error", error);

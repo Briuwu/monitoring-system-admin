@@ -20,7 +20,10 @@ function UserDetails() {
       <p className="text-center text-sm text-neutral-400">
         Here you can see the details of a user.
       </p>
-      <div className="my-10 p-5 rounded-xl border border-black space-y-5">
+      <div className="relative my-10 p-5 rounded-xl border border-black space-y-5">
+        <span className="bg-amber-400 rounded-full px-3 py-2 absolute">
+          {user.department}
+        </span>
         <div className="border border-black rounded-full p-5 mx-auto w-24 aspect-square flex items-center justify-center">
           <User className="h-full w-full" />
         </div>

@@ -3,6 +3,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useNavigate, Outlet } from "react-router";
 import useAuth from "@/context/use-auth";
 import { useEffect } from "react";
+import { useFetchUser } from "@/hooks/users";
+import { User } from "firebase/auth";
 
 function DashboardLayout() {
   const navigate = useNavigate();
@@ -12,11 +14,22 @@ function DashboardLayout() {
     if (!user) {
       navigate("/");
     }
-  }, [user]);
+  }, [navigate, user]);
 
-  if (!user) {
-    return null;
+  if (user) {
+    localStorage.setItem("user", JSON.stringify(user));
   }
+
+  const userStorage = localStorage.getItem("user");
+  const userObj: User = userStorage ? JSON.parse(userStorage) : null;
+
+  const { data: userData } = useFetchUser(userObj.uid);
+
+  useEffect(() => {
+    if (!userData) {
+      navigate("/client");
+    }
+  }, [navigate, userData]);
 
   return (
     <SidebarProvider>

@@ -12,6 +12,7 @@ import UserDetails from "@/pages/dashboard/users/user-details";
 import RequirementDetails from "./pages/dashboard/requirements/requirement-details";
 import AuthProvider from "./context/auth-provider";
 import UpdateRequirementPage from "./pages/dashboard/requirements/update";
+import ClientPage from "./pages/client";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
 
           <Route path="/dashboard/settings" element={<SettingsPage />} />
         </Route>
+        <Route path="/client" element={<ClientPage />} />
       </Routes>
     </AuthProvider>
   );
