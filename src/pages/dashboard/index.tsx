@@ -27,7 +27,11 @@ function DashboardLayout() {
         navigate("/client");
       }
     }
-  }, [navigate, userData, user]);
+  }, []);
+
+  if (!userData || !user) {
+    return;
+  }
 
   return (
     <SidebarProvider>
