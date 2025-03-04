@@ -35,3 +35,13 @@ export function getRemainingDays(expirationDate: string) {
 
   return daysDifference;
 }
+
+export function formatDateFn(date: Date) {
+  const formattedDate = new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  return formattedDate;
+}

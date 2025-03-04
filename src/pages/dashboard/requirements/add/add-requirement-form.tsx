@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { cn } from "@/lib/utils";
+import { cn, formatDateFn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -64,9 +64,7 @@ const formSchema = z.object({
   dateSubmitted: z.coerce.date(),
   renewal: z.coerce.date(),
   expiration: z.coerce.date(),
-  personInCharge: z.string().min(1, {
-    message: "Please enter a person in charge email",
-  }),
+  personInCharge: z.string().min(1),
   department: z.string().min(1, {
     message: "Please select a department.",
   }),
@@ -386,14 +384,12 @@ export const AddRequirementForm = () => {
                   disabled
                 >
                   <span>
-                    {
+                    {formatDateFn(
                       calculateExpirationDate(
                         form.watch("dateSubmitted"),
                         form.watch("frequencyOfCompliance")
                       )
-                        .toISOString()
-                        .split("T")[0]
-                    }
+                    )}
                   </span>
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
@@ -454,7 +450,7 @@ export const AddRequirementForm = () => {
               <FormLabel>Person in-charge for renewal</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="personInCharge@email.com"
+                  placeholder="type the person in charge for renewal..."
                   type="email"
                   {...field}
                   disabled={isPending}
