@@ -3,6 +3,7 @@ import { DataTableColumnHeader } from "@/pages/dashboard/components/data-table-c
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { Requirement } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 export const columns: ColumnDef<Requirement>[] = [
   {
@@ -64,6 +65,22 @@ export const columns: ColumnDef<Requirement>[] = [
   {
     header: "Status",
     accessorKey: "status",
+    cell: ({ row }) => {
+      const status = row.original.status;
+      return (
+        <p
+          className={cn(
+            "p-2 px-4 uppercase rounded-full text-white bg-black",
+            status === "Pending" && "bg-yellow-500",
+            status === "Active" && "bg-green-500",
+            status === "Inactive" && "bg-red-500",
+            status === "Expired" && "bg-red-500"
+          )}
+        >
+          {status}
+        </p>
+      );
+    },
   },
   {
     header: "Document Reference",
