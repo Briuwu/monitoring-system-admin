@@ -15,9 +15,12 @@ import { Separator } from "@/components/ui/separator";
 import {
   useDeleteRequirement,
   useFetchRequirement,
+  useUpdateRequirementRenewal,
 } from "@/hooks/requirements";
 import { cn } from "@/lib/utils";
+import { formatDate } from "date-fns";
 import { useParams, useNavigate, Link } from "react-router";
+import { AutoRenew } from "./auto-renew";
 
 function RequirementDetails() {
   const params = useParams();
@@ -28,6 +31,9 @@ function RequirementDetails() {
     isError,
   } = useFetchRequirement(params.requirementId!);
   const { mutate: deleteRequirement } = useDeleteRequirement();
+  const { mutate: updateRequirementRenewal } = useUpdateRequirementRenewal(
+    params.requirementId!
+  );
 
   // Handle viewing the document
   const handleViewDocument = (fileUrl: string) => {
@@ -133,9 +139,22 @@ function RequirementDetails() {
           </div>
           <div>
             <p className="text-neutral-500">Renewal</p>
-            <p className="text-3xl font-bold text-green-500">
-              {requirement.renewal}
-            </p>
+            <div>
+              <p className="text-3xl font-bold text-green-500">
+                {requirement.renewal}
+              </p>
+              <AutoRenew
+                handleRenew={() => {
+                  updateRequirementRenewal({
+                    renewal: formatDate(new Date(), "yyyy-MM-dd"),
+                    frequency: requirement.frequencyOfCompliance,
+                  });
+                  navigate(`/dashboard/requirements/${params.requirementId}`, {
+                    replace: true,
+                  });
+                }}
+              />
+            </div>
           </div>
           <div>
             <p className="text-neutral-500">Expiration</p>

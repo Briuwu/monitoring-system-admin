@@ -14,6 +14,11 @@ export type Requirement = {
   uploadedFileUrl: string;
 };
 
+export type UpdateRequirement = Omit<
+  Requirement,
+  "id" | "uploadedFileUrl" | "documentReference"
+>;
+
 export type AddRequirement = Omit<Requirement, "id">;
 
 export type User = {

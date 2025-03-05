@@ -1,4 +1,4 @@
-import { AddRequirement } from "@/lib/types";
+import { AddRequirement, UpdateRequirement } from "@/lib/types";
 import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL;
@@ -24,10 +24,21 @@ export const addRequirement = async (requirement: AddRequirement) => {
 };
 
 export const updateRequirement = async (
-  requirement: AddRequirement,
+  requirement: UpdateRequirement,
   requirementId: string
 ) => {
   return await axiosClient.put(`/requirements/${requirementId}`, requirement);
+};
+
+export const updateRequirementRenewal = async (
+  requirementRenewal: string,
+  frequency: string,
+  requirementId: string
+) => {
+  return await axiosClient.put(`/requirements/renewal/${requirementId}`, {
+    renewal: requirementRenewal,
+    frequency,
+  });
 };
 
 export const deleteRequirement = async (id: string) => {

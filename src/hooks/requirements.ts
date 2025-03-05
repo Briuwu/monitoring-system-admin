@@ -5,8 +5,9 @@ import {
   getAllRequirementsByDept,
   getRequirement,
   updateRequirement,
+  updateRequirementRenewal,
 } from "@/actions/requirements";
-import { AddRequirement, Requirement } from "@/lib/types";
+import { AddRequirement, Requirement, UpdateRequirement } from "@/lib/types";
 import {
   QueryObserverResult,
   UseBaseMutationResult,
@@ -90,21 +91,42 @@ export const useAddRequirement = (): UseBaseMutationResult<
 export const useUpdateRequirement = (
   requirementId: string
 ): UseBaseMutationResult<
-  AxiosResponse<AddRequirement>,
+  AxiosResponse<UpdateRequirement>,
   unknown,
-  AddRequirement,
+  UpdateRequirement,
   unknown
 > => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: (requirement: AddRequirement) =>
+    mutationFn: (requirement: UpdateRequirement) =>
       updateRequirement(requirement, requirementId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["requirements"],
+        queryKey: ["requirement"],
       });
       navigate(`/dashboard/requirements/${requirementId}`, { replace: true });
+    },
+  });
+};
+
+export const useUpdateRequirementRenewal = (
+  requirementId: string
+): UseBaseMutationResult<
+  AxiosResponse<string>,
+  unknown,
+  {
+    renewal: string;
+    frequency: string;
+  },
+  unknown
+> => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ renewal, frequency }) =>
+      updateRequirementRenewal(renewal, frequency, requirementId),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
     },
   });
 };

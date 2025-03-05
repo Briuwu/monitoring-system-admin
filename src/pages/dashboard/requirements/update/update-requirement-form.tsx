@@ -1,14 +1,13 @@
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { cn } from "@/lib/utils";
+import { cn, formatDateFn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -34,19 +33,11 @@ import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CloudUpload, Paperclip } from "lucide-react";
-import {
-  FileInput,
-  FileUploader,
-  FileUploaderContent,
-  FileUploaderItem,
-} from "@/components/ui/file-upload";
 import {
   complianceTypeList,
   departmentList,
   frequencyList,
 } from "@/lib/constant";
-import { uploadToCloudinary } from "@/cloudinary-config";
 import { useUpdateRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
 import { Requirement } from "@/lib/types";
@@ -73,7 +64,6 @@ const formSchema = z.object({
   status: z.string().min(1, {
     message: "Please select a status.",
   }),
-  documentReference: z.string(),
 });
 
 const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
@@ -105,13 +95,7 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
   const { mutate: updateRequirement } = useUpdateRequirement(requirement.id);
-  const [files, setFiles] = useState<File[] | null>(null);
 
-  const dropZoneConfig = {
-    maxFiles: 5,
-    maxSize: 1024 * 1024 * 4,
-    multiple: false,
-  };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -123,18 +107,10 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
       personInCharge: requirement.personInCharge,
       department: requirement.department,
       expiration: new Date(requirement.expiration),
-      renewal: new Date(requirement.renewal),
-      documentReference: "",
+      renewal: requirement.renewal ? new Date(requirement.renewal) : new Date(),
       status: "",
     },
   });
-
-  const generateToken = (department: string) => {
-    const year = new Date().getFullYear();
-    const randomKey = Math.random().toString(36).substring(2, 6).toUpperCase();
-    const departmentPrefix = department.substring(0, 2).toUpperCase(); // Get first 2 letters of the department
-    return `${departmentPrefix}-${year}-${randomKey}`;
-  };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { dateSubmitted, renewal, ...data } = values;
@@ -144,14 +120,11 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
     );
     startTransition(async () => {
       try {
-        const fileUrl = await uploadToCloudinary(files![0]);
         updateRequirement({
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
           expiration: formatDate(expiration, "yyyy-MM-dd"),
           renewal: formatDate(renewal, "yyyy-MM-dd"),
-          documentReference: generateToken(values.department),
-          uploadedFileUrl: fileUrl,
         });
 
         toast.success("Requirement Document updated successfully.");
@@ -395,14 +368,12 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
                   disabled
                 >
                   <span>
-                    {
+                    {formatDateFn(
                       calculateExpirationDate(
                         form.watch("dateSubmitted"),
                         form.watch("frequencyOfCompliance")
                       )
-                        .toISOString()
-                        .split("T")[0]
-                    }
+                    )}
                   </span>
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
@@ -574,51 +545,6 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="documentReference"
-          render={() => (
-            <FormItem className="col-span-full">
-              <FormLabel>Upload Document Reference</FormLabel>
-              <FormControl>
-                <FileUploader
-                  value={files}
-                  onValueChange={setFiles}
-                  dropzoneOptions={dropZoneConfig}
-                  className="relative bg-background rounded-lg p-2"
-                >
-                  <FileInput
-                    id="fileInput"
-                    className="outline-dashed outline-1 outline-slate-500"
-                  >
-                    <div className="flex items-center justify-center flex-col p-8 w-full ">
-                      <CloudUpload className="text-gray-500 w-10 h-10" />
-                      <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Click to upload</span>
-                        &nbsp; or drag and drop
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        PDF, DOCX, XLSX, or PPTX
-                      </p>
-                    </div>
-                  </FileInput>
-                  <FileUploaderContent>
-                    {files &&
-                      files.length > 0 &&
-                      files.map((file, i) => (
-                        <FileUploaderItem key={i} index={i}>
-                          <Paperclip className="h-4 w-4 stroke-current" />
-                          <span>{file.name}</span>
-                        </FileUploaderItem>
-                      ))}
-                  </FileUploaderContent>
-                </FileUploader>
-              </FormControl>
-              <FormDescription>Select a file to upload.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button type="submit" className="col-span-full" disabled={isPending}>
           Submit
         </Button>

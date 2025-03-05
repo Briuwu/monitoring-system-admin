@@ -6,7 +6,14 @@ import { useFetchRequirement } from "@/hooks/requirements";
 
 function UpdateRequirementPage() {
   const params = useParams();
-  const { data: requirement } = useFetchRequirement(params.requirementId!);
+  const { data: requirement, isLoading } = useFetchRequirement(
+    params.requirementId!
+  );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center">
