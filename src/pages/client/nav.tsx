@@ -1,6 +1,5 @@
 import { Logout } from "@/components/logout";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { Notification } from "./notification";
 
 export const Nav = () => {
   return (
@@ -11,9 +10,7 @@ export const Nav = () => {
       </div>
       <ul className="flex items-center gap-2">
         <li>
-          <Button asChild variant={"default"}>
-            <Link to="/client">Home</Link>
-          </Button>
+          <Notification />
         </li>
         <li>
           <Logout />

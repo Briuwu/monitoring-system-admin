@@ -4,13 +4,16 @@ import { useEffect } from "react";
 import { Outlet } from "react-router";
 
 function DashboardLayout() {
+  const user = JSON.parse(localStorage.getItem("user-email")!) as string;
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user-email")!) as string;
-
     if (user !== import.meta.env.VITE_ADMIN_EMAIL) {
       window.location.href = "/client";
     }
-  }, []);
+  }, [user]);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
   return (
     <SidebarProvider>
       <AppSidebar />

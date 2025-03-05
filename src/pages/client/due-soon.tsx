@@ -5,12 +5,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useFetchRequirements } from "@/hooks/requirements";
+import { useFetchRequirementsByDept } from "@/hooks/requirements";
+import { useFetchUser } from "@/hooks/users";
 import { getRemainingDays } from "@/lib/utils";
 import { Link } from "react-router";
 
 function DueSoon() {
-  const { data: requirements, isLoading } = useFetchRequirements();
+  const user = JSON.parse(localStorage.getItem("user")!);
+  const { data: userData } = useFetchUser(user.uid ?? "");
+  const { data: requirements, isLoading } = useFetchRequirementsByDept(
+    userData!.department
+  );
 
   if (isLoading || !requirements) {
     return <div>Loading...</div>;
@@ -62,9 +67,9 @@ function DueSoon() {
       <CardContent className="divide-y-2 overflow-y-auto sm:max-h-[325px]">
         {data.map((item) => (
           <Link
-            to={`/dashboard/requirements/${item.id}`}
+            to={`/client/requirements/${item.id}`}
             key={item.id}
-            className="flex items-center justify-between py-4"
+            className="flex items-center justify-between py-4 px-2 hover:bg-neutral-100"
           >
             <p className="text-sm font-semibold">{item.entity}</p>
             <p className="text-sm text-muted-foreground">
