@@ -15,7 +15,7 @@ function DashboardLayout() {
     return <div>Loading...</div>;
   }
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <AppSidebar />
       <main className="p-4 w-full">
         <SidebarTrigger />

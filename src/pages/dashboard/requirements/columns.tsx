@@ -70,7 +70,7 @@ export const columns: ColumnDef<Requirement>[] = [
       return (
         <p
           className={cn(
-            "p-2 px-4 uppercase rounded-full text-white bg-black",
+            "p-2 px-4 uppercase rounded-full text-white text-center bg-black",
             status === "Pending" && "bg-yellow-500",
             status === "Active" && "bg-green-500",
             status === "Inactive" && "bg-red-500",

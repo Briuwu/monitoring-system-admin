@@ -20,6 +20,7 @@ function DueSoon() {
   if (isLoading || !requirements) {
     return <div>Loading...</div>;
   }
+
   const annualDueSoon = requirements.filter(
     (item) =>
       item.frequencyOfCompliance.toLowerCase() === "annual" &&
