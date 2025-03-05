@@ -14,6 +14,7 @@ function DashboardLayout() {
   if (!user) {
     return <div>Loading...</div>;
   }
+
   return (
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />
