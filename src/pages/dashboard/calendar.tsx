@@ -6,7 +6,6 @@ import {
   CalendarPrevTrigger,
   CalendarTodayTrigger,
   CalendarViewTrigger,
-  CalendarYearView,
 } from "@/components/full-calendar";
 import { useFetchRequirements } from "@/hooks/requirements";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -41,12 +40,6 @@ export default function CalendarPage() {
           >
             Month
           </CalendarViewTrigger>
-          <CalendarViewTrigger
-            view="year"
-            className="aria-[current=true]:bg-accent"
-          >
-            Year
-          </CalendarViewTrigger>
 
           <span className="flex-1" />
 
@@ -67,7 +60,6 @@ export default function CalendarPage() {
 
         <div className="flex-1 px-6 overflow-hidden">
           <CalendarMonthView />
-          <CalendarYearView />
         </div>
       </div>
     </Calendar>
