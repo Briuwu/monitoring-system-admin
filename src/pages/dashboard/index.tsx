@@ -1,21 +1,16 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { useNavigate, Outlet } from "react-router";
 import { useEffect } from "react";
-import { useFetchUser } from "@/hooks/users";
+import { Outlet } from "react-router";
 
 function DashboardLayout() {
-  const navigate = useNavigate();
-
-  const userObj = JSON.parse(localStorage.getItem("user") || "{}");
-
-  const { data: userData } = useFetchUser(userObj.uid);
-
   useEffect(() => {
-    if (userData?.role !== "admin") {
-      navigate("/client");
+    const user = JSON.parse(localStorage.getItem("user-email")!) as string;
+
+    if (user !== import.meta.env.VITE_ADMIN_EMAIL) {
+      window.location.href = "/client";
     }
-  }, [navigate, userData]);
+  }, []);
   return (
     <SidebarProvider>
       <AppSidebar />

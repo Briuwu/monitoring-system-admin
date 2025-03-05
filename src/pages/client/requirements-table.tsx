@@ -9,14 +9,15 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { useFetchRequirementsByDept } from "@/hooks/requirements";
 import { Requirement } from "@/lib/types";
+import { useFetchUser } from "@/hooks/users";
 
-type Props = {
-  department: string;
-};
-
-function RequirementsTable({ department }: Props) {
-  const { data: requirementList, isLoading } =
-    useFetchRequirementsByDept(department);
+function RequirementsTable() {
+  const user = JSON.parse(localStorage.getItem("user")!);
+  const { data: userData } = useFetchUser(user.uid ?? "");
+  const department = userData?.department;
+  const { data: requirementList, isLoading } = useFetchRequirementsByDept(
+    department!
+  );
   const [filteredData, setFilteredData] = useState<Requirement[] | undefined>(
     requirementList
   );

@@ -1,22 +1,14 @@
-import { useFetchUser } from "@/hooks/users";
 import { Nav } from "./nav";
 import RequirementsTable from "./requirements-table";
+import useAuth from "@/context/use-auth";
 
 function ClientPage() {
-  const user = JSON.parse(localStorage.getItem("user")!);
-
-  const { data, isLoading } = useFetchUser(user.uid);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const { user: userAuth } = useAuth();
 
   return (
     <div>
       <Nav />
-      <div className="p-5">
-        <RequirementsTable department={data!.department} />
-      </div>
+      <div className="p-5">{userAuth && <RequirementsTable />}</div>
     </div>
   );
 }

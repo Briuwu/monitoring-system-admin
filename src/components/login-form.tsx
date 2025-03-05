@@ -46,6 +46,7 @@ export default function LoginForm() {
         values.password
       );
 
+      localStorage.setItem("user-email", JSON.stringify(user.user.email));
       localStorage.setItem("user", JSON.stringify(user.user));
       toast.success("Login successful");
     } catch (error) {

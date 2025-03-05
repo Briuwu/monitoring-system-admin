@@ -13,8 +13,9 @@ export default function AuthProvider({
     const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
       setUser(user);
     });
+
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
