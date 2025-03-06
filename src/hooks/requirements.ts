@@ -16,7 +16,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { useNavigate } from "react-router";
 
 export const useFetchRequirements = (): QueryObserverResult<Requirement[]> => {
   return useQuery<Requirement[]>({
@@ -61,12 +60,10 @@ export const useDeleteRequirement = (): UseBaseMutationResult<
   unknown
 > => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   return useMutation({
     mutationFn: (id: string) => deleteRequirement(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["requirements"] });
-      navigate("/dashboard/requirements", { replace: true });
     },
   });
 };
@@ -78,12 +75,10 @@ export const useAddRequirement = (): UseBaseMutationResult<
   unknown
 > => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   return useMutation({
     mutationFn: (requirement: AddRequirement) => addRequirement(requirement),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["requirements"] });
-      navigate("/dashboard/requirements", { replace: true });
     },
   });
 };
@@ -97,7 +92,6 @@ export const useUpdateRequirement = (
   unknown
 > => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   return useMutation({
     mutationFn: (requirement: UpdateRequirement) =>
       updateRequirement(requirement, requirementId),
@@ -105,7 +99,6 @@ export const useUpdateRequirement = (
       queryClient.invalidateQueries({
         queryKey: ["requirement"],
       });
-      navigate(`/dashboard/requirements/${requirementId}`, { replace: true });
     },
   });
 };

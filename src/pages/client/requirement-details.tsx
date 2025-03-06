@@ -19,8 +19,9 @@ import {
 } from "@/hooks/requirements";
 import { cn } from "@/lib/utils";
 import { useParams, useNavigate, Link } from "react-router";
-import { AutoRenew } from "../dashboard/requirements/auto-renew";
+import { AutoRenew } from "@/components/auto-renew";
 import { formatDate } from "date-fns";
+import { UploadNewDoc } from "@/components/upload-new-doc";
 
 function RequirementClientDetails() {
   const params = useParams();
@@ -149,7 +150,7 @@ function RequirementClientDetails() {
                     renewal: formatDate(new Date(), "yyyy-MM-dd"),
                     frequency: requirement.frequencyOfCompliance,
                   });
-                  navigate(`/dashboard/requirements/${params.requirementId}`, {
+                  navigate(`/client/requirements/${params.requirementId}`, {
                     replace: true,
                   });
                 }}
@@ -164,13 +165,14 @@ function RequirementClientDetails() {
           </div>
         </div>
         <Separator />
-        <div className="grid gap-5">
+        <div className="grid gap-5 grid-cols-2">
           <Button
             className="min-h-[100px] bg-blue-500 font-black uppercase text-lg"
             onClick={() => handleViewDocument(requirement.uploadedFileUrl)}
           >
             Open Document
           </Button>
+          <UploadNewDoc />
         </div>
       </div>
     </div>

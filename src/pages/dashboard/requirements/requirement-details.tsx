@@ -20,7 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 import { formatDate } from "date-fns";
 import { useParams, useNavigate, Link } from "react-router";
-import { AutoRenew } from "./auto-renew";
+import { AutoRenew } from "@/components/auto-renew";
 
 function RequirementDetails() {
   const params = useParams();

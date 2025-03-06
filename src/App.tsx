@@ -15,6 +15,7 @@ import UpdateRequirementPage from "./pages/dashboard/requirements/update";
 import ClientPage from "./pages/client";
 import AddRequirementClientPage from "./pages/client/add";
 import RequirementClientDetails from "./pages/client/requirement-details";
+import UpdateRequirementClientPage from "./pages/client/update";
 
 function App() {
   return (
@@ -50,6 +51,10 @@ function App() {
         </Route>
         <Route path="/client" element={<ClientPage />} />
         <Route path="/client/add" element={<AddRequirementClientPage />} />
+        <Route
+          path="/client/requirements/update/:requirementId"
+          element={<UpdateRequirementClientPage />}
+        />
         <Route
           path="/client/requirements/:requirementId"
           element={<RequirementClientDetails />}
