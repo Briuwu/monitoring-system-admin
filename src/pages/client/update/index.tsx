@@ -21,7 +21,7 @@ function UpdateRequirementClientPage() {
           Update Requirement Document
         </h2>
         <Button asChild variant={"destructive"}>
-          <Link to="/client/requirements">Back</Link>
+          <Link to="/client">Back</Link>
         </Button>
       </div>
       <UpdateRequirementClientForm requirement={requirement!} />
