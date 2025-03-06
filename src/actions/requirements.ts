@@ -41,6 +41,15 @@ export const updateRequirementRenewal = async (
   });
 };
 
+export const updateDocumentReference = async (
+  requirementId: string,
+  documentReference: string
+) => {
+  return await axiosClient.put(`/requirements/reference/${requirementId}`, {
+    documentReference,
+  });
+};
+
 export const deleteRequirement = async (id: string) => {
   return await axiosClient.delete(`/requirements/${id}`);
 };
