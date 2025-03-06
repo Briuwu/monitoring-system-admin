@@ -43,10 +43,12 @@ export const updateRequirementRenewal = async (
 
 export const updateDocumentReference = async (
   requirementId: string,
-  documentReference: string
+  documentReference: string,
+  uploadedFileUrl: string
 ) => {
   return await axiosClient.put(`/requirements/reference/${requirementId}`, {
     documentReference,
+    uploadedFileUrl,
   });
 };
 

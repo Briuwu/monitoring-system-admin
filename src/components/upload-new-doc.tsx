@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,12 +28,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useUpdateRequirementDocumentReference } from "@/hooks/requirements";
+import { uploadToCloudinary } from "@/cloudinary-config";
+import { useNavigate } from "react-router";
 
 const formSchema = z.object({
   documentReference: z.string(),
 });
 
-export function UploadNewDoc() {
+export function UploadNewDoc({
+  documentId,
+  department,
+  isClient,
+}: {
+  documentId: string;
+  department: string;
+  isClient?: boolean;
+}) {
+  const navigate = useNavigate();
+  const [isPending, startTransition] = useTransition();
+  const { mutate: updateDocumentRef } =
+    useUpdateRequirementDocumentReference(documentId);
+  const [open, setOpen] = useState(false);
   const [files, setFiles] = useState<File[] | null>(null);
 
   const dropZoneConfig = {
@@ -43,24 +59,41 @@ export function UploadNewDoc() {
   };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      documentReference: "",
+    },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
+  const generateToken = (department: string) => {
+    const year = new Date().getFullYear();
+    const randomKey = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const departmentPrefix = department.substring(0, 2).toUpperCase(); // Get first 2 letters of the department
+    return `${departmentPrefix}-${year}-${randomKey}`;
+  };
+
+  function onSubmit() {
+    startTransition(async () => {
+      const fileUrl = await uploadToCloudinary(files![0]);
+      try {
+        updateDocumentRef({
+          documentReference: generateToken(department),
+          uploadedFileUrl: fileUrl,
+        });
+        toast.success("Document uploaded successfully.");
+        setOpen(false);
+        navigate(
+          `/${isClient ? "client" : "dashboard"}/requirements/${documentId}`,
+          { replace: true }
+        );
+      } catch (error) {
+        console.error("Form submission error", error);
+        toast.error("Failed to submit the form. Please try again.");
+      }
+    });
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="min-h-[100px] bg-amber-500 font-black uppercase text-lg">
           Upload New Document
@@ -119,7 +152,7 @@ export function UploadNewDoc() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={isPending}>
               Submit
             </Button>
           </form>

@@ -172,7 +172,11 @@ function RequirementClientDetails() {
           >
             Open Document
           </Button>
-          <UploadNewDoc />
+          <UploadNewDoc
+            documentId={requirement.id}
+            department={requirement.department}
+            isClient
+          />
         </div>
       </div>
     </div>

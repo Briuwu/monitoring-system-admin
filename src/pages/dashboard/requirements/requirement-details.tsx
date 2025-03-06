@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { formatDate } from "date-fns";
 import { useParams, useNavigate, Link } from "react-router";
 import { AutoRenew } from "@/components/auto-renew";
+import { UploadNewDoc } from "@/components/upload-new-doc";
 
 function RequirementDetails() {
   const params = useParams();
@@ -164,13 +165,17 @@ function RequirementDetails() {
           </div>
         </div>
         <Separator />
-        <div className="grid gap-5">
+        <div className="grid gap-5 grid-cols-2">
           <Button
             className="min-h-[100px] bg-blue-500 font-black uppercase text-lg"
             onClick={() => handleViewDocument(requirement.uploadedFileUrl)}
           >
             Open Document
           </Button>
+          <UploadNewDoc
+            documentId={requirement.id}
+            department={requirement.department}
+          />
         </div>
       </div>
     </div>

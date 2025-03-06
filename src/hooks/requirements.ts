@@ -4,6 +4,7 @@ import {
   getAllRequirements,
   getAllRequirementsByDept,
   getRequirement,
+  updateDocumentReference,
   updateRequirement,
   updateRequirementRenewal,
 } from "@/actions/requirements";
@@ -118,6 +119,37 @@ export const useUpdateRequirementRenewal = (
   return useMutation({
     mutationFn: ({ renewal, frequency }) =>
       updateRequirementRenewal(renewal, frequency, requirementId),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
+  });
+};
+
+export const useUpdateRequirementDocumentReference = (
+  requirementId: string
+): UseBaseMutationResult<
+  AxiosResponse<string>,
+  unknown,
+  {
+    documentReference: string;
+    uploadedFileUrl: string;
+  },
+  unknown
+> => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      documentReference,
+      uploadedFileUrl,
+    }: {
+      documentReference: string;
+      uploadedFileUrl: string;
+    }) =>
+      updateDocumentReference(
+        requirementId,
+        documentReference,
+        uploadedFileUrl
+      ),
     onSuccess: () => {
       queryClient.invalidateQueries();
     },
