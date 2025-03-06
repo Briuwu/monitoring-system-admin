@@ -48,6 +48,8 @@ function RequirementsTable() {
           "personInCharge",
           "department",
           "documentReference",
+          "frequencyOfCompliance",
+          "typeOfCompliance",
         ].some((value) => {
           const data = requirement[value as keyof Requirement] as string;
           return data.toLowerCase().includes(globalSearch.toLowerCase());
