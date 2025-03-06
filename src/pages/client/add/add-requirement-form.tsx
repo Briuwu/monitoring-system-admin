@@ -63,7 +63,9 @@ const formSchema = z.object({
   status: z.string().min(1, {
     message: "Please select a status.",
   }),
-  documentReference: z.string(),
+  documentReference: z.string({
+    required_error: "Please upload a document reference.",
+  }),
 });
 
 const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
@@ -121,6 +123,10 @@ export const AddRequirementForm = ({ department }: { department: string }) => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { dateSubmitted, ...data } = values;
+    if (!files || files.length === 0) {
+      toast.error("Please upload a document reference.");
+      return;
+    }
     const expiration = calculateExpirationDate(
       dateSubmitted,
       values.frequencyOfCompliance

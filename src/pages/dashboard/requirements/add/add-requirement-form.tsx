@@ -129,6 +129,10 @@ export const AddRequirementForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { dateSubmitted, ...data } = values;
+    if (!files || files.length === 0) {
+      toast.error("Please upload a document reference.");
+      return;
+    }
     const expiration = calculateExpirationDate(
       dateSubmitted,
       values.frequencyOfCompliance

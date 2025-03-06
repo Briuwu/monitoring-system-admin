@@ -33,7 +33,9 @@ import { uploadToCloudinary } from "@/cloudinary-config";
 import { useNavigate } from "react-router";
 
 const formSchema = z.object({
-  documentReference: z.string(),
+  documentReference: z.string({
+    required_error: "Document reference is required.",
+  }),
 });
 
 export function UploadNewDoc({
@@ -72,6 +74,10 @@ export function UploadNewDoc({
   };
 
   function onSubmit() {
+    if (!files || files.length === 0) {
+      toast.error("Please upload a document reference.");
+      return;
+    }
     startTransition(async () => {
       const fileUrl = await uploadToCloudinary(files![0]);
       try {
