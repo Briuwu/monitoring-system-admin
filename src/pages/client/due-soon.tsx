@@ -24,27 +24,31 @@ function DueSoon() {
   const annualDueSoon = requirements.filter(
     (item) =>
       item.frequencyOfCompliance.toLowerCase() === "annual" &&
+      getRemainingDays(item.expiration) > 0 &&
       getRemainingDays(item.expiration) < 90
   );
 
   const semiAnnualDueSoon = requirements.filter(
     (item) =>
       item.frequencyOfCompliance.toLowerCase() === "semi annual" &&
+      getRemainingDays(item.expiration) > 0 &&
       getRemainingDays(item.expiration) < 60
   );
 
   const quarterlyDueSoon = requirements.filter(
     (item) =>
       item.frequencyOfCompliance.toLowerCase() === "quarterly" &&
+      getRemainingDays(item.expiration) > 0 &&
       getRemainingDays(item.expiration) < 40
   );
 
   const monthlyDueSoon = requirements.filter(
     (item) =>
       item.frequencyOfCompliance.toLowerCase() === "monthly" &&
+      getRemainingDays(item.expiration) > 0 &&
       getRemainingDays(item.expiration) < 30
   );
-
+  
   const data = [
     ...annualDueSoon,
     ...semiAnnualDueSoon,

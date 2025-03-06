@@ -46,7 +46,13 @@ export const columns: ColumnDef<Requirement>[] = [
         const currentDate = new Date();
         const expirationDate = new Date(expiration);
         const timeDiff = expirationDate.getTime() - currentDate.getTime();
-        return Math.ceil(timeDiff / (1000 * 3600 * 24));
+        const result = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        if (result < 0) {
+          return <p className="text-red-500">Expired</p>;
+        }
+
+        return result;
       };
 
       return calculateRemainingDays(expiration);
