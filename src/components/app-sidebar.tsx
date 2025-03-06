@@ -9,8 +9,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Calendar, Home, Inbox, Settings, User } from "lucide-react";
+import { Calendar, Home, Inbox, User } from "lucide-react";
 import { Link } from "react-router";
+import { Logout } from "./logout";
 
 const items = [
   {
@@ -32,11 +33,6 @@ const items = [
     title: "Users",
     url: "users",
     icon: User,
-  },
-  {
-    title: "Settings",
-    url: "settings",
-    icon: Settings,
   },
 ];
 
@@ -67,7 +63,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <Logout />
+      </SidebarFooter>
     </Sidebar>
   );
 }
