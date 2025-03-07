@@ -87,7 +87,7 @@ type Props = {
 export const UpdateRequirementClientForm = ({ requirement }: Props) => {
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
-  const { mutate: updateRequirement } = useUpdateRequirement(requirement.id);
+  const { mutate: updateRequirement } = useUpdateRequirement(requirement.$id);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -121,7 +121,7 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
         });
 
         toast.success("Requirement Document updated successfully.");
-        navigate(`/client/requirements/${requirement.id}`, {
+        navigate(`/client/requirements/${requirement.$id}`, {
           replace: true,
         });
         form.reset();

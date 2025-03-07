@@ -66,8 +66,8 @@ function DueSoon() {
       <CardContent className="divide-y-2 overflow-y-auto sm:max-h-[325px]">
         {data.map((item) => (
           <Link
-            to={`/dashboard/requirements/${item.id}`}
-            key={item.id}
+            to={`/dashboard/requirements/${item.$id}`}
+            key={item.$id}
             className="flex items-center justify-between py-4"
           >
             <p className="text-sm font-semibold">{item.entity}</p>

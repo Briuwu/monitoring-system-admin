@@ -41,8 +41,8 @@ export const Subscriptions = ({ title, item, color }: Props) => {
             <div className="space-y-5">
               {item.map((item) => (
                 <Link
-                  to={`/dashboard/requirements/${item.id}`}
-                  key={item.id}
+                  to={`/dashboard/requirements/${item.$id}`}
+                  key={item.$id}
                   className="text-sm flex items-center justify-between p-2 bg-white rounded-lg shadow"
                 >
                   <div className="flex flex-col">

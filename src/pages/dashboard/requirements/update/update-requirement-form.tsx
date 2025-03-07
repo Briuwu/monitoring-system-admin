@@ -94,7 +94,7 @@ type Props = {
 export const UpdateRequirementForm = ({ requirement }: Props) => {
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
-  const { mutate: updateRequirement } = useUpdateRequirement(requirement.id);
+  const { mutate: updateRequirement } = useUpdateRequirement(requirement.$id);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

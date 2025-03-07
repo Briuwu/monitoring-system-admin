@@ -95,7 +95,7 @@ export const columns: ColumnDef<Requirement>[] = [
       return (
         <Button asChild variant={"outline"}>
           <Link
-            to={`/dashboard/requirements/${row.original.id}`}
+            to={`/dashboard/requirements/${row.original.$id}`}
             className="flex items-center gap-2"
           >
             {row.original.documentReference}

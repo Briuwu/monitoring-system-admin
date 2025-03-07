@@ -1,5 +1,5 @@
 export type Requirement = {
-  id: string;
+  $id: string;
   entity: string;
   department: string;
   complianceList: string;
@@ -16,13 +16,13 @@ export type Requirement = {
 
 export type UpdateRequirement = Omit<
   Requirement,
-  "id" | "uploadedFileUrl" | "documentReference"
+  "$id" | "uploadedFileUrl" | "documentReference"
 >;
 
-export type AddRequirement = Omit<Requirement, "id">;
+export type AddRequirement = Omit<Requirement, "$id">;
 
 export type User = {
-  id: string;
+  $id: string;
   department: string;
   email: string;
   firstName: string;
@@ -31,4 +31,4 @@ export type User = {
   role?: string;
 };
 
-export type AddUser = Omit<User, "id">;
+export type AddUser = Omit<User, "$id">;

@@ -24,7 +24,7 @@ export default function CalendarPage() {
   type ColorVariant = "green" | "pink" | "blue" | "purple";
 
   const events = requirements.map((requirement) => ({
-    id: requirement.id,
+    id: requirement.$id,
     start: new Date(requirement.expiration),
     title: requirement.entity,
     color: (requirement.status === "Active" ? "green" : "pink") as ColorVariant,

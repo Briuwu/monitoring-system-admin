@@ -173,7 +173,7 @@ function RequirementDetails() {
             Open Document
           </Button>
           <UploadNewDoc
-            documentId={requirement.id}
+            documentId={requirement.$id}
             department={requirement.department}
           />
         </div>

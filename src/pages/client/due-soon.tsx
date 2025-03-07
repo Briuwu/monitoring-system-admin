@@ -48,7 +48,7 @@ function DueSoon() {
       getRemainingDays(item.expiration) > 0 &&
       getRemainingDays(item.expiration) < 30
   );
-  
+
   const data = [
     ...annualDueSoon,
     ...semiAnnualDueSoon,
@@ -72,8 +72,8 @@ function DueSoon() {
       <CardContent className="divide-y-2 overflow-y-auto sm:max-h-[325px]">
         {data.map((item) => (
           <Link
-            to={`/client/requirements/${item.id}`}
-            key={item.id}
+            to={`/client/requirements/${item.$id}`}
+            key={item.$id}
             className="flex items-center justify-between py-4 px-2 hover:bg-neutral-100"
           >
             <p className="text-sm font-semibold">{item.entity}</p>
