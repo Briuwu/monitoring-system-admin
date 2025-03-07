@@ -76,7 +76,7 @@ function DueSoon() {
             key={item.$id}
             className="flex items-center justify-between py-4 px-2 hover:bg-neutral-100"
           >
-            <p className="text-sm font-semibold">{item.entity}</p>
+            <p className="text-sm font-semibold">{item.complianceList}</p>
             <p className="text-sm text-muted-foreground">
               Due in {getRemainingDays(item.expiration)} days
             </p>
