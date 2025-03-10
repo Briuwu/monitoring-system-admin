@@ -1,7 +1,14 @@
 import bg from "@/assets/bg.png";
 import LoginForm from "@/components/login-form";
+import { useEffect } from "react";
 
 function LoginPage() {
+  useEffect(() => {
+    if (localStorage.getItem("session")) {
+      window.location.href = "/dashboard";
+    }
+  }, []);
+
   return (
     <main className="grid grid-cols-2 min-h-screen">
       <img src={bg} alt="" className="h-full object-cover" />

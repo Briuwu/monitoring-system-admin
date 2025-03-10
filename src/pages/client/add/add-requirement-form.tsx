@@ -42,9 +42,10 @@ import {
   FileUploaderItem,
 } from "@/components/ui/file-upload";
 import { complianceTypeList, frequencyList } from "@/lib/constant";
-import { uploadToCloudinary } from "@/cloudinary-config";
 import { useAddRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
+import { storage } from "@/appwrite";
+import { ID } from "appwrite";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -133,13 +134,21 @@ export const AddRequirementForm = ({ department }: { department: string }) => {
     );
     startTransition(async () => {
       try {
-        const fileUrl = await uploadToCloudinary(files![0]);
+        const fileData = await storage.createFile(
+          "67ca6aaf0019e5e45ed5",
+          ID.unique(),
+          files[0]
+        );
         addRequirement({
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
           expiration: formatDate(expiration, "yyyy-MM-dd"),
           documentReference: generateToken(department),
-          uploadedFileUrl: fileUrl,
+          uploadedFileUrl: `https://cloud.appwrite.io/v1/storage/buckets/${
+            fileData.bucketId
+          }/files/${fileData.$id}/view?project=${
+            import.meta.env.VITE_APP_WRITE_PROJECT_ID
+          }&mode=admin`,
           department: department,
           renewal: "",
         });
