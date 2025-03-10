@@ -16,7 +16,7 @@ export type Requirement = {
 
 export type UpdateRequirement = Omit<
   Requirement,
-  "$id" | "uploadedFileUrl" | "documentReference"
+  "$id" | "uploadedFileUrl" | "documentReference" | "renewal"
 >;
 
 export type AddRequirement = Omit<Requirement, "$id">;

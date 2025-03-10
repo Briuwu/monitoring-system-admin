@@ -51,7 +51,6 @@ const formSchema = z.object({
     message: "Please select a type of compliance.",
   }),
   dateSubmitted: z.coerce.date(),
-  renewal: z.coerce.date(),
   expiration: z.coerce.date(),
   personInCharge: z.string().min(1),
   status: z.string().min(1, {
@@ -99,13 +98,12 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
       typeOfCompliance: requirement.typeOfCompliance,
       personInCharge: requirement.personInCharge,
       expiration: new Date(requirement.expiration),
-      renewal: requirement.renewal ? new Date(requirement.renewal) : new Date(),
       status: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const { dateSubmitted, renewal, ...data } = values;
+    const { dateSubmitted, ...data } = values;
     const expiration = calculateExpirationDate(
       dateSubmitted,
       values.frequencyOfCompliance
@@ -116,7 +114,6 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
           expiration: formatDate(expiration, "yyyy-MM-dd"),
-          renewal: formatDate(renewal, "yyyy-MM-dd"),
           department: requirement.department,
         });
 
@@ -378,47 +375,6 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
             </PopoverContent>
           </Popover>
         </div>
-
-        <FormField
-          control={form.control}
-          name="renewal"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Schedule of Renewal / Submission</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                      disabled={isPending}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         <FormField
           control={form.control}
