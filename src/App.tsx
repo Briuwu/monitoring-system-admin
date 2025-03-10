@@ -15,45 +15,51 @@ import ClientPage from "./pages/client";
 import AddRequirementClientPage from "./pages/client/add";
 import RequirementClientDetails from "./pages/client/requirement-details";
 import UpdateRequirementClientPage from "./pages/client/update";
+import { ProtectedRoutes } from "./pages/protected-routes";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
-      <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route index element={<DashboardHome />} />
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<DashboardHome />} />
 
-        <Route path="/dashboard/requirements" element={<RequirementsPage />} />
+          <Route
+            path="/dashboard/requirements"
+            element={<RequirementsPage />}
+          />
+          <Route
+            path="/dashboard/requirements/add"
+            element={<AddRequirementPage />}
+          />
+          <Route
+            path="/dashboard/requirements/update/:requirementId"
+            element={<UpdateRequirementPage />}
+          />
+          <Route
+            path="/dashboard/requirements/:requirementId"
+            element={<RequirementDetails />}
+          />
+
+          <Route path="/dashboard/calendar" element={<CalendarPage />} />
+
+          <Route path="/dashboard/users" element={<UsersPage />} />
+          <Route path="/dashboard/users/:userId" element={<UserDetails />} />
+
+          <Route path="/dashboard/settings" element={<SettingsPage />} />
+        </Route>
+        <Route path="/client" element={<ClientPage />} />
+        <Route path="/client/add" element={<AddRequirementClientPage />} />
         <Route
-          path="/dashboard/requirements/add"
-          element={<AddRequirementPage />}
+          path="/client/requirements/update/:requirementId"
+          element={<UpdateRequirementClientPage />}
         />
         <Route
-          path="/dashboard/requirements/update/:requirementId"
-          element={<UpdateRequirementPage />}
+          path="/client/requirements/:requirementId"
+          element={<RequirementClientDetails />}
         />
-        <Route
-          path="/dashboard/requirements/:requirementId"
-          element={<RequirementDetails />}
-        />
-
-        <Route path="/dashboard/calendar" element={<CalendarPage />} />
-
-        <Route path="/dashboard/users" element={<UsersPage />} />
-        <Route path="/dashboard/users/:userId" element={<UserDetails />} />
-
-        <Route path="/dashboard/settings" element={<SettingsPage />} />
       </Route>
-      <Route path="/client" element={<ClientPage />} />
-      <Route path="/client/add" element={<AddRequirementClientPage />} />
-      <Route
-        path="/client/requirements/update/:requirementId"
-        element={<UpdateRequirementClientPage />}
-      />
-      <Route
-        path="/client/requirements/:requirementId"
-        element={<RequirementClientDetails />}
-      />
     </Routes>
   );
 }

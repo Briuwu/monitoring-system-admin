@@ -1,6 +1,5 @@
+import { account } from "@/appwrite";
 import { Button } from "./ui/button";
-import { signOut } from "firebase/auth";
-import { auth } from "@/firebase";
 
 import {
   AlertDialog,
@@ -15,22 +14,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export const Logout = () => {
   const navigate = useNavigate();
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        console.log("User signed out successfully");
-        localStorage.removeItem("user");
-        localStorage.clear();
-        navigate("/");
-      })
-      .catch((error) => {
-        // An error happened.
-        console.error("Error signing out:", error);
-      });
+  const handleSignOut = async () => {
+    await account.deleteSession("current");
+    toast.success("You have been logged out.");
+    navigate("/");
   };
   return (
     <AlertDialog>

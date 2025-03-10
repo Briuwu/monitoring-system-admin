@@ -13,8 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { auth } from "@/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { account } from "@/appwrite";
+import { useNavigate } from "react-router";
 
 const formSchema = z.object({
   email: z
@@ -30,6 +30,7 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,15 +41,13 @@ export default function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const user = await signInWithEmailAndPassword(
-        auth,
+      const session = await account.createEmailPasswordSession(
         values.email,
         values.password
       );
-
-      localStorage.setItem("user-email", JSON.stringify(user.user.email));
-      localStorage.setItem("user", JSON.stringify(user.user));
-      toast.success("Login successful");
+      toast.success("Account login successfully.");
+      localStorage.setItem("session", JSON.stringify(session.current));
+      navigate("/dashboard");
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");

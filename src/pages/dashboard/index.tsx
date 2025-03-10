@@ -1,19 +1,18 @@
+import { account } from "@/appwrite";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useEffect } from "react";
 import { Outlet } from "react-router";
 
 function DashboardLayout() {
-  const user = JSON.parse(localStorage.getItem("user-email")!) as string;
   useEffect(() => {
-    if (user !== import.meta.env.VITE_ADMIN_EMAIL) {
-      window.location.href = "/client";
-    }
-  }, [user]);
+    const fetch = async () => {
+      const data = await account.get();
 
-  if (!user) {
-    return <div>Loading...</div>;
-  }
+      if (data.labels[0] !== "admin") window.location.href = "/client";
+    };
+    fetch();
+  }, []);
 
   return (
     <SidebarProvider defaultOpen={false}>
