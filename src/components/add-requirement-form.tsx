@@ -41,11 +41,15 @@ import {
   FileUploaderContent,
   FileUploaderItem,
 } from "@/components/ui/file-upload";
-import { complianceTypeList, frequencyList } from "@/lib/constant";
+import {
+  complianceTypeList,
+  departmentList,
+  frequencyList,
+} from "@/lib/constant";
 import { useAddRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
-import { storage } from "@/appwrite";
 import { ID } from "appwrite";
+import { storage } from "@/appwrite";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -61,12 +65,13 @@ const formSchema = z.object({
   dateSubmitted: z.coerce.date(),
   expiration: z.coerce.date(),
   personInCharge: z.string().min(1),
+  department: z.string().min(1, {
+    message: "Please select a department.",
+  }),
   status: z.string().min(1, {
     message: "Please select a status.",
   }),
-  documentReference: z.string({
-    required_error: "Please upload a document reference.",
-  }),
+  documentReference: z.string(),
 });
 
 const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
@@ -90,7 +95,11 @@ const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
   return date;
 };
 
-export const AddRequirementForm = ({ department }: { department: string }) => {
+type Props = {
+  department?: string;
+};
+
+export const AddRequirementForm = ({ department }: Props) => {
   const [isPending, startTransition] = useTransition();
   const { mutate: addRequirement } = useAddRequirement();
   const [files, setFiles] = useState<File[] | null>(null);
@@ -109,6 +118,7 @@ export const AddRequirementForm = ({ department }: { department: string }) => {
       frequencyOfCompliance: "",
       typeOfCompliance: "",
       personInCharge: "",
+      department: "",
       status: "",
       documentReference: "",
       expiration: calculateExpirationDate(new Date(), ""),
@@ -143,17 +153,20 @@ export const AddRequirementForm = ({ department }: { department: string }) => {
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
           expiration: formatDate(expiration, "yyyy-MM-dd"),
-          documentReference: generateToken(department),
+          documentReference: generateToken(
+            department ? department : values.department
+          ),
           uploadedFileUrl: `https://cloud.appwrite.io/v1/storage/buckets/${
             fileData.bucketId
           }/files/${fileData.$id}/view?project=${
             import.meta.env.VITE_APP_WRITE_PROJECT_ID
           }&mode=admin`,
-          department: department,
+          department: department ? department : values.department,
           renewal: "",
         });
 
         toast.success("Requirement Document added successfully.");
+        form.reset();
       } catch (error) {
         console.error("Form submission error", error);
         toast.error("Failed to submit the form. Please try again.");
@@ -302,7 +315,7 @@ export const AddRequirementForm = ({ department }: { department: string }) => {
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
                   <Command>
-                    <CommandInput placeholder="Search department..." />
+                    <CommandInput placeholder="Search compliance..." />
                     <CommandList>
                       <CommandEmpty>No type found.</CommandEmpty>
                       <CommandGroup>
@@ -468,6 +481,70 @@ export const AddRequirementForm = ({ department }: { department: string }) => {
             </FormItem>
           )}
         />
+        {!department && (
+          <FormField
+            control={form.control}
+            name="department"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Department</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "w-[200px] justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
+                        disabled={isPending}
+                      >
+                        {field.value
+                          ? departmentList.find(
+                              (department) => department.value === field.value
+                            )?.label
+                          : "Select department"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search department..." />
+                      <CommandList>
+                        <CommandEmpty>No department found.</CommandEmpty>
+                        <CommandGroup>
+                          {departmentList.map((department) => (
+                            <CommandItem
+                              value={department.label}
+                              key={department.value}
+                              onSelect={() => {
+                                form.setValue("department", department.value);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  department.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {department.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}

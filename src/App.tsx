@@ -5,7 +5,6 @@ import DashboardLayout from "@/pages/dashboard";
 import DashboardHome from "@/pages/dashboard/dashboard-home";
 import RequirementsPage from "@/pages/dashboard/requirements";
 import CalendarPage from "@/pages/dashboard/calendar";
-import SettingsPage from "@/pages/dashboard/settings";
 import UsersPage from "@/pages/dashboard/users";
 import AddRequirementPage from "@/pages/dashboard/requirements/add";
 import UserDetails from "@/pages/dashboard/users/user-details";
@@ -13,7 +12,6 @@ import RequirementDetails from "./pages/dashboard/requirements/requirement-detai
 import UpdateRequirementPage from "./pages/dashboard/requirements/update";
 import ClientPage from "./pages/client";
 import AddRequirementClientPage from "./pages/client/add";
-import RequirementClientDetails from "./pages/client/requirement-details";
 import UpdateRequirementClientPage from "./pages/client/update";
 import { ProtectedRoutes } from "./pages/protected-routes";
 
@@ -46,8 +44,6 @@ function App() {
 
           <Route path="/dashboard/users" element={<UsersPage />} />
           <Route path="/dashboard/users/:userId" element={<UserDetails />} />
-
-          <Route path="/dashboard/settings" element={<SettingsPage />} />
         </Route>
         <Route path="/client" element={<ClientPage />} />
         <Route path="/client/add" element={<AddRequirementClientPage />} />
@@ -57,7 +53,7 @@ function App() {
         />
         <Route
           path="/client/requirements/:requirementId"
-          element={<RequirementClientDetails />}
+          element={<RequirementDetails isClient />}
         />
       </Route>
     </Routes>

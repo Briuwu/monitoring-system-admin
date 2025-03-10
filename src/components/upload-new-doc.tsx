@@ -29,8 +29,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useUpdateRequirementDocumentReference } from "@/hooks/requirements";
-import { uploadToCloudinary } from "@/cloudinary-config";
 import { useNavigate } from "react-router";
+import { storage } from "@/appwrite";
+import { ID } from "appwrite";
 
 const formSchema = z.object({
   documentReference: z.string({
@@ -79,11 +80,19 @@ export function UploadNewDoc({
       return;
     }
     startTransition(async () => {
-      const fileUrl = await uploadToCloudinary(files![0]);
+      const fileData = await storage.createFile(
+        "67ca6aaf0019e5e45ed5",
+        ID.unique(),
+        files[0]
+      );
       try {
         updateDocumentRef({
           documentReference: generateToken(department),
-          uploadedFileUrl: fileUrl,
+          uploadedFileUrl: `https://cloud.appwrite.io/v1/storage/buckets/${
+            fileData.bucketId
+          }/files/${fileData.$id}/view?project=${
+            import.meta.env.VITE_APP_WRITE_PROJECT_ID
+          }&mode=admin`,
         });
         toast.success("Document uploaded successfully.");
         setOpen(false);

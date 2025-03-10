@@ -23,7 +23,11 @@ import { useParams, useNavigate, Link } from "react-router";
 import { AutoRenew } from "@/components/auto-renew";
 import { UploadNewDoc } from "@/components/upload-new-doc";
 
-function RequirementDetails() {
+type Props = {
+  isClient?: boolean;
+};
+
+function RequirementDetails({ isClient }: Props) {
   const params = useParams();
   const navigate = useNavigate();
   const {
@@ -54,10 +58,12 @@ function RequirementDetails() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-5">
+    <div className={cn("max-w-5xl mx-auto space-y-5", isClient && "my-14")}>
       <div className="flex items-center justify-between">
         <Button variant={"destructive"} asChild>
-          <Link to="/dashboard/requirements">Back</Link>
+          <Link to={isClient ? "/client" : "/dashboard/requirements"}>
+            Back
+          </Link>
         </Button>
         <div className="flex items-center gap-2">
           <AlertDialog>
@@ -77,7 +83,7 @@ function RequirementDetails() {
                 <AlertDialogAction
                   onClick={() => {
                     deleteRequirement(params.requirementId!);
-                    navigate("/dashboard/requirements");
+                    navigate(isClient ? "/client" : "/dashboard/requirements");
                   }}
                 >
                   Continue
@@ -87,7 +93,11 @@ function RequirementDetails() {
           </AlertDialog>
 
           <Button asChild>
-            <Link to={`/dashboard/requirements/update/${params.requirementId}`}>
+            <Link
+              to={`/${isClient ? "client" : "dashboard"}/requirements/update/${
+                params.requirementId
+              }`}
+            >
               Edit Document
             </Link>
           </Button>
@@ -150,9 +160,14 @@ function RequirementDetails() {
                     renewal: formatDate(new Date(), "yyyy-MM-dd"),
                     frequency: requirement.frequencyOfCompliance,
                   });
-                  navigate(`/dashboard/requirements/${params.requirementId}`, {
-                    replace: true,
-                  });
+                  navigate(
+                    `/${isClient ? "client" : "dashboard"}/requirements/${
+                      params.requirementId
+                    }`,
+                    {
+                      replace: true,
+                    }
+                  );
                 }}
               />
             </div>

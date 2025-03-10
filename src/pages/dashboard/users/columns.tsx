@@ -51,7 +51,7 @@ export const columns: ColumnDef<User>[] = [
           <DropdownMenuContent>
             <DropdownMenuItem>
               <Link
-                to={`/dashboard/users/${row.original.id}`}
+                to={`/dashboard/users/${row.original.$id}`}
                 className="flex items-center gap-2"
               >
                 <UserIcon />
