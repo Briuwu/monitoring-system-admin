@@ -45,6 +45,12 @@ export default function LoginForm() {
         values.email,
         values.password
       );
+
+      if (!session) {
+        toast.error("Failed to login. Please try again.");
+        return;
+      }
+
       localStorage.setItem("session", JSON.stringify(session.current));
       const data = await account.get();
       localStorage.setItem("user-department", JSON.stringify(data.labels[1]));

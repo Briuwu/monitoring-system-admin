@@ -19,10 +19,14 @@ import { toast } from "sonner";
 export const Logout = () => {
   const navigate = useNavigate();
   const handleSignOut = async () => {
-    await account.deleteSession("current");
-    localStorage.clear();
-    toast.success("You have been logged out.");
-    navigate("/");
+    try {
+      await account.deleteSession("current");
+      localStorage.clear();
+      toast.success("You have been logged out.");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <AlertDialog>

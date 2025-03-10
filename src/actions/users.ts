@@ -20,7 +20,7 @@ export const addUser = async (user: AddUser) => {
 };
 
 export const updateUser = async (user: User) => {
-  return await axiosClient.put(`/users/${user.id}`, user);
+  return await axiosClient.put(`/users/${user.$id}`, user);
 };
 
 export const deleteUser = async (id: string) => {
