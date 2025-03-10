@@ -1,5 +1,4 @@
 import { useFetchUser } from "@/hooks/users";
-import { cn } from "@/lib/utils";
 import { User } from "lucide-react";
 import { useParams } from "react-router";
 
@@ -33,11 +32,6 @@ function UserDetails() {
             {user.lastName}, {user.firstName}{" "}
             {user.middleName === "N/A" ? "" : user.middleName}
           </p>
-          <span
-            className={cn("bg-black py-2 px-3 text-sm text-white rounded-full")}
-          >
-            {user.role?.toUpperCase()}
-          </span>
         </div>
       </div>
     </div>

@@ -55,12 +55,10 @@ export const useAddUser = (): UseBaseMutationResult<
   unknown
 > => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   return useMutation({
     mutationFn: (user: AddUser) => addUser(user),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      navigate("/dashboard/users", { replace: true });
     },
     onError: (error) => {
       toast.error("Failed to add user. Please try again.");

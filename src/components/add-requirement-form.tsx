@@ -50,6 +50,7 @@ import { useAddRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
 import { ID } from "appwrite";
 import { storage } from "@/appwrite";
+import { useNavigate } from "react-router";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -100,6 +101,7 @@ type Props = {
 };
 
 export const AddRequirementForm = ({ department }: Props) => {
+  const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
   const { mutate: addRequirement } = useAddRequirement();
   const [files, setFiles] = useState<File[] | null>(null);
@@ -167,6 +169,9 @@ export const AddRequirementForm = ({ department }: Props) => {
 
         toast.success("Requirement Document added successfully.");
         form.reset();
+        navigate(department ? `/client` : `/dashboard/requirements`, {
+          replace: true,
+        });
       } catch (error) {
         console.error("Form submission error", error);
         toast.error("Failed to submit the form. Please try again.");
