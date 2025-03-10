@@ -120,7 +120,7 @@ export const AddRequirementForm = ({ department }: Props) => {
       frequencyOfCompliance: "",
       typeOfCompliance: "",
       personInCharge: "",
-      department: "",
+      department: department ? department : "",
       status: "",
       documentReference: "",
       expiration: calculateExpirationDate(new Date(), ""),
