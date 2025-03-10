@@ -9,14 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { useFetchRequirementsByDept } from "@/hooks/requirements";
 import { Requirement } from "@/lib/types";
-import { useFetchUser } from "@/hooks/users";
 
 function RequirementsTable() {
-  const user = JSON.parse(localStorage.getItem("user")!);
-  const { data: userData } = useFetchUser(user.uid ?? "");
-  const department = userData?.department;
+  const userDepartment = JSON.parse(localStorage.getItem("user-department")!);
+
   const { data: requirementList, isLoading } = useFetchRequirementsByDept(
-    department!
+    userDepartment!
   );
   const [filteredData, setFilteredData] = useState<Requirement[] | undefined>(
     requirementList
@@ -93,7 +91,7 @@ function RequirementsTable() {
           Legal and other requirement documents
         </h2>
         <Button asChild>
-          <Link to={`/client/add?department=${department}`}>
+          <Link to={`/client/add?department=${userDepartment}`}>
             + Add Document
           </Link>
         </Button>

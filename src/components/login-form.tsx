@@ -45,8 +45,10 @@ export default function LoginForm() {
         values.email,
         values.password
       );
-      toast.success("Account login successfully.");
       localStorage.setItem("session", JSON.stringify(session.current));
+      const data = await account.get();
+      localStorage.setItem("user-department", JSON.stringify(data.labels[1]));
+      toast.success("Account login successfully.");
       navigate("/dashboard");
     } catch (error) {
       console.error("Form submission error", error);
