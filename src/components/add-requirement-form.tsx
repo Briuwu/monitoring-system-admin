@@ -147,7 +147,7 @@ export const AddRequirementForm = ({ department }: Props) => {
     startTransition(async () => {
       try {
         const fileData = await storage.createFile(
-          "67ca6aaf0019e5e45ed5",
+          import.meta.env.VITE_APP_WRITE_BUCKET_ID,
           ID.unique(),
           files[0]
         );
