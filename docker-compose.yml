@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  react-app:
+    image: react-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args: # Pass environment variables at build time
+        VITE_APP_WRITE_PROJECT_ID_PROD: ${VITE_APP_WRITE_PROJECT_ID_PROD}
+        VITE_APP_WRITE_PROJECT_ID_DEV: ${VITE_APP_WRITE_PROJECT_ID_DEV}
+        VITE_APP_WRITE_ENDPOINT_PROD: ${VITE_APP_WRITE_ENDPOINT_PROD}
+        VITE_APP_WRITE_ENDPOINT_DEV: ${VITE_APP_WRITE_ENDPOINT_DEV}
+        VITE_APP_WRITE_BUCKET_ID_PROD: ${VITE_APP_WRITE_BUCKET_ID_PROD}
+        VITE_APP_WRITE_BUCKET_ID_DEV: ${VITE_APP_WRITE_BUCKET_ID_DEV}
+        VITE_API_URL_PROD: ${VITE_API_URL_PROD}
+        VITE_API_URL_DEV: ${VITE_API_URL_DEV}
+    env_file:
+      - .env # Still needed for runtime variables
+    ports:
+      - "3000:3000"

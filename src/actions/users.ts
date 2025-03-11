@@ -1,7 +1,7 @@
+import { url } from "@/appwrite";
 import { AddUser, User } from "@/lib/types";
 import axios from "axios";
 
-const url = import.meta.env.VITE_API_URL;
 const axiosClient = axios.create({
   baseURL: url,
   timeout: 100000,

@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/dialog";
 import { useUpdateRequirementDocumentReference } from "@/hooks/requirements";
 import { useNavigate } from "react-router";
-import { storage } from "@/appwrite";
+import { bucketId, endpointUrl, storage } from "@/appwrite";
 import { ID } from "appwrite";
 
 const formSchema = z.object({
@@ -81,14 +81,14 @@ export function UploadNewDoc({
     }
     startTransition(async () => {
       const fileData = await storage.createFile(
-        import.meta.env.VITE_APP_WRITE_BUCKET_ID,
+        bucketId,
         ID.unique(),
         files[0]
       );
       try {
         updateDocumentRef({
           documentReference: generateToken(department),
-          uploadedFileUrl: `https://cloud.appwrite.io/v1/storage/buckets/${
+          uploadedFileUrl: `${endpointUrl}/storage/buckets/${
             fileData.bucketId
           }/files/${fileData.$id}/view?project=${
             import.meta.env.VITE_APP_WRITE_PROJECT_ID

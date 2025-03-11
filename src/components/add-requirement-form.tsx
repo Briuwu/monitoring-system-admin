@@ -49,7 +49,7 @@ import {
 import { useAddRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
 import { ID } from "appwrite";
-import { storage } from "@/appwrite";
+import { bucketId, endpointUrl, storage } from "@/appwrite";
 import { useNavigate } from "react-router";
 
 const formSchema = z.object({
@@ -147,7 +147,7 @@ export const AddRequirementForm = ({ department }: Props) => {
     startTransition(async () => {
       try {
         const fileData = await storage.createFile(
-          import.meta.env.VITE_APP_WRITE_BUCKET_ID,
+          bucketId,
           ID.unique(),
           files[0]
         );
@@ -158,7 +158,7 @@ export const AddRequirementForm = ({ department }: Props) => {
           documentReference: generateToken(
             department ? department : values.department
           ),
-          uploadedFileUrl: `https://cloud.appwrite.io/v1/storage/buckets/${
+          uploadedFileUrl: `${endpointUrl}/v1/storage/buckets/${
             fileData.bucketId
           }/files/${fileData.$id}/view?project=${
             import.meta.env.VITE_APP_WRITE_PROJECT_ID
