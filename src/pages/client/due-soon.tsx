@@ -6,15 +6,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useFetchRequirementsByDept } from "@/hooks/requirements";
-import { useFetchUser } from "@/hooks/users";
 import { getRemainingDays } from "@/lib/utils";
 import { Link } from "react-router";
 
 function DueSoon() {
-  const user = JSON.parse(localStorage.getItem("user")!);
-  const { data: userData } = useFetchUser(user.uid ?? "");
+  const department = localStorage.getItem("user-department");
   const { data: requirements, isLoading } = useFetchRequirementsByDept(
-    userData!.department
+    department!
   );
 
   if (isLoading || !requirements) {
