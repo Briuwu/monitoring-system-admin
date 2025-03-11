@@ -10,10 +10,9 @@ import { getRemainingDays } from "@/lib/utils";
 import { Link } from "react-router";
 
 function DueSoon() {
-  const department = localStorage.getItem("user-department");
-  const { data: requirements, isLoading } = useFetchRequirementsByDept(
-    department!
-  );
+  const department = JSON.parse(localStorage.getItem("user-department")!);
+  const { data: requirements, isLoading } =
+    useFetchRequirementsByDept(department);
 
   if (isLoading || !requirements) {
     return <div>Loading...</div>;
@@ -56,8 +55,10 @@ function DueSoon() {
     return getRemainingDays(a.expiration) - getRemainingDays(b.expiration);
   });
 
+  console.log(department);
+
   return (
-    <Card>
+    <Card className="max-w-md">
       <CardHeader>
         <CardTitle className="text-lg font-bold text-red-500">
           Due Soon
