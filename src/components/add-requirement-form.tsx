@@ -49,7 +49,7 @@ import {
 import { useAddRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
 import { ID } from "appwrite";
-import { bucketId, endpointUrl, storage } from "@/appwrite";
+import { bucketId, endpointUrl, projectId, storage } from "@/appwrite";
 import { useNavigate } from "react-router";
 
 const formSchema = z.object({
@@ -158,11 +158,7 @@ export const AddRequirementForm = ({ department }: Props) => {
           documentReference: generateToken(
             department ? department : values.department
           ),
-          uploadedFileUrl: `${endpointUrl}/v1/storage/buckets/${
-            fileData.bucketId
-          }/files/${fileData.$id}/view?project=${
-            import.meta.env.VITE_APP_WRITE_PROJECT_ID
-          }&mode=admin`,
+          uploadedFileUrl: `${endpointUrl}/v1/storage/buckets/${fileData.bucketId}/files/${fileData.$id}/view?project=${projectId}&mode=admin`,
           department: department ? department : values.department,
           renewal: "",
         });

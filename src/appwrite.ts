@@ -1,6 +1,6 @@
 import { Account, Client, Storage } from "appwrite";
 
-const projectId = import.meta.env.PROD
+export const projectId = import.meta.env.PROD
   ? import.meta.env.VITE_APP_WRITE_PROJECT_ID_PROD
   : import.meta.env.VITE_APP_WRITE_PROJECT_ID_DEV;
 

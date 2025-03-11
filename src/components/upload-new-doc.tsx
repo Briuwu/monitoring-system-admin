@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/dialog";
 import { useUpdateRequirementDocumentReference } from "@/hooks/requirements";
 import { useNavigate } from "react-router";
-import { bucketId, endpointUrl, storage } from "@/appwrite";
+import { bucketId, endpointUrl, projectId, storage } from "@/appwrite";
 import { ID } from "appwrite";
 
 const formSchema = z.object({
@@ -88,11 +88,7 @@ export function UploadNewDoc({
       try {
         updateDocumentRef({
           documentReference: generateToken(department),
-          uploadedFileUrl: `${endpointUrl}/storage/buckets/${
-            fileData.bucketId
-          }/files/${fileData.$id}/view?project=${
-            import.meta.env.VITE_APP_WRITE_PROJECT_ID
-          }&mode=admin`,
+          uploadedFileUrl: `${endpointUrl}/storage/buckets/${fileData.bucketId}/files/${fileData.$id}/view?project=${projectId}&mode=admin`,
         });
         toast.success("Document uploaded successfully.");
         setOpen(false);
