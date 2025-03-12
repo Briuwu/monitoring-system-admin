@@ -411,7 +411,6 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
                     ["Active", "Active"],
                     ["Inactive", "Inactive"],
                     ["Pending", "Pending"],
-                    ["Expired", "Expired"],
                   ].map((option, index) => (
                     <FormItem
                       className="flex items-center space-x-3 space-y-0"
