@@ -6,7 +6,7 @@ import { useFetchRequirementsByDept } from "@/hooks/requirements";
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
 
 function DashboardHome() {
-  const department = JSON.parse(localStorage.getItem("department")!);
+  const department = JSON.parse(localStorage.getItem("user-department")!);
   const { data: requirementList, isLoading } =
     useFetchRequirementsByDept(department);
 

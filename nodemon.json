@@ -1,0 +1,8 @@
+{
+    "watch": "src/**/*", 
+    "ext": "*",
+    "exec": "npm install --legacy-peer-deps && tsc -b && vite build && serve -s dist",
+    "events": {
+        "restart": "/docker/kill-serve.sh && npm install --legacy-peer-deps && tsc -b && vite build && serve -s dist"
+    }
+}
