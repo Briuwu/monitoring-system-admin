@@ -37,7 +37,7 @@ export const useFetchRequirementsByDept = (
       const { data } = await getAllRequirementsByDept(dept);
       return data;
     },
-    queryKey: ["requirements"],
+    queryKey: ["requirement", dept],
     select: (data: Requirement[]) => [...data],
   });
 };
@@ -50,7 +50,7 @@ export const useFetchRequirement = (
       const { data } = await getRequirement(requirementId);
       return data;
     },
-    queryKey: ["requirements"],
+    queryKey: ["requirement", requirementId],
   });
 };
 
@@ -98,7 +98,7 @@ export const useUpdateRequirement = (
       updateRequirement(requirement, requirementId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["requirements"],
+        queryKey: ["requirement", requirementId],
       });
     },
   });
@@ -121,7 +121,7 @@ export const useUpdateRequirementRenewal = (
       updateRequirementRenewal(renewal, frequency, requirementId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["requirements"],
+        queryKey: ["requirement", requirementId],
       });
     },
   });
@@ -154,7 +154,7 @@ export const useUpdateRequirementDocumentReference = (
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["requirements"],
+        queryKey: ["requirement", requirementId],
       });
     },
   });

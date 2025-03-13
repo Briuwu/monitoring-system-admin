@@ -27,7 +27,7 @@ export const useFetchUser = (userId: string): QueryObserverResult<User> => {
       const { data } = await getUser(userId);
       return data;
     },
-    queryKey: ["users"],
+    queryKey: ["user", userId],
   });
 };
 
