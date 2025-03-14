@@ -1,4 +1,10 @@
-import { addUser, deleteUser, getAllUsers, getUser } from "@/actions/users";
+import {
+  addUser,
+  deleteUser,
+  getAllUsers,
+  getUser,
+  updateUser,
+} from "@/actions/users";
 import { AddUser, User } from "@/lib/types";
 import {
   QueryObserverResult,
@@ -18,6 +24,7 @@ export const useFetchUsers = (): QueryObserverResult<User[]> => {
       return data;
     },
     queryKey: ["users"],
+    select: (data: User[]) => [...data],
   });
 };
 
@@ -63,6 +70,25 @@ export const useAddUser = (): UseBaseMutationResult<
     onError: (error) => {
       toast.error("Failed to add user. Please try again.");
       console.error("Error adding user", error);
+    },
+  });
+};
+
+export const useUpdateUserById = (): UseBaseMutationResult<
+  AxiosResponse<User>,
+  unknown,
+  User,
+  unknown
+> => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (user: User) => updateUser(user),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
+    onError: (error) => {
+      toast.error("Failed to update user. Please try again.");
+      console.error("Error updating user", error);
     },
   });
 };

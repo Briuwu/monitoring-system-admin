@@ -1,6 +1,7 @@
 import { useFetchUser } from "@/hooks/users";
 import { User } from "lucide-react";
 import { useParams } from "react-router";
+import { EditUserForm } from "./edit-user-form";
 
 function UserDetails() {
   const params = useParams();
@@ -33,6 +34,9 @@ function UserDetails() {
             {user.middleName === "N/A" ? "" : user.middleName}
           </p>
         </div>
+      </div>
+      <div className="p-5 rounded-xl border border-black">
+        <EditUserForm user={user} />
       </div>
     </div>
   );

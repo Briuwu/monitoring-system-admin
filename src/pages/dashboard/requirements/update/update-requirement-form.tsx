@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { cn, formatDateFn } from "@/lib/utils";
+import { cn, delay, formatDateFn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -123,9 +123,9 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
           expiration: formatDate(expiration, "yyyy-MM-dd"),
         });
-
+        await delay();
         toast.success("Requirement Document updated successfully.");
-        navigate(`/dashboard/requirements`, {
+        navigate(`/dashboard/requirements/${requirement.$id}`, {
           replace: true,
         });
       } catch (error) {
