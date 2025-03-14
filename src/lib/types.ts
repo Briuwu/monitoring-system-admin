@@ -33,4 +33,4 @@ export type User = {
 
 export type AddUser = Omit<User, "$id">;
 
-export type UpdateUserInfo = Omit<User, "$id">;
+export type UpdateUserInfo = Omit<User, "department">;

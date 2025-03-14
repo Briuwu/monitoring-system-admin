@@ -5,7 +5,7 @@ import {
   getUser,
   updateUser,
 } from "@/actions/users";
-import { AddUser, User } from "@/lib/types";
+import { AddUser, UpdateUserInfo, User } from "@/lib/types";
 import {
   QueryObserverResult,
   UseBaseMutationResult,
@@ -75,14 +75,14 @@ export const useAddUser = (): UseBaseMutationResult<
 };
 
 export const useUpdateUserById = (): UseBaseMutationResult<
-  AxiosResponse<User>,
+  AxiosResponse<UpdateUserInfo>,
   unknown,
-  User,
+  UpdateUserInfo,
   unknown
 > => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (user: User) => updateUser(user),
+    mutationFn: (user: UpdateUserInfo) => updateUser(user),
     onSuccess: () => {
       queryClient.invalidateQueries();
     },

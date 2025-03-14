@@ -1,5 +1,5 @@
 import { url } from "@/appwrite";
-import { AddUser, User } from "@/lib/types";
+import { AddUser, UpdateUserInfo } from "@/lib/types";
 import axios from "axios";
 
 const axiosClient = axios.create({
@@ -19,7 +19,7 @@ export const addUser = async (user: AddUser) => {
   return await axiosClient.post("/users", user);
 };
 
-export const updateUser = async (user: User) => {
+export const updateUser = async (user: UpdateUserInfo) => {
   return await axiosClient.put(`/users/${user.$id}`, user);
 };
 
