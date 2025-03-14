@@ -40,7 +40,8 @@ function UserDetails() {
         </div>
       </div>
       <div className="p-5 rounded-xl border border-black">
-        <EditUserForm user={user} />
+        {/* <EditUserForm user={user} /> */}
+        TODO: UPDATE USER INFO
       </div>
     </div>
   );

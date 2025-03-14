@@ -54,6 +54,7 @@ export const EditUserForm = ({ user }: Props) => {
       firstName: user.firstName,
       lastName: user.lastName,
       middleName: user.middleName,
+      department: user.department,
     },
   });
 
