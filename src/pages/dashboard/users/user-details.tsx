@@ -1,7 +1,7 @@
 import { useFetchUser } from "@/hooks/users";
 import { User } from "lucide-react";
 import { Link, useParams } from "react-router";
-import { EditUserForm } from "./edit-user-form";
+// import { EditUserForm } from "./edit-user-form";
 import { Button } from "@/components/ui/button";
 
 function UserDetails() {
