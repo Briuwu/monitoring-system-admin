@@ -7,16 +7,7 @@ import App from "./App.tsx";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false, // Prevent refetch when switching tabs
-      refetchOnReconnect: false, // Prevent refetch when reconnecting to internet
-      refetchOnMount: false, // Do not refetch when component mounts
-      retry: 2, // Retry failed requests up to 2 times
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

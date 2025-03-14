@@ -471,7 +471,7 @@ export const AddRequirementForm = ({ department }: Props) => {
               <FormLabel>Person in-charge for renewal</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="type the person in charge for renewal..."
+                  placeholder="e.g. dan.reyes@seiwakaiun.com.ph"
                   type="email"
                   {...field}
                   disabled={isPending}
