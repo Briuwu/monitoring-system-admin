@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   useDeleteRequirement,
   useFetchRequirement,
+  useUpdateRequirement,
   useUpdateRequirementRenewal,
 } from "@/hooks/requirements";
 import { cn } from "@/lib/utils";
@@ -22,6 +23,7 @@ import { formatDate } from "date-fns";
 import { useParams, useNavigate, Link } from "react-router";
 import { AutoRenew } from "@/components/auto-renew";
 import { UploadNewDoc } from "@/components/upload-new-doc";
+import { EndOfContract } from "@/components/end-of-contract";
 
 type Props = {
   isClient?: boolean;
@@ -37,6 +39,9 @@ function RequirementDetails({ isClient }: Props) {
   } = useFetchRequirement(params.requirementId!);
   const { mutate: deleteRequirement } = useDeleteRequirement();
   const { mutate: updateRequirementRenewal } = useUpdateRequirementRenewal(
+    params.requirementId!
+  );
+  const { mutate: updateRequirementStatus } = useUpdateRequirement(
     params.requirementId!
   );
 
@@ -118,7 +123,7 @@ function RequirementDetails({ isClient }: Props) {
                   "p-2 px-4 uppercase rounded-full text-white bg-black",
                   requirement.status === "Pending" && "bg-yellow-500",
                   requirement.status === "Active" && "bg-green-500",
-                  requirement.status === "Inactive" && "bg-red-500",
+                  requirement.status === "Inactive" && "bg-neutral-500",
                   requirement.status === "Expired" && "bg-red-500"
                 )}
               >
@@ -178,6 +183,42 @@ function RequirementDetails({ isClient }: Props) {
               {requirement.expiration}
             </p>
           </div>
+        </div>
+        <div className="max-w-md mx-auto">
+          <EndOfContract
+            handleEndContract={() => {
+              const {
+                complianceList,
+                dateSubmitted,
+                department,
+                entity,
+                personInCharge,
+                typeOfCompliance,
+                frequencyOfCompliance,
+                expiration,
+              } = requirement;
+
+              updateRequirementStatus({
+                status: "Inactive",
+                dateSubmitted,
+                complianceList,
+                department,
+                entity,
+                personInCharge,
+                typeOfCompliance,
+                frequencyOfCompliance,
+                expiration,
+              });
+              navigate(
+                `/${isClient ? "client" : "dashboard"}/requirements/${
+                  params.requirementId
+                }`,
+                {
+                  replace: true,
+                }
+              );
+            }}
+          />
         </div>
         <Separator />
         <div className="grid gap-5 grid-cols-2">

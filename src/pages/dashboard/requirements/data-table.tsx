@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
                 className="even:bg-gray-50 odd:bg-white hover:bg-gray-100"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="py-6">
+                  <TableCell key={cell.id} className="py-6 text-sm">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

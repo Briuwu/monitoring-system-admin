@@ -69,7 +69,9 @@ export const columns: ColumnDef<Requirement>[] = [
     accessorKey: "personInCharge",
   },
   {
-    header: "Status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
     accessorKey: "status",
     cell: ({ row }) => {
       const status = row.original.status;
@@ -79,7 +81,7 @@ export const columns: ColumnDef<Requirement>[] = [
             "p-2 px-4 uppercase rounded-full text-white bg-black text-center",
             status === "Pending" && "bg-yellow-500",
             status === "Active" && "bg-green-500",
-            status === "Inactive" && "bg-red-500",
+            status === "Inactive" && "bg-neutral-500",
             status === "Expired" && "bg-red-500"
           )}
         >
