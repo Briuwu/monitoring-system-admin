@@ -1,7 +1,8 @@
 import { useFetchUser } from "@/hooks/users";
 import { User } from "lucide-react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { EditUserForm } from "./edit-user-form";
+import { Button } from "@/components/ui/button";
 
 function UserDetails() {
   const params = useParams();
@@ -16,6 +17,9 @@ function UserDetails() {
   }
   return (
     <div className="max-w-xl mx-auto">
+      <Button asChild variant="destructive">
+        <Link to={`/dashboard/users`}>Back</Link>
+      </Button>
       <h1 className="text-center uppercase text-xl font-bold">User Details</h1>
       <p className="text-center text-sm text-neutral-400">
         Here you can see the details of a user.
