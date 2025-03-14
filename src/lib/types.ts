@@ -28,9 +28,8 @@ export type User = {
   firstName: string;
   lastName: string;
   middleName?: string;
-  role?: string;
 };
 
 export type AddUser = Omit<User, "$id">;
 
-export type UpdateUserInfo = Omit<User, "department">;
+export type UpdateUserInfo = Omit<User, "email">;

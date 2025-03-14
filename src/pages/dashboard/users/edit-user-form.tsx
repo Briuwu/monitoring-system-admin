@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { delay } from "@/lib/utils";
+import { cn, delay } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,7 +14,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { departmentList } from "@/lib/constant";
 import { useUpdateUserById } from "@/hooks/users";
 import { User } from "@/lib/types";
 import { useNavigate } from "react-router";
@@ -23,7 +37,7 @@ const formSchema = z.object({
   firstName: z.string().min(2),
   lastName: z.string().min(2),
   middleName: z.string().optional(),
-  email: z.string(),
+  department: z.string(),
 });
 
 type Props = {
@@ -40,7 +54,6 @@ export const EditUserForm = ({ user }: Props) => {
       firstName: user.firstName,
       lastName: user.lastName,
       middleName: user.middleName,
-      email: user.email,
     },
   });
 
@@ -129,18 +142,61 @@ export const EditUserForm = ({ user }: Props) => {
 
         <FormField
           control={form.control}
-          name="email"
+          name="department"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="johndoe@email.com"
-                  type="email"
-                  {...field}
-                  disabled={isPending}
-                />
-              </FormControl>
+            <FormItem className="flex flex-col col-span-full">
+              <FormLabel>Department</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      disabled={isPending}
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? departmentList.find(
+                            (dept) => dept.value === field.value
+                          )?.label
+                        : "Select department"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[300px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search department..." />
+                    <CommandList>
+                      <CommandEmpty>No department found.</CommandEmpty>
+                      <CommandGroup>
+                        {departmentList.map((dept) => (
+                          <CommandItem
+                            value={dept.label}
+                            key={dept.value}
+                            onSelect={() => {
+                              form.setValue("department", dept.value);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                dept.value === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {dept.label}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
 
               <FormMessage />
             </FormItem>
