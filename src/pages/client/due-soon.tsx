@@ -58,7 +58,7 @@ function DueSoon() {
   console.log(department);
 
   return (
-    <Card className="max-w-md">
+    <Card>
       <CardHeader>
         <CardTitle className="text-lg font-bold text-red-500">
           Due Soon

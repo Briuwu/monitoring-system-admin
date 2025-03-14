@@ -17,7 +17,7 @@ export const Notification = () => {
           <Bell />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent side="left" className="mt-5">
+      <DropdownMenuContent side="left" className="mt-5 max-w-md">
         <DropdownMenuLabel>Notification</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DueSoon />
