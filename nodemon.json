@@ -1,8 +1,20 @@
 {
-    "watch": "src/**/*", 
-    "ext": "*",
-    "exec": "npm install --legacy-peer-deps && tsc -b && vite build && serve -s dist",
-    "events": {
-        "restart": "/docker/kill-serve.sh && npm install --legacy-peer-deps && tsc -b && vite build && serve -s dist"
-    }
+  "watch": ["*.*"],
+  "ext": "*",
+  "ignore": [
+    ".git",
+    ".gitignore",
+    "dist",
+    "node_modules/**/node_modules",
+    "package-lock.json",
+    ".vscode",
+    "docker-compose.yml",
+    "Dockerfile",
+    "entrypoint.sh",
+    "README.md"
+  ],
+  "exec": "npm install --legacy-peer-deps && tsc -b && vite build && serve -s dist",
+  "events": {
+    "restart": "/docker/kill-node.sh && npm install --legacy-peer-deps && tsc -b && vite build && serve -s dist"
+  }
 }
