@@ -44,7 +44,7 @@ export function AppSidebar() {
           <img src="./skpi-logo.webp" alt="" />
         </div>
         <h1 className="text-black text-xs font-semibold uppercase group-data-[collapsible=icon]:hidden font-logo">
-          Seiwa Kaiun Monitoring System
+          Compliance Monitoring System
         </h1>
       </SidebarHeader>
       <SidebarContent>
