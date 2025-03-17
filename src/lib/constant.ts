@@ -50,6 +50,22 @@ export const frequencyList = [
     label: "Annual",
     value: "Annual",
   },
+  {
+    label: "2 Years",
+    value: "2 Years",
+  },
+  {
+    label: "3 Years",
+    value: "3 Years",
+  },
+  {
+    label: "5 Years",
+    value: "5 Years",
+  },
+  {
+    label: "10 Years",
+    value: "10 Years",
+  },
 ] as const;
 
 export const complianceTypeList = [
@@ -68,5 +84,9 @@ export const complianceTypeList = [
   {
     label: "Certificate",
     value: "Certificate",
+  },
+  {
+    label: "Others",
+    value: "Others",
   },
 ] as const;

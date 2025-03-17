@@ -4,6 +4,28 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "Arial Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Arial Regular"), url("./fonts/ARIAL.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Cambria Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Cambria Regular"), url("./fonts/CAMBRIA.ttf") format("ttf");
+}
+
+html {
+  font-family: "Arial Regular", sans-serif;
+}
+
+@theme {
+  --font-logo: "Cambria Regular", sans-serif;
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
