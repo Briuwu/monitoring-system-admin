@@ -95,8 +95,6 @@ function DueSoon() {
     return getRemainingDays(a.expiration) - getRemainingDays(b.expiration);
   });
 
-  console.log(department);
-
   return (
     <Card>
       <CardHeader>
