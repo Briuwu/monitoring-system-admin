@@ -37,7 +37,7 @@ export const useFetchRequirementsByDept = (
       const { data } = await getAllRequirementsByDept(dept);
       return data;
     },
-    queryKey: ["requirement", dept],
+    queryKey: ["requirements"],
     select: (data: Requirement[]) => [...data],
   });
 };
