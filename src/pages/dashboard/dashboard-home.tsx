@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Subscriptions } from "./components/subscriptions";
 import { useFetchRequirements } from "@/hooks/requirements";
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
+import { getDashboardData } from "@/lib/utils";
 
 function DashboardHome() {
   const { data: requirementList, isLoading } = useFetchRequirements();
@@ -16,57 +17,7 @@ function DashboardHome() {
     return <div>No data found</div>;
   }
 
-  const subscriptionCounts = {
-    active: requirementList.filter(
-      (item) => item.status.toLowerCase() === "active"
-    ),
-    inactive: requirementList.filter(
-      (item) => item.status.toLowerCase() === "inactive"
-    ),
-    pending: requirementList.filter(
-      (item) => item.status.toLowerCase() === "pending"
-    ),
-    total: requirementList,
-  };
-
-  const annualValue = requirementList.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "annual"
-  ).length;
-
-  const semiAnnualValue = requirementList.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "semi annual"
-  ).length;
-
-  const quarterlyValue = requirementList.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "quarterly"
-  ).length;
-
-  const monthlyValue = requirementList.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "monthly"
-  ).length;
-
-  const chartData = [
-    {
-      date: "Monthly",
-      value: monthlyValue,
-      fill: "#DE3163",
-    },
-    {
-      date: "Quarterly",
-      value: quarterlyValue,
-      fill: "#A6F1E0",
-    },
-    {
-      date: "SemiAnnual",
-      value: semiAnnualValue,
-      fill: "#3D8D7A",
-    },
-    {
-      date: "Annual",
-      value: annualValue,
-      fill: "#FDB7EA",
-    },
-  ];
+  const { subscriptionCounts, chartData } = getDashboardData(requirementList);
 
   return (
     <div className="w-full space-y-5">

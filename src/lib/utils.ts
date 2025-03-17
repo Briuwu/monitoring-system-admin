@@ -184,4 +184,60 @@ export const dues = (requirements: Requirement[]) => {
   });
 
   return data;
-}
+};
+
+export const getDashboardData = (requirements: Requirement[]) => {
+  const subscriptionCounts = {
+    active: requirements.filter(
+      (item) => item.status.toLowerCase() === "active"
+    ),
+    inactive: requirements.filter(
+      (item) => item.status.toLowerCase() === "inactive"
+    ),
+    pending: requirements.filter(
+      (item) => item.status.toLowerCase() === "pending"
+    ),
+    total: requirements,
+  };
+
+  const annualValue = requirements.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "annual"
+  ).length;
+
+  const semiAnnualValue = requirements.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "semi annual"
+  ).length;
+
+  const quarterlyValue = requirements.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "quarterly"
+  ).length;
+
+  const monthlyValue = requirements.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "monthly"
+  ).length;
+
+  const chartData = [
+    {
+      date: "Monthly",
+      value: monthlyValue,
+      fill: "#DE3163",
+    },
+    {
+      date: "Quarterly",
+      value: quarterlyValue,
+      fill: "#A6F1E0",
+    },
+    {
+      date: "SemiAnnual",
+      value: semiAnnualValue,
+      fill: "#3D8D7A",
+    },
+    {
+      date: "Annual",
+      value: annualValue,
+      fill: "#FDB7EA",
+    },
+  ];
+
+  return { subscriptionCounts, chartData };
+};
