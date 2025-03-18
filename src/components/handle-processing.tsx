@@ -11,31 +11,29 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-export const EndOfContract = ({
-  handleEndContract,
+export const HandleProcessing = ({
+  handleProcess,
 }: {
-  handleEndContract: () => void;
+  handleProcess: () => void;
 }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="destructive"
-          className="w-full min-h-[80px] text-xl uppercase hover:scale-105 transition"
-        >
-          End of Contract
+        <Button className="w-full bg-yellow-500 min-h-[80px] text-xl uppercase hover:scale-105 transition">
+          On Process
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action will end the contract of the following compliance.
+            This action cannot be undone. This will set the status of this
+            requirement to "On Process".
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleEndContract}>
+          <AlertDialogAction onClick={handleProcess}>
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>

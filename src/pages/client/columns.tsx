@@ -79,17 +79,18 @@ export const columns: ColumnDef<Requirement>[] = [
     accessorKey: "status",
     cell: ({ row }) => {
       const status = row.original.status;
+      const processed = row.original.onProcessedDate;
       return (
         <p
           className={cn(
-            "p-2 px-4 uppercase rounded-full text-white bg-black text-center",
+            "uppercase py-2 text-sm rounded-full text-white bg-black text-center w-[110px]",
             status === "On Process" && "bg-yellow-500",
             status === "Active" && "bg-green-500",
             status === "Inactive" && "bg-neutral-500",
             status === "Expired" && "bg-red-500"
           )}
         >
-          {status}
+          {processed ? `Process: ${processed}` : status}
         </p>
       );
     },

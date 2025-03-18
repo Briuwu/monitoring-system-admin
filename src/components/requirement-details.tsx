@@ -24,6 +24,7 @@ import { useParams, useNavigate, Link } from "react-router";
 import { AutoRenew } from "@/components/auto-renew";
 import { UploadNewDoc } from "@/components/upload-new-doc";
 import { EndOfContract } from "@/components/end-of-contract";
+import { HandleProcessing } from "@/components/handle-processing";
 
 type Props = {
   isClient?: boolean;
@@ -125,7 +126,7 @@ function RequirementDetails({ isClient }: Props) {
               <p
                 className={cn(
                   "p-2 px-4 uppercase rounded-full text-white bg-black",
-                  requirement.status === "Pending" && "bg-yellow-500",
+                  requirement.status === "On Process" && "bg-yellow-500",
                   requirement.status === "Active" && "bg-green-500",
                   requirement.status === "Inactive" && "bg-neutral-500",
                   requirement.status === "Expired" && "bg-red-500"
@@ -152,7 +153,7 @@ function RequirementDetails({ isClient }: Props) {
           </p>
         </div>
         <Separator />
-        <div className="grid grid-cols-3 place-items-center text-center">
+        <div className="grid grid-cols-4 place-items-center text-center">
           <div>
             <p className="text-neutral-500">Date Submitted</p>
             <p className="text-3xl font-bold">{requirement.dateSubmitted}</p>
@@ -186,6 +187,12 @@ function RequirementDetails({ isClient }: Props) {
             </div>
           </div>
           <div>
+            <p className="text-neutral-500">Processed Date</p>
+            <p className="text-3xl font-bold text-yellow-500">
+              {requirement.onProcessedDate || "N/A"}
+            </p>
+          </div>
+          <div>
             <p className="text-neutral-500">Expiration</p>
             <p className="text-3xl font-bold text-red-500">
               {requirement.frequencyOfCompliance === "N/A"
@@ -194,9 +201,11 @@ function RequirementDetails({ isClient }: Props) {
             </p>
           </div>
         </div>
-        <div className="max-w-md mx-auto">
-          <EndOfContract
-            handleEndContract={() => {
+
+        <Separator />
+        <div className="grid grid-cols-2 gap-5">
+          <HandleProcessing
+            handleProcess={() => {
               const {
                 complianceList,
                 dateSubmitted,
@@ -209,6 +218,42 @@ function RequirementDetails({ isClient }: Props) {
               } = requirement;
 
               updateRequirementStatus({
+                status: "On Process",
+                dateSubmitted,
+                complianceList,
+                department,
+                entity,
+                personInCharge,
+                typeOfCompliance,
+                frequencyOfCompliance,
+                expiration,
+                onProcessedDate: formatDate(new Date(), "yyyy-MM-dd"),
+              });
+              navigate(
+                `/${isClient ? "client" : "dashboard"}/requirements/${
+                  params.requirementId
+                }`,
+                {
+                  replace: true,
+                }
+              );
+            }}
+          />
+          <EndOfContract
+            handleEndContract={() => {
+              const {
+                complianceList,
+                dateSubmitted,
+                department,
+                entity,
+                personInCharge,
+                typeOfCompliance,
+                frequencyOfCompliance,
+                expiration,
+                onProcessedDate,
+              } = requirement;
+
+              updateRequirementStatus({
                 status: "Inactive",
                 dateSubmitted,
                 complianceList,
@@ -218,6 +263,7 @@ function RequirementDetails({ isClient }: Props) {
                 typeOfCompliance,
                 frequencyOfCompliance,
                 expiration,
+                onProcessedDate,
               });
               navigate(
                 `/${isClient ? "client" : "dashboard"}/requirements/${
@@ -230,10 +276,9 @@ function RequirementDetails({ isClient }: Props) {
             }}
           />
         </div>
-        <Separator />
         <div className="grid gap-5 grid-cols-2">
           <Button
-            className="min-h-[100px] bg-blue-500 font-black uppercase text-lg"
+            className="min-h-[80px] bg-blue-500 font-black uppercase text-lg"
             onClick={() => handleViewDocument(requirement.uploadedFileUrl)}
           >
             Open Document

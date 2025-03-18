@@ -8,7 +8,7 @@ import CalendarPage from "@/pages/dashboard/calendar";
 import UsersPage from "@/pages/dashboard/users";
 import AddRequirementPage from "@/pages/dashboard/requirements/add";
 import UserDetails from "@/pages/dashboard/users/user-details";
-import RequirementDetails from "./pages/dashboard/requirements/requirement-details";
+import RequirementDetails from "./components/requirement-details";
 import UpdateRequirementPage from "./pages/dashboard/requirements/update";
 import ClientPage from "./pages/client";
 import AddRequirementClientPage from "./pages/client/add";

@@ -260,27 +260,27 @@ export const getDashboardData = (requirements: Requirement[]) => {
     {
       date: "2 Years",
       value: twoYearsValue,
-      fill: "#FDB7EA",
+      fill: "#C7D9DD",
     },
     {
       date: "3 Years",
       value: threeYearsValue,
-      fill: "#FDB7EA",
+      fill: "#F2E2B1",
     },
     {
       date: "4 Years",
       value: fourYearsValue,
-      fill: "#FDB7EA",
+      fill: "#E6B2BA",
     },
     {
       date: "5 Years",
       value: fiveYearsValue,
-      fill: "#FDB7EA",
+      fill: "#EBE5C2",
     },
     {
       date: "10 Years",
       value: tenYearsValue,
-      fill: "#FDB7EA",
+      fill: "#FADA7A",
     },
   ];
 

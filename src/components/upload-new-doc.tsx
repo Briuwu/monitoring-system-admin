@@ -106,7 +106,7 @@ export function UploadNewDoc({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="min-h-[100px] bg-amber-500 font-black uppercase text-lg">
+        <Button className="min-h-[80px] bg-green-500 font-black uppercase text-lg">
           Upload New Document
         </Button>
       </DialogTrigger>

@@ -12,6 +12,7 @@ export type Requirement = {
   personInCharge: string;
   status: string;
   uploadedFileUrl: string;
+  onProcessedDate: string;
 };
 
 export type UpdateRequirement = Omit<
