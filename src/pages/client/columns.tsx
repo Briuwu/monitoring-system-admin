@@ -90,7 +90,9 @@ export const columns: ColumnDef<Requirement>[] = [
             status === "Expired" && "bg-red-500"
           )}
         >
-          {processed ? `Process: ${processed}` : status}
+          {processed && status === "On Process"
+            ? `Process: ${processed}`
+            : status}
         </p>
       );
     },

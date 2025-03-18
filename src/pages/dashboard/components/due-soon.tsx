@@ -35,7 +35,7 @@ function DueSoon() {
         <CardContent className="divide-y-2 overflow-y-auto sm:max-h-[325px]">
           {data.map((item) => (
             <Link
-              to={`/client/requirements/${item.$id}`}
+              to={`/dashboard/requirements/${item.$id}`}
               key={item.$id}
               className="flex items-center justify-between py-4 px-2 hover:bg-neutral-100"
             >
