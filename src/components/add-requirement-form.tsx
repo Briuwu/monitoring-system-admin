@@ -30,7 +30,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -51,6 +51,7 @@ import { format as formatDate } from "date-fns";
 import { ID } from "appwrite";
 import { bucketId, endpointUrl, projectId, storage } from "@/appwrite";
 import { useNavigate } from "react-router";
+import { DatetimePicker } from "./ui/datetime-picker";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -143,6 +144,7 @@ export const AddRequirementForm = ({ department }: Props) => {
           uploadedFileUrl: `${endpointUrl}/storage/buckets/${fileData.bucketId}/files/${fileData.$id}/view?project=${projectId}&mode=admin`,
           department: department ? department : values.department,
           renewal: "",
+          onProcessedDate: "",
         });
 
         toast.success("Requirement Document added successfully.");
@@ -333,7 +335,7 @@ export const AddRequirementForm = ({ department }: Props) => {
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="dateSubmitted"
           render={({ field }) => (
@@ -369,6 +371,21 @@ export const AddRequirementForm = ({ department }: Props) => {
                 </PopoverContent>
               </Popover>
 
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+        <FormField
+          control={form.control}
+          name="dateSubmitted"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Date Submitted / Conducted</FormLabel>
+              <DatetimePicker
+                {...field}
+                format={[["months", "days", "years"]]}
+              />
+              <FormDescription>Month / Day / Year</FormDescription>
               <FormMessage />
             </FormItem>
           )}

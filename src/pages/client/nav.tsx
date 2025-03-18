@@ -1,5 +1,4 @@
 import { Logout } from "@/components/logout";
-import { Notification } from "./notification";
 
 export const Nav = () => {
   return (
@@ -13,9 +12,6 @@ export const Nav = () => {
         </h1>
       </div>
       <ul className="flex items-center gap-2">
-        <li>
-          <Notification />
-        </li>
         <li>
           <Logout />
         </li>

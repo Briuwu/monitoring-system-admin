@@ -51,7 +51,7 @@ function DashboardHome() {
           color="bg-yellow-500"
         />
       </div>
-      <div className="grid lg:grid-cols-2 gap-5">
+      <div className="grid lg:grid-cols-[0.75fr_1fr] gap-5">
         <BarChartOverview chartData={chartData} />
         <DueSoon />
       </div>

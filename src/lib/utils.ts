@@ -105,7 +105,7 @@ export async function delay(ms: number = 1000) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export const dues = (requirements: Requirement[]) => {
+export const dues = (requirements: Requirement[], status: string) => {
   const annualDueSoon = requirements.filter(
     (item) =>
       item.frequencyOfCompliance.toLowerCase() === "annual" &&
@@ -183,7 +183,7 @@ export const dues = (requirements: Requirement[]) => {
     return getRemainingDays(a.expiration) - getRemainingDays(b.expiration);
   });
 
-  return data;
+  return data.filter((item) => item.status === status);
 };
 
 export const getDashboardData = (requirements: Requirement[]) => {

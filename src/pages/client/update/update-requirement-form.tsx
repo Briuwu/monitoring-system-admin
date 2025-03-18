@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,7 +30,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
 // import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -38,6 +39,7 @@ import { useUpdateRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
 import { Requirement } from "@/lib/types";
 import { useNavigate } from "react-router";
+import { DatetimePicker } from "@/components/ui/datetime-picker";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -97,6 +99,7 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
               ? ""
               : formatDate(expiration, "yyyy-MM-dd"),
           department: requirement.department,
+          onProcessedDate: requirement.onProcessedDate,
         });
         await delay();
         toast.success("Requirement Document updated successfully.");
@@ -287,7 +290,7 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="dateSubmitted"
           render={({ field }) => (
@@ -323,6 +326,21 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
                 </PopoverContent>
               </Popover>
 
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+        <FormField
+          control={form.control}
+          name="dateSubmitted"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Date Submitted / Conducted</FormLabel>
+              <DatetimePicker
+                {...field}
+                format={[["months", "days", "years"]]}
+              />
+              <FormDescription>Month / Day / Year</FormDescription>
               <FormMessage />
             </FormItem>
           )}
