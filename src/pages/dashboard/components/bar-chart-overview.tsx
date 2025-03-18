@@ -59,7 +59,7 @@ export function BarChartOverview({ chartData }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Subscription Overview</CardTitle>
+        <CardTitle>Compliances Overview</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -92,7 +92,7 @@ export function BarChartOverview({ chartData }: Props) {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="leading-none text-muted-foreground">
-          Showing total subscription value
+          Showing total compliance value
         </div>
       </CardFooter>
     </Card>

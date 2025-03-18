@@ -29,22 +29,22 @@ function DashboardHome() {
       </div>
       <div className="grid lg:grid-cols-4 gap-2 w-full">
         <Subscriptions
-          title="Total Subscriptions"
+          title="Total Compliances"
           item={subscriptionCounts.total}
           color="bg-blue-500"
         />
         <Subscriptions
-          title="Active Subscriptions"
+          title="Active Compliances"
           item={subscriptionCounts.active}
           color="bg-green-500"
         />
         <Subscriptions
-          title="Inactive Subscriptions"
+          title="Inactive Compliances"
           item={subscriptionCounts.inactive}
           color="bg-red-500"
         />
         <Subscriptions
-          title="Pending Subscriptions"
+          title="On Process Compliances"
           item={subscriptionCounts.pending}
           color="bg-yellow-500"
         />
