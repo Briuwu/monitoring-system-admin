@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { cn, delay, formatDateFn } from "@/lib/utils";
+import { calculateExpirationDate, cn, delay, formatDateFn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -32,7 +32,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+// import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   complianceTypeList,
   departmentList,
@@ -65,27 +65,6 @@ const formSchema = z.object({
   }),
 });
 
-const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
-  const date = new Date(dateSubmitted);
-  switch (frequency) {
-    case "Monthly":
-      date.setMonth(date.getMonth() + 1);
-      break;
-    case "Quarterly":
-      date.setMonth(date.getMonth() + 3);
-      break;
-    case "Semi Annual":
-      date.setMonth(date.getMonth() + 6);
-      break;
-    case "Annual":
-      date.setFullYear(date.getFullYear() + 1);
-      break;
-    default:
-      break;
-  }
-  return date;
-};
-
 type Props = {
   requirement: Requirement;
 };
@@ -106,7 +85,7 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
       personInCharge: requirement.personInCharge,
       department: requirement.department,
       expiration: new Date(requirement.expiration),
-      status: "",
+      status: requirement.status,
     },
   });
 
@@ -464,7 +443,7 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="status"
           render={({ field }) => (
@@ -478,7 +457,7 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
                   {[
                     ["Active", "Active"],
                     ["Inactive", "Inactive"],
-                    ["Pending", "Pending"],
+                    ["On Process", "On Process"],
                   ].map((option, index) => (
                     <FormItem
                       className="flex items-center space-x-3 space-y-0"
@@ -498,7 +477,7 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <Button type="submit" className="col-span-full" disabled={isPending}>
           Submit

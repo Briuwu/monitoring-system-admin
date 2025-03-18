@@ -30,6 +30,21 @@ const chartConfig = {
   Monthly: {
     label: "Monthly",
   },
+  "2 Years": {
+    label: "2 Years",
+  },
+  "3 Years": {
+    label: "3 Years",
+  },
+  "4 Years": {
+    label: "4 Years",
+  },
+  "5 Years": {
+    label: "5 Years",
+  },
+  "10 Years": {
+    label: "10 Years",
+  },
 } satisfies ChartConfig;
 
 type Props = {

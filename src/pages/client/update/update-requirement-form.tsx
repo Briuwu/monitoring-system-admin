@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { cn, delay, formatDateFn } from "@/lib/utils";
+import { calculateExpirationDate, cn, delay, formatDateFn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -32,7 +32,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+// import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { complianceTypeList, frequencyList } from "@/lib/constant";
 import { useUpdateRequirement } from "@/hooks/requirements";
 import { format as formatDate } from "date-fns";
@@ -58,27 +58,6 @@ const formSchema = z.object({
   }),
 });
 
-const calculateExpirationDate = (dateSubmitted: Date, frequency: string) => {
-  const date = new Date(dateSubmitted);
-  switch (frequency) {
-    case "Monthly":
-      date.setMonth(date.getMonth() + 1);
-      break;
-    case "Quarterly":
-      date.setMonth(date.getMonth() + 3);
-      break;
-    case "Semi Annual":
-      date.setMonth(date.getMonth() + 6);
-      break;
-    case "Annual":
-      date.setFullYear(date.getFullYear() + 1);
-      break;
-    default:
-      break;
-  }
-  return date;
-};
-
 type Props = {
   requirement: Requirement;
 };
@@ -98,7 +77,7 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
       typeOfCompliance: requirement.typeOfCompliance,
       personInCharge: requirement.personInCharge,
       expiration: new Date(requirement.expiration),
-      status: "",
+      status: requirement.status,
     },
   });
 
@@ -113,7 +92,10 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
         updateRequirement({
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
-          expiration: formatDate(expiration, "yyyy-MM-dd"),
+          expiration:
+            form.watch("frequencyOfCompliance") === "N/A"
+              ? ""
+              : formatDate(expiration, "yyyy-MM-dd"),
           department: requirement.department,
         });
         await delay();
@@ -346,35 +328,37 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
           )}
         />
 
-        <div className="space-y-1">
-          <p className="text-sm">Expiration Date</p>
-          <Popover>
-            <PopoverTrigger asChild>
-              <FormControl>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-[240px] pl-3 text-left font-normal bg-neutral-300"
-                  )}
-                  disabled
-                >
-                  <span>
-                    {formatDateFn(
-                      calculateExpirationDate(
-                        form.watch("dateSubmitted"),
-                        form.watch("frequencyOfCompliance")
-                      )
+        {form.watch("frequencyOfCompliance") !== "N/A" && (
+          <div className="space-y-1">
+            <p className="text-sm">Expiration Date</p>
+            <Popover>
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[240px] pl-3 text-left font-normal bg-neutral-300"
                     )}
-                  </span>
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                </Button>
-              </FormControl>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar mode="single" initialFocus />
-            </PopoverContent>
-          </Popover>
-        </div>
+                    disabled
+                  >
+                    <span>
+                      {formatDateFn(
+                        calculateExpirationDate(
+                          form.watch("dateSubmitted"),
+                          form.watch("frequencyOfCompliance")
+                        )
+                      )}
+                    </span>
+                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar mode="single" initialFocus />
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
 
         <FormField
           control={form.control}
@@ -396,7 +380,7 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="status"
           render={({ field }) => (
@@ -410,7 +394,7 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
                   {[
                     ["Active", "Active"],
                     ["Inactive", "Inactive"],
-                    ["Pending", "Pending"],
+                    ["On Process", "On Process"],
                   ].map((option, index) => (
                     <FormItem
                       className="flex items-center space-x-3 space-y-0"
@@ -430,7 +414,7 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
         <Button type="submit" className="col-span-full" disabled={isPending}>
           Submit

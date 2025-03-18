@@ -42,6 +42,10 @@ export const columns: ColumnDef<Requirement>[] = [
     header: "Remaining Days",
     cell: ({ row }) => {
       const expiration = row.original.expiration;
+      const frequency = row.original.frequencyOfCompliance;
+      if (frequency === "N/A") {
+        return <p>N/A</p>;
+      }
       const calculateRemainingDays = (expiration: string) => {
         const currentDate = new Date();
         const expirationDate = new Date(expiration);
@@ -79,7 +83,7 @@ export const columns: ColumnDef<Requirement>[] = [
         <p
           className={cn(
             "p-2 px-4 uppercase rounded-full text-white bg-black text-center",
-            status === "Pending" && "bg-yellow-500",
+            status === "On Process" && "bg-yellow-500",
             status === "Active" && "bg-green-500",
             status === "Inactive" && "bg-neutral-500",
             status === "Expired" && "bg-red-500"

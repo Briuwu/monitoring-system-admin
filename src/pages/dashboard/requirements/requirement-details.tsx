@@ -163,28 +163,34 @@ function RequirementDetails({ isClient }: Props) {
               <p className="text-3xl font-bold text-green-500">
                 {requirement.renewal}
               </p>
-              <AutoRenew
-                handleRenew={() => {
-                  updateRequirementRenewal({
-                    renewal: formatDate(new Date(), "yyyy-MM-dd"),
-                    frequency: requirement.frequencyOfCompliance,
-                  });
-                  navigate(
-                    `/${isClient ? "client" : "dashboard"}/requirements/${
-                      params.requirementId
-                    }`,
-                    {
-                      replace: true,
-                    }
-                  );
-                }}
-              />
+              {requirement.frequencyOfCompliance !== "N/A" ? (
+                <AutoRenew
+                  handleRenew={() => {
+                    updateRequirementRenewal({
+                      renewal: formatDate(new Date(), "yyyy-MM-dd"),
+                      frequency: requirement.frequencyOfCompliance,
+                    });
+                    navigate(
+                      `/${isClient ? "client" : "dashboard"}/requirements/${
+                        params.requirementId
+                      }`,
+                      {
+                        replace: true,
+                      }
+                    );
+                  }}
+                />
+              ) : (
+                <p>N/A</p>
+              )}
             </div>
           </div>
           <div>
             <p className="text-neutral-500">Expiration</p>
             <p className="text-3xl font-bold text-red-500">
-              {requirement.expiration}
+              {requirement.frequencyOfCompliance === "N/A"
+                ? "N/A"
+                : requirement.expiration}
             </p>
           </div>
         </div>

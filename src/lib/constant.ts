@@ -66,6 +66,10 @@ export const frequencyList = [
     label: "10 Years",
     value: "10 Years",
   },
+  {
+    label: "N/A",
+    value: "N/A",
+  },
 ] as const;
 
 export const complianceTypeList = [

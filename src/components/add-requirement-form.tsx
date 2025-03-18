@@ -133,11 +133,14 @@ export const AddRequirementForm = ({ department }: Props) => {
         addRequirement({
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
-          expiration: formatDate(expiration, "yyyy-MM-dd"),
+          expiration:
+            form.watch("frequencyOfCompliance") === "N/A"
+              ? ""
+              : formatDate(expiration, "yyyy-MM-dd"),
           documentReference: generateToken(
             department ? department : values.department
           ),
-          uploadedFileUrl: `${endpointUrl}/v1/storage/buckets/${fileData.bucketId}/files/${fileData.$id}/view?project=${projectId}&mode=admin`,
+          uploadedFileUrl: `${endpointUrl}/storage/buckets/${fileData.bucketId}/files/${fileData.$id}/view?project=${projectId}&mode=admin`,
           department: department ? department : values.department,
           renewal: "",
         });
@@ -371,35 +374,37 @@ export const AddRequirementForm = ({ department }: Props) => {
           )}
         />
 
-        <div className="space-y-1">
-          <p className="text-sm">Expiration Date</p>
-          <Popover>
-            <PopoverTrigger asChild>
-              <FormControl>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-[240px] pl-3 text-left font-normal bg-neutral-300"
-                  )}
-                  disabled
-                >
-                  <span>
-                    {formatDateFn(
-                      calculateExpirationDate(
-                        form.watch("dateSubmitted"),
-                        form.watch("frequencyOfCompliance")
-                      )
+        {form.watch("frequencyOfCompliance") !== "N/A" && (
+          <div className="space-y-1">
+            <p className="text-sm">Expiration Date</p>
+            <Popover>
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[240px] pl-3 text-left font-normal bg-neutral-300"
                     )}
-                  </span>
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                </Button>
-              </FormControl>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar mode="single" initialFocus />
-            </PopoverContent>
-          </Popover>
-        </div>
+                    disabled
+                  >
+                    <span>
+                      {formatDateFn(
+                        calculateExpirationDate(
+                          form.watch("dateSubmitted"),
+                          form.watch("frequencyOfCompliance")
+                        )
+                      )}
+                    </span>
+                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar mode="single" initialFocus />
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
 
         {/* <FormField
           control={form.control}
@@ -540,7 +545,7 @@ export const AddRequirementForm = ({ department }: Props) => {
                   {[
                     ["Active", "Active"],
                     ["Inactive", "Inactive"],
-                    ["Pending", "Pending"],
+                    ["On Process", "On Process"],
                     ["Expired", "Expired"],
                   ].map((option, index) => (
                     <FormItem

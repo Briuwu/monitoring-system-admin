@@ -195,13 +195,33 @@ export const getDashboardData = (requirements: Requirement[]) => {
       (item) => item.status.toLowerCase() === "inactive"
     ),
     pending: requirements.filter(
-      (item) => item.status.toLowerCase() === "pending"
+      (item) => item.status.toLowerCase() === "on process"
     ),
     total: requirements,
   };
 
   const annualValue = requirements.filter(
     (item) => item.frequencyOfCompliance.toLowerCase() === "annual"
+  ).length;
+
+  const twoYearsValue = requirements.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "2 years"
+  ).length;
+
+  const threeYearsValue = requirements.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "3 years"
+  ).length;
+
+  const fourYearsValue = requirements.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "4 years"
+  ).length;
+
+  const fiveYearsValue = requirements.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "5 years"
+  ).length;
+
+  const tenYearsValue = requirements.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "10 years"
   ).length;
 
   const semiAnnualValue = requirements.filter(
@@ -235,6 +255,31 @@ export const getDashboardData = (requirements: Requirement[]) => {
     {
       date: "Annual",
       value: annualValue,
+      fill: "#FDB7EA",
+    },
+    {
+      date: "2 Years",
+      value: twoYearsValue,
+      fill: "#FDB7EA",
+    },
+    {
+      date: "3 Years",
+      value: threeYearsValue,
+      fill: "#FDB7EA",
+    },
+    {
+      date: "4 Years",
+      value: fourYearsValue,
+      fill: "#FDB7EA",
+    },
+    {
+      date: "5 Years",
+      value: fiveYearsValue,
+      fill: "#FDB7EA",
+    },
+    {
+      date: "10 Years",
+      value: tenYearsValue,
       fill: "#FDB7EA",
     },
   ];
