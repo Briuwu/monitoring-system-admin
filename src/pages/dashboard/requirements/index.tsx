@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { ComboboxFilter } from "../components/combobox-filter";
@@ -9,19 +9,19 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { useFetchRequirements } from "@/hooks/requirements";
 import { Requirement } from "@/lib/types";
+import { getRemainingDays } from "@/lib/utils";
 
 function RequirementsPage() {
   const { data: requirementList, isLoading } = useFetchRequirements();
-  const [filteredData, setFilteredData] = useState<Requirement[] | undefined>(
-    requirementList
-  );
   const [statusFilter, setStatusFilter] = useState("");
   const [entityFilter, setEntityFilter] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
   const [globalSearch, setGlobalSearch] = useState("");
 
-  const handleFilter = useCallback(() => {
-    let result = requirementList!;
+  const filteredData = useMemo(() => {
+    if (!requirementList) return [];
+    let result = requirementList;
+
     if (statusFilter) {
       result = result.filter(
         (requirement) =>
@@ -61,7 +61,12 @@ function RequirementsPage() {
       );
     }
 
-    setFilteredData(result);
+    // Automatically sort by remaining days
+    return result.sort((a, b) => {
+      const remainingDaysA = getRemainingDays(a.expiration);
+      const remainingDaysB = getRemainingDays(b.expiration);
+      return remainingDaysA - remainingDaysB;
+    });
   }, [
     statusFilter,
     entityFilter,
@@ -69,10 +74,6 @@ function RequirementsPage() {
     departmentFilter,
     requirementList,
   ]);
-
-  useEffect(() => {
-    handleFilter();
-  }, [handleFilter]);
 
   if (isLoading) {
     return <div>Loading requirements...</div>;
@@ -83,21 +84,21 @@ function RequirementsPage() {
   }
 
   const statusOptions = Array.from(
-    new Set(requirementList!.map((requirement) => requirement.status))
+    new Set(requirementList.map((requirement) => requirement.status))
   ).map((status) => ({
     value: status,
     label: status,
   }));
 
   const entityOptions = Array.from(
-    new Set(requirementList!.map((requirement) => requirement.entity))
+    new Set(requirementList.map((requirement) => requirement.entity))
   ).map((entity) => ({
     value: entity,
     label: entity,
   }));
 
   const departmentOptions = Array.from(
-    new Set(requirementList!.map((requirement) => requirement.department))
+    new Set(requirementList.map((requirement) => requirement.department))
   ).map((department) => ({
     value: department,
     label: department,
@@ -140,7 +141,7 @@ function RequirementsPage() {
           placeholder="Filter by dept..."
         />
       </div>
-      <DataTable columns={columns} data={filteredData || []} />
+      <DataTable columns={columns} data={filteredData} />
     </div>
   );
 }

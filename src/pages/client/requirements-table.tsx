@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { ComboboxFilter } from "@/pages/dashboard/components/combobox-filter";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { useFetchRequirementsByDept } from "@/hooks/requirements";
 import { Requirement } from "@/lib/types";
+import { getRemainingDays } from "@/lib/utils";
 
 function RequirementsTable() {
   const userDepartment = JSON.parse(localStorage.getItem("user-department")!);
@@ -16,15 +17,15 @@ function RequirementsTable() {
   const { data: requirementList, isLoading } = useFetchRequirementsByDept(
     userDepartment!
   );
-  const [filteredData, setFilteredData] = useState<Requirement[] | undefined>(
-    requirementList
-  );
+
   const [statusFilter, setStatusFilter] = useState("");
   const [entityFilter, setEntityFilter] = useState("");
   const [globalSearch, setGlobalSearch] = useState("");
 
-  const handleFilter = useCallback(() => {
-    let result = requirementList!;
+  const filteredData = useMemo(() => {
+    if (!requirementList) return [];
+    let result = requirementList;
+
     if (statusFilter) {
       result = result.filter(
         (requirement) =>
@@ -38,6 +39,7 @@ function RequirementsTable() {
           requirement.entity.toLowerCase() === entityFilter.toLowerCase()
       );
     }
+
     if (globalSearch) {
       result = result.filter((requirement) =>
         [
@@ -55,12 +57,13 @@ function RequirementsTable() {
       );
     }
 
-    setFilteredData(result);
+    // Automatically sort by remaining days
+    return result.sort((a, b) => {
+      const remainingDaysA = getRemainingDays(a.expiration);
+      const remainingDaysB = getRemainingDays(b.expiration);
+      return remainingDaysA - remainingDaysB;
+    });
   }, [statusFilter, entityFilter, globalSearch, requirementList]);
-
-  useEffect(() => {
-    handleFilter();
-  }, [handleFilter]);
 
   if (isLoading) {
     return <div>Loading requirements...</div>;
