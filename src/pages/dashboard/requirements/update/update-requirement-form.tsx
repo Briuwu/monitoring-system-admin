@@ -1,4 +1,4 @@
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,6 +44,7 @@ import { format as formatDate } from "date-fns";
 import { Requirement } from "@/lib/types";
 import { useNavigate } from "react-router";
 import { DatetimePicker } from "@/components/ui/datetime-picker";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -75,6 +76,7 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
   const { mutate: updateRequirement } = useUpdateRequirement(requirement.$id);
+  const [autoExpiry, setAutoExpiry] = useState(true);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -102,7 +104,12 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
         updateRequirement({
           ...data,
           dateSubmitted: formatDate(dateSubmitted, "yyyy-MM-dd"),
-          expiration: formatDate(expiration, "yyyy-MM-dd"),
+          expiration:
+            form.watch("frequencyOfCompliance") === "N/A"
+              ? ""
+              : autoExpiry
+              ? formatDate(expiration, "yyyy-MM-dd")
+              : formatDate(values.expiration, "yyyy-MM-dd"),
           onProcessedDate: requirement.onProcessedDate,
         });
         await delay();
@@ -349,35 +356,70 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
           )}
         />
 
-        <div className="space-y-1">
-          <p className="text-sm">Expiration Date</p>
-          <Popover>
-            <PopoverTrigger asChild>
-              <FormControl>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-[240px] pl-3 text-left font-normal bg-neutral-300"
-                  )}
-                  disabled
-                >
-                  <span>
-                    {formatDateFn(
-                      calculateExpirationDate(
-                        form.watch("dateSubmitted"),
-                        form.watch("frequencyOfCompliance")
-                      )
-                    )}
-                  </span>
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                </Button>
-              </FormControl>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar mode="single" initialFocus />
-            </PopoverContent>
-          </Popover>
-        </div>
+        {form.watch("frequencyOfCompliance") !== "N/A" && (
+          <div className="space-y-2">
+            {autoExpiry ? (
+              <div className="space-y-1">
+                <p className="text-sm">Expiration Date</p>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[240px] pl-3 text-left font-normal bg-neutral-300"
+                        )}
+                        disabled
+                      >
+                        <span>
+                          {formatDateFn(
+                            calculateExpirationDate(
+                              form.watch("dateSubmitted"),
+                              form.watch("frequencyOfCompliance")
+                            )
+                          )}
+                        </span>
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar mode="single" initialFocus />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            ) : (
+              <FormField
+                control={form.control}
+                name="expiration"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Expiration Date</FormLabel>
+                    <DatetimePicker
+                      {...field}
+                      format={[["months", "days", "years"]]}
+                    />
+                    <FormDescription>Month / Day / Year</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            <div className="space-x-2 flex items-top">
+              <Checkbox
+                id="expiry"
+                checked={autoExpiry}
+                onCheckedChange={() => setAutoExpiry(!autoExpiry)}
+              />
+              <label
+                htmlFor="expiry"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Automatic Expiration Date
+              </label>
+            </div>
+          </div>
+        )}
 
         <FormField
           control={form.control}

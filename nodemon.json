@@ -1,5 +1,5 @@
 {
-  "watch": ["*.*"],
+  "watch": ["*.*", ".env"],
   "ext": "*",
   "ignore": [
     ".git",
