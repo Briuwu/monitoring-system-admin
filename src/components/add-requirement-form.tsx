@@ -105,6 +105,7 @@ export const AddRequirementForm = ({ department }: Props) => {
       department: department ? department : "",
       status: "",
       documentReference: "",
+      expiration: calculateExpirationDate(new Date(), ""),
     },
   });
 
