@@ -40,6 +40,7 @@ import { format as formatDate } from "date-fns";
 import { Requirement } from "@/lib/types";
 import { useNavigate } from "react-router";
 import { DatetimePicker } from "@/components/ui/datetime-picker";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
   entity: z.string().min(1),
