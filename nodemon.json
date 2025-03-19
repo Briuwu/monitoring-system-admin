@@ -13,8 +13,7 @@
     "entrypoint.sh",
     "README.md"
   ],
-  "exec": "npm install --legacy-peer-deps && tsc -b && vite build && serve -s dist",
   "events": {
-    "restart": "/docker/kill-node.sh && npm install --legacy-peer-deps && tsc -b && vite build && serve -s dist"
+    "restart": "npm install --legacy-peer-deps && tsc -b && vite build"
   }
 }
