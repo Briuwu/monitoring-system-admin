@@ -1,7 +1,7 @@
 import { BarChartOverview } from "@/pages/dashboard/components/bar-chart-overview";
 import DueSoon from "@/pages/client/due-soon.tsx";
 import { Button } from "@/components/ui/button";
-import { Subscriptions } from "@/pages/dashboard/components/subscriptions";
+import { Subscriptions } from "./subscriptions";
 import { useFetchRequirementsByDept } from "@/hooks/requirements";
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
 import { getDashboardData } from "@/lib/utils";

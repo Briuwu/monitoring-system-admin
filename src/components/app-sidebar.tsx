@@ -41,7 +41,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex gap-2 items-center flex-row py-4">
         <div className="w-8 aspect-square rounded-full">
-          <img src="./skpi-logo.webp" alt="" />
+          <img src="../skpi-logo.webp" alt="" />
         </div>
         <h1 className="text-black text-xs font-semibold uppercase group-data-[collapsible=icon]:hidden font-logo">
           Compliance Monitoring System
