@@ -166,7 +166,7 @@ export const dues = (requirements: Requirement[], status: string) => {
     (item) =>
       item.frequencyOfCompliance.toLowerCase() === "monthly" &&
       getRemainingDays(item.expiration) > 0 &&
-      getRemainingDays(item.expiration) < 30
+      getRemainingDays(item.expiration) < 15
   );
 
   const data = [
