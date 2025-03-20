@@ -11,7 +11,7 @@ import { useFetchRequirements } from "@/hooks/requirements";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function CalendarPage() {
-  const { data: requirements, isLoading } = useFetchRequirements();
+  const { data: requirements, isLoading } = useFetchRequirements("");
 
   if (isLoading) {
     return <div>Loading...</div>;
