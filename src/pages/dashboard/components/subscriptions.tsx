@@ -16,9 +16,10 @@ type Props = {
   title: string;
   item: Requirement[];
   color: string;
+  isClient?: boolean;
 };
 
-export const Subscriptions = ({ title, item, color }: Props) => {
+export const Subscriptions = ({ title, item, color, isClient }: Props) => {
   const value = item.length;
   return (
     <Dialog>
@@ -48,7 +49,9 @@ export const Subscriptions = ({ title, item, color }: Props) => {
         <div className="space-y-5">
           {item.map((item) => (
             <Link
-              to={`/dashboard/requirements/${item.$id}`}
+              to={`/${isClient ? "client" : "dashboard"}/requirements/${
+                item.$id
+              }`}
               key={item.$id}
               className="text-sm flex items-center justify-between p-2 bg-white rounded-lg shadow"
             >

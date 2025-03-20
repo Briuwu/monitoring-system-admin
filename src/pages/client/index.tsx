@@ -1,8 +1,8 @@
 import { useState } from "react";
-import DashboardHome from "./dashboard-home";
 import { Nav } from "./nav";
 import RequirementsTable from "./requirements-table";
 import { Button } from "@/components/ui/button";
+import DashboardHome from "@/components/dashboard-home";
 
 function ClientPage() {
   const [open, setOpen] = useState(false);
@@ -13,7 +13,7 @@ function ClientPage() {
         <Button onClick={() => setOpen(!open)} className="bg-blue-500">
           Toggle Dashboard
         </Button>
-        {open && <DashboardHome />}
+        {open && <DashboardHome isClient />}
         <RequirementsTable />
       </div>
     </div>

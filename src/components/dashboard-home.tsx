@@ -1,13 +1,16 @@
-import { BarChartOverview } from "./components/bar-chart-overview";
-import DueSoon from "./components/due-soon";
+import { BarChartOverview } from "../pages/dashboard/components/bar-chart-overview";
+import DueSoon from "../pages/dashboard/components/due-soon";
 import { Button } from "@/components/ui/button";
-import { Subscriptions } from "./components/subscriptions";
+import { Subscriptions } from "../pages/dashboard/components/subscriptions";
 import { useFetchRequirements } from "@/hooks/requirements";
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
 import { getDashboardData } from "@/lib/utils";
 
-function DashboardHome() {
-  const { data: requirementList, isLoading } = useFetchRequirements();
+function DashboardHome({ isClient }: { isClient?: boolean }) {
+  const department = JSON.parse(localStorage.getItem("user-department")!);
+  const { data: requirementList, isLoading } = useFetchRequirements(
+    isClient ? department : ""
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -32,26 +35,30 @@ function DashboardHome() {
           title="Total Compliances"
           item={subscriptionCounts.total}
           color="bg-blue-500"
+          isClient={isClient}
         />
         <Subscriptions
           title="Active Compliances"
           item={subscriptionCounts.active}
           color="bg-green-500"
+          isClient={isClient}
         />
         <Subscriptions
           title="Inactive Compliances"
           item={subscriptionCounts.inactive}
           color="bg-red-500"
+          isClient={isClient}
         />
         <Subscriptions
           title="On Process Compliances"
           item={subscriptionCounts.pending}
           color="bg-yellow-500"
+          isClient={isClient}
         />
       </div>
       <div className="grid lg:grid-cols-[0.75fr_1fr] gap-5">
         <BarChartOverview chartData={chartData} />
-        <DueSoon />
+        <DueSoon isClient={isClient} />
       </div>
     </div>
   );

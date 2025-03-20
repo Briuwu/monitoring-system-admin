@@ -7,16 +7,14 @@ import { SearchIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { useFetchRequirementsByDept } from "@/hooks/requirements";
+import { useFetchRequirements } from "@/hooks/requirements";
 import { Requirement } from "@/lib/types";
 import { getRemainingDays } from "@/lib/utils";
 
 function RequirementsTable() {
-  const userDepartment = JSON.parse(localStorage.getItem("user-department")!);
+  const department = JSON.parse(localStorage.getItem("user-department")!);
 
-  const { data: requirementList, isLoading } = useFetchRequirementsByDept(
-    userDepartment!
-  );
+  const { data: requirementList, isLoading } = useFetchRequirements(department);
 
   const [statusFilter, setStatusFilter] = useState("");
   const [entityFilter, setEntityFilter] = useState("");
@@ -94,7 +92,7 @@ function RequirementsTable() {
           Legal and other requirement documents
         </h2>
         <Button asChild>
-          <Link to={`/client/add?department=${userDepartment}`}>
+          <Link to={`/client/add?department=${department}`}>
             + Add Document
           </Link>
         </Button>

@@ -9,8 +9,12 @@ import { useFetchRequirements } from "@/hooks/requirements";
 import { dues, getRemainingDays } from "@/lib/utils";
 import { Link } from "react-router";
 
-function DueSoon() {
-  const { data: requirements, isLoading } = useFetchRequirements();
+function DueSoon({ isClient }: { isClient?: boolean }) {
+  const department = JSON.parse(localStorage.getItem("user-department")!);
+
+  const { data: requirements, isLoading } = useFetchRequirements(
+    isClient ? department : ""
+  );
 
   if (isLoading || !requirements) {
     return <div>Loading...</div>;
