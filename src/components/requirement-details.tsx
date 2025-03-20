@@ -114,7 +114,7 @@ function RequirementDetails({ isClient }: Props) {
         </div>
       </div>
       <div className="space-y-10 border p-4 rounded-xl border-black">
-        <div className="space-y-2">
+        <div className="space-y-10">
           <div className="flex items-start justify-between">
             <p className="text-xl text-neutral-500 font-medium">
               {requirement.entity}
@@ -136,21 +136,31 @@ function RequirementDetails({ isClient }: Props) {
               </p>
             </div>
           </div>
-          <h2 className="text-2xl font-bold">
-            {requirement.complianceList} - {requirement.typeOfCompliance}
-          </h2>
-          <p className="text-neutral-500">
-            Department:{" "}
-            <span className="font-bold text-black">
-              {requirement.department}
-            </span>
-          </p>
-          <p className="text-neutral-500">
-            Person in Charge:{" "}
-            <span className="font-bold text-black">
-              {requirement.personInCharge}
-            </span>
-          </p>
+          <div className="flex items-center justify-between">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold">
+                {requirement.complianceList} - {requirement.typeOfCompliance}
+              </h2>
+              <p className="text-neutral-500">
+                Department:{" "}
+                <span className="font-bold text-black">
+                  {requirement.department}
+                </span>
+              </p>
+              <p className="text-neutral-500">
+                Person in Charge:{" "}
+                <span className="font-bold text-black">
+                  {requirement.personInCharge}
+                </span>
+              </p>
+            </div>
+            <p className="self-start">
+              Frequency:{" "}
+              <span className="bg-black text-white py-2 rounded-full px-2 font-bold uppercase">
+                {requirement.frequencyOfCompliance}
+              </span>
+            </p>
+          </div>
         </div>
         <Separator />
         <div className="grid grid-cols-4 place-items-center text-center">
