@@ -17,5 +17,9 @@ export const columns: ColumnDef<ActivityLogs>[] = [
   {
     header: "Date",
     accessorKey: "$createdAt",
+    cell: ({ row }) => {
+      const date = new Date(row.original.$createdAt);
+      return date.toLocaleDateString();
+    },
   },
 ];
