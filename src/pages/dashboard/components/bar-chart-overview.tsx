@@ -45,6 +45,9 @@ const chartConfig = {
   "10 Years": {
     label: "10 Years",
   },
+  "N/A": {
+    label: "N/A",
+  },
 } satisfies ChartConfig;
 
 type Props = {

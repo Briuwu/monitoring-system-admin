@@ -200,6 +200,10 @@ export const getDashboardData = (requirements: Requirement[]) => {
     total: requirements,
   };
 
+  const naValue = requirements.filter(
+    (item) => item.frequencyOfCompliance.toLowerCase() === "n/a"
+  ).length;
+
   const annualValue = requirements.filter(
     (item) => item.frequencyOfCompliance.toLowerCase() === "annual"
   ).length;
@@ -281,6 +285,11 @@ export const getDashboardData = (requirements: Requirement[]) => {
       date: "10 Years",
       value: tenYearsValue,
       fill: "#FADA7A",
+    },
+    {
+      date: "N/A",
+      value: naValue,
+      fill: "#C4C4C4",
     },
   ];
 
