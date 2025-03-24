@@ -21,7 +21,13 @@ export default function ActivityLogsPage() {
       <h1 className="uppercase font-bold text-2xl text-center">
         Activity Logs
       </h1>
-      <DataTable columns={columns} data={data} />
+      <DataTable
+        columns={columns}
+        data={data.sort(
+          (a, b) =>
+            new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime()
+        )}
+      />
     </div>
   );
 }
