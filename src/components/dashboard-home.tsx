@@ -1,7 +1,7 @@
 import { BarChartOverview } from "../pages/dashboard/components/bar-chart-overview";
-import DueSoon from "../pages/dashboard/components/due-soon";
+import DueSoon from "./due-soon";
 import { Button } from "@/components/ui/button";
-import { Subscriptions } from "../pages/dashboard/components/subscriptions";
+import { Subscriptions } from "./subscriptions";
 import { useFetchRequirements } from "@/hooks/requirements";
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
 import { getDashboardData } from "@/lib/utils";
