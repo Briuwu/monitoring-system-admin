@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Calendar, Home, Inbox, User } from "lucide-react";
+import { Activity, Calendar, Home, Inbox, User } from "lucide-react";
 import { Link } from "react-router";
 import { Logout } from "./logout";
 
@@ -33,6 +33,11 @@ const items = [
     title: "Users",
     url: "users",
     icon: User,
+  },
+  {
+    title: "Activity Logs",
+    url: "activity-logs",
+    icon: Activity,
   },
 ];
 

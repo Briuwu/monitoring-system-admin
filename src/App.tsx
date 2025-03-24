@@ -14,6 +14,7 @@ import ClientPage from "./pages/client";
 import AddRequirementClientPage from "./pages/client/add";
 import UpdateRequirementClientPage from "./pages/client/update";
 import { ProtectedRoutes } from "./pages/protected-routes";
+import ActivityLogsPage from "./pages/dashboard/activity-logs";
 
 function App() {
   return (
@@ -44,6 +45,10 @@ function App() {
 
           <Route path="/dashboard/users" element={<UsersPage />} />
           <Route path="/dashboard/users/:userId" element={<UserDetails />} />
+          <Route
+            path="/dashboard/activity-logs"
+            element={<ActivityLogsPage />}
+          />
         </Route>
         <Route path="/client" element={<ClientPage />} />
         <Route path="/client/add" element={<AddRequirementClientPage />} />

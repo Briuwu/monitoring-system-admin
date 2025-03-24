@@ -5,6 +5,7 @@ import { Subscriptions } from "./subscriptions";
 import { useFetchRequirements } from "@/hooks/requirements";
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
 import { getDashboardData } from "@/lib/utils";
+import { Activities } from "./activities";
 
 function DashboardHome({ isClient }: { isClient?: boolean }) {
   const department = JSON.parse(localStorage.getItem("user-department")!);
@@ -59,6 +60,9 @@ function DashboardHome({ isClient }: { isClient?: boolean }) {
       <div className="grid lg:grid-cols-[0.75fr_1fr] gap-5">
         <BarChartOverview chartData={chartData} />
         <DueSoon isClient={isClient} />
+      </div>
+      <div>
+        <Activities dept={department} isClient={isClient} />
       </div>
     </div>
   );
