@@ -40,20 +40,26 @@ export const Activities = ({
         </CardDescription>
       </CardHeader>
       <CardContent className="divide-y-2 sm:max-h-[400px] overflow-auto">
-        {data.map((item) => (
-          <div
-            key={item.$id}
-            className="py-4 px-2 hover:bg-neutral-100 flex items-center gap-20"
-          >
-            <p>{item.email}</p>
-            <p className="font-semibold ml-auto">
-              {item.action} in {item.department}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {format(item.$createdAt, "dd MMM yyyy")}
-            </p>
-          </div>
-        ))}
+        {data
+          .sort(
+            (a, b) =>
+              new Date(b.$createdAt).getTime() -
+              new Date(a.$createdAt).getTime()
+          )
+          .map((item) => (
+            <div
+              key={item.$id}
+              className="py-4 px-2 hover:bg-neutral-100 flex items-center gap-20"
+            >
+              <p>{item.email}</p>
+              <p className="font-semibold ml-auto">
+                {item.action} in {item.department}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {format(item.$createdAt, "dd MMM yyyy")}
+              </p>
+            </div>
+          ))}
       </CardContent>
     </Card>
   );
