@@ -5,6 +5,7 @@ import {
   getUser,
   updateUser,
 } from "@/actions/users";
+import { account } from "@/appwrite";
 import { AddUser, UpdateUserInfo, User } from "@/lib/types";
 import {
   QueryObserverResult,
@@ -13,7 +14,9 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { Models } from "appwrite";
 import { AxiosResponse } from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -92,3 +95,22 @@ export const useUpdateUserById = (): UseBaseMutationResult<
     },
   });
 };
+
+export function useCurrentUser() {
+  const [currentUser, setCurrentUser] =
+    useState<Models.User<Models.Preferences>>();
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const data = await account.get();
+        setCurrentUser(data);
+      } catch (error) {
+        console.error("Error fetching current user", error);
+      }
+    };
+    fetchCurrentUser();
+  }, []);
+
+  return currentUser;
+}

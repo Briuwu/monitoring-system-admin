@@ -29,7 +29,8 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { departmentList } from "@/lib/constant";
-import { useAddUser } from "@/hooks/users";
+import { useAddUser, useCurrentUser } from "@/hooks/users";
+import { useAddActivityLog } from "@/hooks/logs";
 
 const formSchema = z
   .object({
@@ -53,6 +54,8 @@ const formSchema = z
 
 export const AddUserForm = ({ handleClose }: { handleClose: () => void }) => {
   const [isPending, startTransition] = useTransition();
+  const currentUser = useCurrentUser()!;
+  const { mutate: addActivity } = useAddActivityLog();
   const { mutate: createUser } = useAddUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,6 +76,12 @@ export const AddUserForm = ({ handleClose }: { handleClose: () => void }) => {
     startTransition(async () => {
       try {
         createUser({ ...data });
+        addActivity({
+          action: "Created a new user",
+          department: values.department,
+          email: currentUser.email,
+          userId: currentUser.$id,
+        });
         toast.success("User created successfully");
         form.reset();
         handleClose();

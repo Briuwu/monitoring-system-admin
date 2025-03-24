@@ -25,6 +25,8 @@ import { AutoRenew } from "@/components/auto-renew";
 import { UploadNewDoc } from "@/components/upload-new-doc";
 import { EndOfContract } from "@/components/end-of-contract";
 import { HandleProcessing } from "@/components/handle-processing";
+import { useAddActivityLog } from "@/hooks/logs";
+import { useCurrentUser } from "@/hooks/users";
 
 type Props = {
   isClient?: boolean;
@@ -33,6 +35,7 @@ type Props = {
 function RequirementDetails({ isClient }: Props) {
   const params = useParams();
   const navigate = useNavigate();
+  const currentUser = useCurrentUser()!;
   const {
     data: requirement,
     isLoading,
@@ -45,6 +48,7 @@ function RequirementDetails({ isClient }: Props) {
   const { mutate: updateRequirementStatus } = useUpdateRequirement(
     params.requirementId!
   );
+  const { mutate: addActivity } = useAddActivityLog();
 
   // Handle viewing the document
   const handleViewDocument = (fileUrl: string) => {
@@ -89,6 +93,12 @@ function RequirementDetails({ isClient }: Props) {
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => {
+                      addActivity({
+                        action: `Deleted the document: '${requirement.complianceList}'`,
+                        department: requirement.department,
+                        email: currentUser.email,
+                        userId: currentUser.$id,
+                      });
                       deleteRequirement(params.requirementId!);
                       navigate(
                         isClient ? "/client" : "/dashboard/requirements"
@@ -181,6 +191,14 @@ function RequirementDetails({ isClient }: Props) {
                       renewal: formatDate(new Date(), "yyyy-MM-dd"),
                       frequency: requirement.frequencyOfCompliance,
                     });
+
+                    addActivity({
+                      action: `Renewed the document: '${requirement.complianceList}'`,
+                      department: requirement.department,
+                      email: currentUser.email,
+                      userId: currentUser.$id,
+                    });
+
                     navigate(
                       `/${isClient ? "client" : "dashboard"}/requirements/${
                         params.requirementId
@@ -239,6 +257,14 @@ function RequirementDetails({ isClient }: Props) {
                 expiration,
                 onProcessedDate: formatDate(new Date(), "yyyy-MM-dd"),
               });
+
+              addActivity({
+                action: `Processed the document: '${requirement.complianceList}'`,
+                department: requirement.department,
+                email: currentUser.email,
+                userId: currentUser.$id,
+              });
+
               navigate(
                 `/${isClient ? "client" : "dashboard"}/requirements/${
                   params.requirementId
@@ -275,6 +301,14 @@ function RequirementDetails({ isClient }: Props) {
                 expiration,
                 onProcessedDate,
               });
+
+              addActivity({
+                action: `Ended the document: '${requirement.complianceList}'`,
+                department: requirement.department,
+                email: currentUser.email,
+                userId: currentUser.$id,
+              });
+
               navigate(
                 `/${isClient ? "client" : "dashboard"}/requirements/${
                   params.requirementId
@@ -296,6 +330,14 @@ function RequirementDetails({ isClient }: Props) {
           <UploadNewDoc
             documentId={requirement.$id}
             department={requirement.department}
+            addActivity={() => {
+              addActivity({
+                action: `Uploaded a new document: '${requirement.complianceList}'`,
+                department: requirement.department,
+                email: currentUser.email,
+                userId: currentUser.$id,
+              });
+            }}
           />
         </div>
       </div>

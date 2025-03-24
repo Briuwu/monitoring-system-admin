@@ -43,10 +43,12 @@ export function UploadNewDoc({
   documentId,
   department,
   isClient,
+  addActivity,
 }: {
   documentId: string;
   department: string;
   isClient?: boolean;
+  addActivity: () => void;
 }) {
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
@@ -90,6 +92,7 @@ export function UploadNewDoc({
           documentReference: generateToken(department),
           uploadedFileUrl: `${endpointUrl}/storage/buckets/${fileData.bucketId}/files/${fileData.$id}/view?project=${projectId}&mode=admin`,
         });
+        addActivity();
         toast.success("Document uploaded successfully.");
         setOpen(false);
         navigate(
