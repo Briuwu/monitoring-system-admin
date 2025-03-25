@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { useFetchRequirements } from "@/hooks/requirements";
 import { dues, getRemainingDays } from "@/lib/utils";
+import { useMemo } from "react";
 import { Link } from "react-router";
 
 function DueSoon({ isClient }: { isClient?: boolean }) {
@@ -16,13 +17,19 @@ function DueSoon({ isClient }: { isClient?: boolean }) {
     isClient ? department : ""
   );
 
+  const data = useMemo(
+    () => dues(requirements ?? [], "Active"),
+    [requirements]
+  );
+
+  const processData = useMemo(
+    () => dues(requirements ?? [], "On Process"),
+    [requirements]
+  );
+
   if (isLoading || !requirements) {
     return <div>Loading...</div>;
   }
-
-  const data = dues(requirements, "Active");
-
-  const processData = dues(requirements, "On Process");
 
   return (
     <div className="grid grid-cols-2 gap-5">

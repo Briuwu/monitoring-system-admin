@@ -26,7 +26,6 @@ export const useFetchRequirements = (
       return data;
     },
     queryKey: ["requirements"],
-    select: (data: Requirement[]) => [...data],
   });
 };
 

@@ -27,7 +27,6 @@ export const useFetchUsers = (): QueryObserverResult<User[]> => {
       return data;
     },
     queryKey: ["users"],
-    select: (data: User[]) => [...data],
   });
 };
 

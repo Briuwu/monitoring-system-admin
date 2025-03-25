@@ -6,11 +6,17 @@ import { useFetchRequirements } from "@/hooks/requirements";
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
 import { getDashboardData } from "@/lib/utils";
 import { Activities } from "./activities";
+import { useMemo } from "react";
 
 function DashboardHome({ isClient }: { isClient?: boolean }) {
   const department = JSON.parse(localStorage.getItem("user-department")!);
   const { data: requirementList, isLoading } = useFetchRequirements(
     isClient ? department : ""
+  );
+
+  const { subscriptions, chartData } = useMemo(
+    () => getDashboardData(requirementList ?? []),
+    [requirementList]
   );
 
   if (isLoading) {
@@ -20,8 +26,6 @@ function DashboardHome({ isClient }: { isClient?: boolean }) {
   if (!requirementList) {
     return <div>No data found</div>;
   }
-
-  const { subscriptionCounts, chartData } = getDashboardData(requirementList);
 
   return (
     <div className="w-full space-y-5">
@@ -34,25 +38,25 @@ function DashboardHome({ isClient }: { isClient?: boolean }) {
       <div className="grid lg:grid-cols-4 gap-2 w-full">
         <Subscriptions
           title="Total Compliances"
-          item={subscriptionCounts.total}
+          item={subscriptions.total}
           color="bg-blue-500"
           isClient={isClient}
         />
         <Subscriptions
           title="Active Compliances"
-          item={subscriptionCounts.active}
+          item={subscriptions.active}
           color="bg-green-500"
           isClient={isClient}
         />
         <Subscriptions
           title="Inactive Compliances"
-          item={subscriptionCounts.inactive}
+          item={subscriptions.inactive}
           color="bg-red-500"
           isClient={isClient}
         />
         <Subscriptions
           title="On Process Compliances"
-          item={subscriptionCounts.pending}
+          item={subscriptions.pending}
           color="bg-yellow-500"
           isClient={isClient}
         />

@@ -106,192 +106,89 @@ export async function delay(ms: number = 1000) {
 }
 
 export const dues = (requirements: Requirement[], status: string) => {
-  const annualDueSoon = requirements.filter(
-    (item) =>
-      item.frequencyOfCompliance.toLowerCase() === "annual" &&
-      getRemainingDays(item.expiration) > 0 &&
-      getRemainingDays(item.expiration) < 90
-  );
+  const frequencyConfig = {
+    annual: { daysThreshold: 90, interval: "year" },
+    "2 years": { daysThreshold: 90, interval: "2 years" },
+    "3 years": { daysThreshold: 90, interval: "3 years" },
+    "4 years": { daysThreshold: 90, interval: "4 years" },
+    "5 years": { daysThreshold: 90, interval: "5 years" },
+    "10 years": { daysThreshold: 180, interval: "10 years" },
+    "semi annual": { daysThreshold: 60, interval: "semi-annual" },
+    quarterly: { daysThreshold: 40, interval: "quarter" },
+    monthly: { daysThreshold: 15, interval: "month" },
+  };
 
-  const twoYearsDueSoon = requirements.filter(
-    (item) =>
-      item.frequencyOfCompliance.toLowerCase() === "2 years" &&
-      getRemainingDays(item.expiration) > 0 &&
-      getRemainingDays(item.expiration) < 90
-  );
+  const dueSoonRequirements = requirements
+    .filter((item) => {
+      const remainingDays = getRemainingDays(item.expiration);
+      const config =
+        frequencyConfig[
+          item.frequencyOfCompliance.toLowerCase() as keyof typeof frequencyConfig
+        ];
 
-  const threeYearsDueSoon = requirements.filter(
-    (item) =>
-      item.frequencyOfCompliance.toLowerCase() === "3 years" &&
-      getRemainingDays(item.expiration) > 0 &&
-      getRemainingDays(item.expiration) < 90
-  );
+      return (
+        config && remainingDays > 0 && remainingDays < config.daysThreshold
+      );
+    })
+    .sort(
+      (a, b) => getRemainingDays(a.expiration) - getRemainingDays(b.expiration)
+    );
 
-  const fourYearsDueSoon = requirements.filter(
-    (item) =>
-      item.frequencyOfCompliance.toLowerCase() === "4 years" &&
-      getRemainingDays(item.expiration) > 0 &&
-      getRemainingDays(item.expiration) < 90
-  );
-
-  const fiveYearsDueSoon = requirements.filter(
-    (item) =>
-      item.frequencyOfCompliance.toLowerCase() === "5 years" &&
-      getRemainingDays(item.expiration) > 0 &&
-      getRemainingDays(item.expiration) < 90
-  );
-
-  const tenYearsDueSoon = requirements.filter(
-    (item) =>
-      item.frequencyOfCompliance.toLowerCase() === "10 years" &&
-      getRemainingDays(item.expiration) > 0 &&
-      getRemainingDays(item.expiration) < 180
-  );
-
-  const semiAnnualDueSoon = requirements.filter(
-    (item) =>
-      item.frequencyOfCompliance.toLowerCase() === "semi annual" &&
-      getRemainingDays(item.expiration) > 0 &&
-      getRemainingDays(item.expiration) < 60
-  );
-
-  const quarterlyDueSoon = requirements.filter(
-    (item) =>
-      item.frequencyOfCompliance.toLowerCase() === "quarterly" &&
-      getRemainingDays(item.expiration) > 0 &&
-      getRemainingDays(item.expiration) < 40
-  );
-
-  const monthlyDueSoon = requirements.filter(
-    (item) =>
-      item.frequencyOfCompliance.toLowerCase() === "monthly" &&
-      getRemainingDays(item.expiration) > 0 &&
-      getRemainingDays(item.expiration) < 15
-  );
-
-  const data = [
-    ...annualDueSoon,
-    ...semiAnnualDueSoon,
-    ...quarterlyDueSoon,
-    ...monthlyDueSoon,
-    ...twoYearsDueSoon,
-    ...threeYearsDueSoon,
-    ...fourYearsDueSoon,
-    ...fiveYearsDueSoon,
-    ...tenYearsDueSoon,
-  ].sort((a, b) => {
-    return getRemainingDays(a.expiration) - getRemainingDays(b.expiration);
-  });
-
-  return data.filter((item) => item.status === status);
+  return dueSoonRequirements.filter((item) => item.status === status);
 };
 
 export const getDashboardData = (requirements: Requirement[]) => {
-  const subscriptionCounts = {
-    active: requirements.filter(
-      (item) => item.status.toLowerCase() === "active"
-    ),
-    inactive: requirements.filter(
-      (item) => item.status.toLowerCase() === "inactive"
-    ),
-    pending: requirements.filter(
-      (item) => item.status.toLowerCase() === "on process"
-    ),
-    total: requirements,
-  };
-
-  const naValue = requirements.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "n/a"
-  ).length;
-
-  const annualValue = requirements.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "annual"
-  ).length;
-
-  const twoYearsValue = requirements.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "2 years"
-  ).length;
-
-  const threeYearsValue = requirements.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "3 years"
-  ).length;
-
-  const fourYearsValue = requirements.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "4 years"
-  ).length;
-
-  const fiveYearsValue = requirements.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "5 years"
-  ).length;
-
-  const tenYearsValue = requirements.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "10 years"
-  ).length;
-
-  const semiAnnualValue = requirements.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "semi annual"
-  ).length;
-
-  const quarterlyValue = requirements.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "quarterly"
-  ).length;
-
-  const monthlyValue = requirements.filter(
-    (item) => item.frequencyOfCompliance.toLowerCase() === "monthly"
-  ).length;
-
-  const chartData = [
-    {
-      date: "Monthly",
-      value: monthlyValue,
-      fill: "#DE3163",
+  // Optimize status filtering with a single pass through the array
+  const subscriptions = requirements.reduce(
+    (acc, item) => {
+      const status = item.status.toLowerCase();
+      switch (status) {
+        case "active":
+          acc.active.push(item);
+          break;
+        case "inactive":
+          acc.inactive.push(item);
+          break;
+        case "on process":
+          acc.pending.push(item);
+          break;
+      }
+      return acc;
     },
     {
-      date: "Quarterly",
-      value: quarterlyValue,
-      fill: "#A6F1E0",
-    },
-    {
-      date: "SemiAnnual",
-      value: semiAnnualValue,
-      fill: "#3D8D7A",
-    },
-    {
-      date: "Annual",
-      value: annualValue,
-      fill: "#FDB7EA",
-    },
-    {
-      date: "2 Years",
-      value: twoYearsValue,
-      fill: "#C7D9DD",
-    },
-    {
-      date: "3 Years",
-      value: threeYearsValue,
-      fill: "#F2E2B1",
-    },
-    {
-      date: "4 Years",
-      value: fourYearsValue,
-      fill: "#E6B2BA",
-    },
-    {
-      date: "5 Years",
-      value: fiveYearsValue,
-      fill: "#EBE5C2",
-    },
-    {
-      date: "10 Years",
-      value: tenYearsValue,
-      fill: "#FADA7A",
-    },
-    {
-      date: "N/A",
-      value: naValue,
-      fill: "#C4C4C4",
-    },
+      active: [] as Requirement[],
+      inactive: [] as Requirement[],
+      pending: [] as Requirement[],
+      total: requirements,
+    }
+  );
+
+  // Optimize frequency counting with a single pass through the array
+  const frequencyCounts = requirements.reduce((acc, item) => {
+    const frequency = item.frequencyOfCompliance.toLowerCase();
+    acc[frequency] = (acc[frequency] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Create chart data dynamically based on frequency counts
+  const frequencyMappings = [
+    { date: "Monthly", key: "monthly", fill: "#DE3163" },
+    { date: "Quarterly", key: "quarterly", fill: "#A6F1E0" },
+    { date: "SemiAnnual", key: "semi annual", fill: "#3D8D7A" },
+    { date: "Annual", key: "annual", fill: "#FDB7EA" },
+    { date: "2 Years", key: "2 years", fill: "#C7D9DD" },
+    { date: "3 Years", key: "3 years", fill: "#F2E2B1" },
+    { date: "4 Years", key: "4 years", fill: "#E6B2BA" },
+    { date: "5 Years", key: "5 years", fill: "#EBE5C2" },
+    { date: "10 Years", key: "10 years", fill: "#FADA7A" },
+    { date: "N/A", key: "n/a", fill: "#C4C4C4" },
   ];
 
-  return { subscriptionCounts, chartData };
+  const chartData = frequencyMappings.map((mapping) => ({
+    date: mapping.date,
+    value: frequencyCounts[mapping.key] || 0,
+    fill: mapping.fill,
+  }));
+
+  return { subscriptions, chartData };
 };
