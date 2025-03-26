@@ -18,7 +18,6 @@ export const useFetchActivityLogs = (
       return data;
     },
     queryKey: ["activity-logs"],
-    select: (data: ActivityLogs[]) => [...data],
   });
 };
 
