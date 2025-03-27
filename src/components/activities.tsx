@@ -8,7 +8,7 @@ import {
 } from "./ui/card";
 import { format } from "date-fns";
 
-export const Activities = ({
+const Activities = ({
   isClient,
   dept,
 }: {
@@ -64,3 +64,5 @@ export const Activities = ({
     </Card>
   );
 };
+
+export default Activities;

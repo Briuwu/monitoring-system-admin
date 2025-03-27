@@ -58,7 +58,7 @@ type Props = {
   }[];
 };
 
-export function BarChartOverview({ chartData }: Props) {
+function BarChartOverview({ chartData }: Props) {
   return (
     <Card>
       <CardHeader>
@@ -101,3 +101,5 @@ export function BarChartOverview({ chartData }: Props) {
     </Card>
   );
 }
+
+export default BarChartOverview;

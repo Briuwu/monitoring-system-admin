@@ -19,7 +19,7 @@ type Props = {
   isClient?: boolean;
 };
 
-export const Subscriptions = ({ title, item, color, isClient }: Props) => {
+const Subscriptions = ({ title, item, color, isClient }: Props) => {
   const value = item.length;
   return (
     <Dialog>
@@ -82,3 +82,5 @@ export const Subscriptions = ({ title, item, color, isClient }: Props) => {
     </Dialog>
   );
 };
+
+export default Subscriptions;

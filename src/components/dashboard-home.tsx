@@ -1,11 +1,20 @@
-import { BarChartOverview } from "../pages/dashboard/components/bar-chart-overview";
-import DueSoon from "./due-soon";
-import { Button } from "@/components/ui/button";
-import { Subscriptions } from "./subscriptions";
-import { useFetchRequirements } from "@/hooks/requirements";
+import { lazy, Suspense } from "react";
+
+const LazySubscription = lazy(() => import("./subscriptions"));
+const LazyDueSoon = lazy(() => import("./due-soon"));
+
+const LazyBarChartOverview = lazy(
+  () => import("@/pages/dashboard/components/bar-chart-overview")
+);
+
+const LazyActivities = lazy(() => import("./activities"));
+
 import { generateReport } from "@/pages/dashboard/components/generate-reports";
+
+import { Button } from "@/components/ui/button";
+import { useFetchRequirements } from "@/hooks/requirements";
 import { getDashboardData } from "@/lib/utils";
-import { Activities } from "./activities";
+
 import { useMemo } from "react";
 
 function DashboardHome({ isClient }: { isClient?: boolean }) {
@@ -36,37 +45,55 @@ function DashboardHome({ isClient }: { isClient?: boolean }) {
         </Button>
       </div>
       <div className="grid lg:grid-cols-4 gap-2 w-full">
-        <Subscriptions
-          title="Total Compliances"
-          item={subscriptions.total}
-          color="bg-blue-500"
-          isClient={isClient}
-        />
-        <Subscriptions
-          title="Active Compliances"
-          item={subscriptions.active}
-          color="bg-green-500"
-          isClient={isClient}
-        />
-        <Subscriptions
-          title="Inactive Compliances"
-          item={subscriptions.inactive}
-          color="bg-red-500"
-          isClient={isClient}
-        />
-        <Subscriptions
-          title="On Process Compliances"
-          item={subscriptions.pending}
-          color="bg-yellow-500"
-          isClient={isClient}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazySubscription
+            title="Total Compliances"
+            item={subscriptions.total}
+            color="bg-blue-500"
+            isClient={isClient}
+          />
+        </Suspense>
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazySubscription
+            title="Active Compliances"
+            item={subscriptions.active}
+            color="bg-green-500"
+            isClient={isClient}
+          />
+        </Suspense>
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazySubscription
+            title="Inactive Compliances"
+            item={subscriptions.inactive}
+            color="bg-red-500"
+            isClient={isClient}
+          />
+        </Suspense>
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazySubscription
+            title="On Process Compliances"
+            item={subscriptions.pending}
+            color="bg-yellow-500"
+            isClient={isClient}
+          />
+        </Suspense>
       </div>
       <div className="grid lg:grid-cols-[0.75fr_1fr] gap-5">
-        <BarChartOverview chartData={chartData} />
-        <DueSoon isClient={isClient} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazyBarChartOverview chartData={chartData} />
+        </Suspense>
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazyDueSoon isClient={isClient} />
+        </Suspense>
       </div>
       <div>
-        <Activities dept={department} isClient={isClient} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazyActivities dept={department} isClient={isClient} />
+        </Suspense>
       </div>
     </div>
   );
