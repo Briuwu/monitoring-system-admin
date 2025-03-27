@@ -15,6 +15,17 @@ export type Requirement = {
   onProcessedDate: string;
 };
 
+export type ActivityLogs = {
+  $id: string;
+  userId: string;
+  email: string;
+  action: string;
+  department: string;
+  $createdAt: string;
+};
+
+export type AddActivityLog = Omit<ActivityLogs, "$id" | "$createdAt">;
+
 export type UpdateRequirement = Omit<
   Requirement,
   "$id" | "uploadedFileUrl" | "documentReference" | "renewal"
@@ -33,4 +44,4 @@ export type User = {
 
 export type AddUser = Omit<User, "$id">;
 
-export type UpdateUserInfo = Omit<User, "email">;
+export type UpdateUserInfo = User;

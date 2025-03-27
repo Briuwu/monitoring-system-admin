@@ -1,5 +1,9 @@
+import { lazy, Suspense } from "react";
+
 import { Button } from "@/components/ui/button";
-import { AddRequirementForm } from "@/components/add-requirement-form";
+const LazyAddRequirementForm = lazy(
+  () => import("@/components/add-requirement-form")
+);
 import { Link, useSearchParams } from "react-router";
 
 function AddRequirementClientPage() {
@@ -15,7 +19,9 @@ function AddRequirementClientPage() {
           <Link to="/client">Back</Link>
         </Button>
       </div>
-      <AddRequirementForm department={searchParams.get("department")!} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <LazyAddRequirementForm department={searchParams.get("department")!} />
+      </Suspense>
     </div>
   );
 }

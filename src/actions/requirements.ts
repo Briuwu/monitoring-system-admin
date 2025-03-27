@@ -7,12 +7,12 @@ const axiosClient = axios.create({
   timeout: 100000,
 });
 
-export const getAllRequirements = async () => {
-  return await axiosClient.get("/requirements");
-};
+export const getAllRequirements = async (dept: string) => {
+  if (dept) {
+    return await axiosClient.get(`/requirements?dept=${dept}`);
+  }
 
-export const getAllRequirementsByDept = async (dept: string) => {
-  return await axiosClient.get(`/requirements?dept=${dept}`);
+  return await axiosClient.get("/requirements");
 };
 
 export const getRequirement = async (id: string) => {

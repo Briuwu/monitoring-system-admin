@@ -1,4 +1,4 @@
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -43,10 +43,12 @@ export function UploadNewDoc({
   documentId,
   department,
   isClient,
+  addActivity,
 }: {
   documentId: string;
   department: string;
   isClient?: boolean;
+  addActivity: () => void;
 }) {
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
@@ -67,14 +69,20 @@ export function UploadNewDoc({
     },
   });
 
-  const generateToken = (department: string) => {
-    const year = new Date().getFullYear();
-    const randomKey = Math.random().toString(36).substring(2, 6).toUpperCase();
-    const departmentPrefix = department.substring(0, 2).toUpperCase(); // Get first 2 letters of the department
-    return `${departmentPrefix}-${year}-${randomKey}`;
-  };
+  const generateToken = useMemo(
+    () => (department: string) => {
+      const year = new Date().getFullYear();
+      const randomKey = Math.random()
+        .toString(36)
+        .substring(2, 6)
+        .toUpperCase();
+      const departmentPrefix = department.substring(0, 2).toUpperCase(); // Get first 2 letters of the department
+      return `${departmentPrefix}-${year}-${randomKey}`;
+    },
+    []
+  );
 
-  function onSubmit() {
+  const onSubmit = () => {
     if (!files || files.length === 0) {
       toast.error("Please upload a document reference.");
       return;
@@ -90,6 +98,7 @@ export function UploadNewDoc({
           documentReference: generateToken(department),
           uploadedFileUrl: `${endpointUrl}/storage/buckets/${fileData.bucketId}/files/${fileData.$id}/view?project=${projectId}&mode=admin`,
         });
+        addActivity();
         toast.success("Document uploaded successfully.");
         setOpen(false);
         navigate(
@@ -101,7 +110,7 @@ export function UploadNewDoc({
         toast.error("Failed to submit the form. Please try again.");
       }
     });
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -25,6 +25,8 @@ import { AutoRenew } from "@/components/auto-renew";
 import { UploadNewDoc } from "@/components/upload-new-doc";
 import { EndOfContract } from "@/components/end-of-contract";
 import { HandleProcessing } from "@/components/handle-processing";
+import { useAddActivityLog } from "@/hooks/logs";
+import { useCurrentUser } from "@/hooks/users";
 
 type Props = {
   isClient?: boolean;
@@ -33,6 +35,7 @@ type Props = {
 function RequirementDetails({ isClient }: Props) {
   const params = useParams();
   const navigate = useNavigate();
+  const currentUser = useCurrentUser()!;
   const {
     data: requirement,
     isLoading,
@@ -45,6 +48,7 @@ function RequirementDetails({ isClient }: Props) {
   const { mutate: updateRequirementStatus } = useUpdateRequirement(
     params.requirementId!
   );
+  const { mutate: addActivity } = useAddActivityLog();
 
   // Handle viewing the document
   const handleViewDocument = (fileUrl: string) => {
@@ -89,6 +93,12 @@ function RequirementDetails({ isClient }: Props) {
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => {
+                      addActivity({
+                        action: `Deleted the document: '${requirement.complianceList}'`,
+                        department: requirement.department,
+                        email: currentUser.email,
+                        userId: currentUser.$id,
+                      });
                       deleteRequirement(params.requirementId!);
                       navigate(
                         isClient ? "/client" : "/dashboard/requirements"
@@ -114,7 +124,7 @@ function RequirementDetails({ isClient }: Props) {
         </div>
       </div>
       <div className="space-y-10 border p-4 rounded-xl border-black">
-        <div className="space-y-2">
+        <div className="space-y-10">
           <div className="flex items-start justify-between">
             <p className="text-xl text-neutral-500 font-medium">
               {requirement.entity}
@@ -136,21 +146,31 @@ function RequirementDetails({ isClient }: Props) {
               </p>
             </div>
           </div>
-          <h2 className="text-2xl font-bold">
-            {requirement.complianceList} - {requirement.typeOfCompliance}
-          </h2>
-          <p className="text-neutral-500">
-            Department:{" "}
-            <span className="font-bold text-black">
-              {requirement.department}
-            </span>
-          </p>
-          <p className="text-neutral-500">
-            Person in Charge:{" "}
-            <span className="font-bold text-black">
-              {requirement.personInCharge}
-            </span>
-          </p>
+          <div className="flex items-center justify-between">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold">
+                {requirement.complianceList} - {requirement.typeOfCompliance}
+              </h2>
+              <p className="text-neutral-500">
+                Department:{" "}
+                <span className="font-bold text-black">
+                  {requirement.department}
+                </span>
+              </p>
+              <p className="text-neutral-500">
+                Person in Charge:{" "}
+                <span className="font-bold text-black">
+                  {requirement.personInCharge}
+                </span>
+              </p>
+            </div>
+            <p className="self-start">
+              Frequency:{" "}
+              <span className="bg-black text-white py-2 rounded-full px-2 font-bold uppercase">
+                {requirement.frequencyOfCompliance}
+              </span>
+            </p>
+          </div>
         </div>
         <Separator />
         <div className="grid grid-cols-4 place-items-center text-center">
@@ -171,6 +191,14 @@ function RequirementDetails({ isClient }: Props) {
                       renewal: formatDate(new Date(), "yyyy-MM-dd"),
                       frequency: requirement.frequencyOfCompliance,
                     });
+
+                    addActivity({
+                      action: `Renewed the document: '${requirement.complianceList}'`,
+                      department: requirement.department,
+                      email: currentUser.email,
+                      userId: currentUser.$id,
+                    });
+
                     navigate(
                       `/${isClient ? "client" : "dashboard"}/requirements/${
                         params.requirementId
@@ -229,6 +257,14 @@ function RequirementDetails({ isClient }: Props) {
                 expiration,
                 onProcessedDate: formatDate(new Date(), "yyyy-MM-dd"),
               });
+
+              addActivity({
+                action: `Processed the document: '${requirement.complianceList}'`,
+                department: requirement.department,
+                email: currentUser.email,
+                userId: currentUser.$id,
+              });
+
               navigate(
                 `/${isClient ? "client" : "dashboard"}/requirements/${
                   params.requirementId
@@ -265,6 +301,14 @@ function RequirementDetails({ isClient }: Props) {
                 expiration,
                 onProcessedDate,
               });
+
+              addActivity({
+                action: `Ended the document: '${requirement.complianceList}'`,
+                department: requirement.department,
+                email: currentUser.email,
+                userId: currentUser.$id,
+              });
+
               navigate(
                 `/${isClient ? "client" : "dashboard"}/requirements/${
                   params.requirementId
@@ -286,6 +330,14 @@ function RequirementDetails({ isClient }: Props) {
           <UploadNewDoc
             documentId={requirement.$id}
             department={requirement.department}
+            addActivity={() => {
+              addActivity({
+                action: `Uploaded a new document: '${requirement.complianceList}'`,
+                department: requirement.department,
+                email: currentUser.email,
+                userId: currentUser.$id,
+              });
+            }}
           />
         </div>
       </div>

@@ -12,7 +12,7 @@ import { Requirement } from "@/lib/types";
 import { getRemainingDays } from "@/lib/utils";
 
 function RequirementsPage() {
-  const { data: requirementList, isLoading } = useFetchRequirements();
+  const { data: requirementList, isLoading } = useFetchRequirements("");
   const [statusFilter, setStatusFilter] = useState("");
   const [entityFilter, setEntityFilter] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");

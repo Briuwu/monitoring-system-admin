@@ -7,18 +7,29 @@ import {
 } from "@/components/ui/card";
 import { useFetchRequirements } from "@/hooks/requirements";
 import { dues, getRemainingDays } from "@/lib/utils";
+import { useMemo } from "react";
 import { Link } from "react-router";
 
-function DueSoon() {
-  const { data: requirements, isLoading } = useFetchRequirements();
+function DueSoon({ isClient }: { isClient?: boolean }) {
+  const department = JSON.parse(localStorage.getItem("user-department")!);
+
+  const { data: requirements, isLoading } = useFetchRequirements(
+    isClient ? department : ""
+  );
+
+  const data = useMemo(
+    () => dues(requirements ?? [], "Active"),
+    [requirements]
+  );
+
+  const processData = useMemo(
+    () => dues(requirements ?? [], "On Process"),
+    [requirements]
+  );
 
   if (isLoading || !requirements) {
     return <div>Loading...</div>;
   }
-
-  const data = dues(requirements, "Active");
-
-  const processData = dues(requirements, "On Process");
 
   return (
     <div className="grid grid-cols-2 gap-5">
@@ -60,7 +71,9 @@ function DueSoon() {
         <CardContent className="divide-y-2 overflow-y-auto sm:max-h-[325px]">
           {processData.map((item) => (
             <Link
-              to={`/dashboard/requirements/${item.$id}`}
+              to={`/${isClient ? "client" : "dashboard"}/requirements/${
+                item.$id
+              }`}
               key={item.$id}
               className="flex items-center justify-between py-4 px-2 hover:bg-neutral-100"
             >

@@ -53,6 +53,8 @@ import { bucketId, endpointUrl, projectId, storage } from "@/appwrite";
 import { useNavigate } from "react-router";
 import { DatetimePicker } from "./ui/datetime-picker";
 import { Checkbox } from "./ui/checkbox";
+import { useAddActivityLog } from "@/hooks/logs";
+import { useCurrentUser } from "@/hooks/users";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -81,10 +83,12 @@ type Props = {
   department?: string;
 };
 
-export const AddRequirementForm = ({ department }: Props) => {
+const AddRequirementForm = ({ department }: Props) => {
   const navigate = useNavigate();
+  const currentUser = useCurrentUser()!;
   const [isPending, startTransition] = useTransition();
   const { mutate: addRequirement } = useAddRequirement();
+  const { mutate: addActivity } = useAddActivityLog();
   const [autoExpiry, setAutoExpiry] = useState(true);
   const [files, setFiles] = useState<File[] | null>(null);
 
@@ -149,6 +153,12 @@ export const AddRequirementForm = ({ department }: Props) => {
           department: department ? department : values.department,
           renewal: "",
           onProcessedDate: "",
+        });
+        addActivity({
+          userId: currentUser.$id,
+          email: currentUser.email,
+          action: `Added the requirement: '${data.complianceList}'`,
+          department: department ? department : values.department,
         });
 
         toast.success("Requirement Document added successfully.");
@@ -674,3 +684,5 @@ export const AddRequirementForm = ({ department }: Props) => {
     </Form>
   );
 };
+
+export default AddRequirementForm;

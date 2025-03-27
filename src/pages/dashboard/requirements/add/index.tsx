@@ -1,5 +1,9 @@
+import { lazy, Suspense } from "react";
+
+const AddRequirementForm = lazy(
+  () => import("@/components/add-requirement-form")
+);
 import { Button } from "@/components/ui/button";
-import { AddRequirementForm } from "@/components/add-requirement-form";
 import { Link } from "react-router";
 
 function AddRequirementPage() {
@@ -13,7 +17,9 @@ function AddRequirementPage() {
           <Link to="/dashboard/requirements">Back</Link>
         </Button>
       </div>
-      <AddRequirementForm />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AddRequirementForm />
+      </Suspense>
     </div>
   );
 }

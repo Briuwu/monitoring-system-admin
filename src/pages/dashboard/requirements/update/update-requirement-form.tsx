@@ -45,6 +45,8 @@ import { Requirement } from "@/lib/types";
 import { useNavigate } from "react-router";
 import { DatetimePicker } from "@/components/ui/datetime-picker";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useCurrentUser } from "@/hooks/users";
+import { useAddActivityLog } from "@/hooks/logs";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -74,6 +76,8 @@ type Props = {
 
 export const UpdateRequirementForm = ({ requirement }: Props) => {
   const navigate = useNavigate();
+  const currentUser = useCurrentUser()!;
+  const { mutate: addActivity } = useAddActivityLog();
   const [isPending, startTransition] = useTransition();
   const { mutate: updateRequirement } = useUpdateRequirement(requirement.$id);
   const [autoExpiry, setAutoExpiry] = useState(true);
@@ -111,6 +115,12 @@ export const UpdateRequirementForm = ({ requirement }: Props) => {
               ? formatDate(expiration, "yyyy-MM-dd")
               : formatDate(values.expiration, "yyyy-MM-dd"),
           onProcessedDate: requirement.onProcessedDate,
+        });
+        addActivity({
+          action: `Updated the requirement: '${requirement.complianceList}'`,
+          department: requirement.department,
+          email: currentUser.email,
+          userId: currentUser.$id,
         });
         await delay();
         toast.success("Requirement Document updated successfully.");

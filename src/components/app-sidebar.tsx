@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Calendar, Home, Inbox, User } from "lucide-react";
+import { Activity, Calendar, Home, Inbox, User } from "lucide-react";
 import { Link } from "react-router";
 import { Logout } from "./logout";
 
@@ -34,6 +34,11 @@ const items = [
     url: "users",
     icon: User,
   },
+  {
+    title: "Activity Logs",
+    url: "activity-logs",
+    icon: Activity,
+  },
 ];
 
 export function AppSidebar() {
@@ -41,7 +46,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex gap-2 items-center flex-row py-4">
         <div className="w-8 aspect-square rounded-full">
-          <img src="./skpi-logo.webp" alt="" />
+          <img src="../skpi-logo.webp" alt="" />
         </div>
         <h1 className="text-black text-xs font-semibold uppercase group-data-[collapsible=icon]:hidden font-logo">
           Compliance Monitoring System

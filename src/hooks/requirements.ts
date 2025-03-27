@@ -2,7 +2,6 @@ import {
   addRequirement,
   deleteRequirement,
   getAllRequirements,
-  getAllRequirementsByDept,
   getRequirement,
   updateDocumentReference,
   updateRequirement,
@@ -18,27 +17,15 @@ import {
 } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
-export const useFetchRequirements = (): QueryObserverResult<Requirement[]> => {
-  return useQuery<Requirement[]>({
-    queryFn: async () => {
-      const { data } = await getAllRequirements();
-      return data;
-    },
-    queryKey: ["requirements"],
-    select: (data: Requirement[]) => [...data],
-  });
-};
-
-export const useFetchRequirementsByDept = (
+export const useFetchRequirements = (
   dept: string
 ): QueryObserverResult<Requirement[]> => {
   return useQuery<Requirement[]>({
     queryFn: async () => {
-      const { data } = await getAllRequirementsByDept(dept);
+      const { data } = await getAllRequirements(dept);
       return data;
     },
-    queryKey: ["requirements", dept],
-    select: (data: Requirement[]) => [...data],
+    queryKey: ["requirements"],
   });
 };
 

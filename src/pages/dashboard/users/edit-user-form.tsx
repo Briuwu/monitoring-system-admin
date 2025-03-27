@@ -53,7 +53,7 @@ export const EditUserForm = ({ user }: Props) => {
     defaultValues: {
       firstName: user.firstName,
       lastName: user.lastName,
-      middleName: user.middleName,
+      middleName: user.middleName || "",
       department: user.department,
     },
   });
@@ -64,7 +64,7 @@ export const EditUserForm = ({ user }: Props) => {
     const { ...data } = values;
     startTransition(async () => {
       try {
-        updateUser({ ...data, $id: user.$id });
+        updateUser({ ...data, $id: user.$id, email: user.email });
         await delay();
         toast.success("User updated successfully");
         navigate(`/dashboard/users/${user.$id}`, { replace: true });
