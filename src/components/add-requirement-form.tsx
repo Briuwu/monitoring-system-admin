@@ -83,7 +83,7 @@ type Props = {
   department?: string;
 };
 
-export const AddRequirementForm = ({ department }: Props) => {
+const AddRequirementForm = ({ department }: Props) => {
   const navigate = useNavigate();
   const currentUser = useCurrentUser()!;
   const [isPending, startTransition] = useTransition();
@@ -684,3 +684,5 @@ export const AddRequirementForm = ({ department }: Props) => {
     </Form>
   );
 };
+
+export default AddRequirementForm;
