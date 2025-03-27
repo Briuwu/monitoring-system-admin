@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Nav } from "./nav";
-import RequirementsTable from "./requirements-table";
 import { Button } from "@/components/ui/button";
-import DashboardHome from "@/components/dashboard-home";
+
+const LazyRequirementsTable = lazy(() => import("./requirements-table"));
+const LazyDashboardHome = lazy(() => import("@/components/dashboard-home"));
 
 function ClientPage() {
   const [open, setOpen] = useState(false);
@@ -13,8 +14,14 @@ function ClientPage() {
         <Button onClick={() => setOpen(!open)} className="bg-blue-500">
           Toggle Dashboard
         </Button>
-        {open && <DashboardHome isClient />}
-        <RequirementsTable />
+        {open && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LazyDashboardHome isClient />
+          </Suspense>
+        )}
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazyRequirementsTable />
+        </Suspense>
       </div>
     </div>
   );
