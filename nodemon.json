@@ -1,6 +1,7 @@
 {
   "watch": ["*.*", ".env"],
   "ext": "*",
+  "verbose": true,
   "ignore": [
     ".git",
     ".gitignore",
