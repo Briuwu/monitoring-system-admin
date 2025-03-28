@@ -1,50 +1,90 @@
-# React + TypeScript + Vite
+# Compliance Monitoring & Document Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📋 Project Overview
 
-Currently, two official plugins are available:
+This comprehensive Compliance Monitoring & Document Management System is designed to streamline document tracking, management, and compliance processes across multiple departments.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Key Features
 
-## Expanding the ESLint configuration
+### 🔐 Access Control
+- **Admin Dashboard**: Full access to all documents across all departments
+- **Client Dashboard**: Department-specific document access based on user registration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 📊 Dashboard Capabilities
+- Total compliance overview
+- Compliance status breakdown (Active, Inactive, In Process)
+- Bar chart visualizing compliance frequencies
+- Comprehensive insights into organizational compliance health
 
-- Configure the top-level `parserOptions` property like this:
+### 🔔 Notification System
+- Automated email notifications
+- Alerts for:
+  - Upcoming document expirations
+  - Documents nearing due dates
+  - Critical compliance milestones
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 📄 Document Management
+#### Document Table
+- Advanced search functionality
+- Filtering options:
+  - Status
+  - Entity
+  - Department
+
+#### Document Operations
+- Add new documents
+- Edit existing documents
+- Delete documents
+- Detailed document view with:
+  - Comprehensive document information
+  - Document upload/view capabilities
+  - Auto-renewal tracking
+  - Process status management
+  - Contract termination options
+
+### 👥 User Management
+- Admin user registration
+- User role and department assignment
+
+### 📅 Calendar Integration
+- Visual representation of all compliance expirations
+- Comprehensive admin-side calendar view
+
+### 📝 Activity Tracking
+- Detailed activity log
+- Track all system interactions and changes
+
+## 🚀 Technologies Used
+- [List your tech stack here, e.g., React, Node.js, Express, MongoDB]
+
+## 🛠️ Installation
+
+### Prerequisites
+- [List required software, versions, etc.]
+
+### Setup Steps
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/compliance-monitoring-system.git
+
+# Navigate to project directory
+cd compliance-monitoring-system
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your configuration
+
+# Run the application
+npm start
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🔒 Environment Variables
+- `DATABASE_URL`: Database connection string
+- `JWT_SECRET`: JSON Web Token secret
+- `EMAIL_SERVICE_API_KEY`: Email notification service API key
+- `ADMIN_EMAIL`: Primary admin contact email
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## 🙏 Acknowledgements
