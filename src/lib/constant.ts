@@ -1,11 +1,11 @@
 export const departmentList = [
   {
-    label: "HR",
-    value: "HR",
+    label: "HRD",
+    value: "HRD",
   },
   {
-    label: "GA",
-    value: "GA",
+    label: "GAD",
+    value: "GAD",
   },
   {
     label: "Safety",
@@ -16,16 +16,16 @@ export const departmentList = [
     value: "MIS",
   },
   {
-    label: "Finance",
-    value: "Finance",
+    label: "FIN",
+    value: "FIN",
   },
   {
     label: "QA",
     value: "QA",
   },
   {
-    label: "OOF",
-    value: "OOF",
+    label: "OOS",
+    value: "OOS",
   },
   {
     label: "OJS",
