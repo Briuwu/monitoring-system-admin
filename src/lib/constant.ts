@@ -70,6 +70,10 @@ export const frequencyList = [
     label: "N/A",
     value: "N/A",
   },
+  {
+    label: "Others",
+    value: "Others",
+  }
 ] as const;
 
 export const complianceTypeList = [

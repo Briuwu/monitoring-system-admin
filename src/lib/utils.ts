@@ -114,6 +114,7 @@ export const dues = (requirements: Requirement[], status: string) => {
     "5 years": { daysThreshold: 90, interval: "5 years" },
     "10 years": { daysThreshold: 180, interval: "10 years" },
     "semi annual": { daysThreshold: 60, interval: "semi-annual" },
+    "others": { daysThreshold: 15, interval: "others" },
     quarterly: { daysThreshold: 40, interval: "quarter" },
     monthly: { daysThreshold: 15, interval: "month" },
   };
