@@ -109,7 +109,7 @@ const AddRequirementForm = ({ department }: Props) => {
       department: department ? department : "",
       status: "",
       documentReference: "",
-      expiration: calculateExpirationDate(new Date(), "").toString(),
+      expiration: "",
     },
   });
 
@@ -122,6 +122,19 @@ const AddRequirementForm = ({ department }: Props) => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { dateSubmitted, ...data } = values;
+
+    if (!dateSubmitted) {
+      toast.error("Please select a date submitted.");
+      return;
+    }
+
+    if (!autoExpiry) {
+      if (!data.expiration) {
+        toast.error("Please select an expiration date.");
+        return;
+      }
+    }
+
     if (!files || files.length === 0) {
       toast.error("Please upload a document reference.");
       return;
