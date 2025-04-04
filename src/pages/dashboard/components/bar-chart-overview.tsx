@@ -48,6 +48,9 @@ const chartConfig = {
   "N/A": {
     label: "N/A",
   },
+  Others: {
+    label: "Others",
+  },
 } satisfies ChartConfig;
 
 type Props = {

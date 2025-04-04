@@ -1,4 +1,4 @@
-import { url } from "@/appwrite";
+import { account, url } from "@/appwrite";
 import { AddUser, UpdateUserInfo } from "@/lib/types";
 import axios from "axios";
 
@@ -25,4 +25,15 @@ export const updateUser = async (user: UpdateUserInfo) => {
 
 export const deleteUser = async (id: string) => {
   return await axiosClient.delete(`/users/${id}`);
+};
+
+export const updateUserPassword = async (
+  oldPassword: string,
+  newPassword: string
+) => {
+  try {
+    return await account.updatePassword(newPassword, oldPassword);
+  } catch (error) {
+    throw new Error("Failed to update password: " + error);
+  }
 };

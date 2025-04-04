@@ -114,7 +114,7 @@ export const dues = (requirements: Requirement[], status: string) => {
     "5 years": { daysThreshold: 90, interval: "5 years" },
     "10 years": { daysThreshold: 180, interval: "10 years" },
     "semi annual": { daysThreshold: 60, interval: "semi-annual" },
-    "others": { daysThreshold: 15, interval: "others" },
+    others: { daysThreshold: 15, interval: "others" },
     quarterly: { daysThreshold: 40, interval: "quarter" },
     monthly: { daysThreshold: 15, interval: "month" },
   };
@@ -183,6 +183,7 @@ export const getDashboardData = (requirements: Requirement[]) => {
     { date: "5 Years", key: "5 years", fill: "#EBE5C2" },
     { date: "10 Years", key: "10 years", fill: "#FADA7A" },
     { date: "N/A", key: "n/a", fill: "#C4C4C4" },
+    { date: "Others", key: "others", fill: "#F2B5D4" },
   ];
 
   const chartData = frequencyMappings.map((mapping) => ({

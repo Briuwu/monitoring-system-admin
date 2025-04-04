@@ -20,6 +20,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { useTransition } from "react";
+import { updateUserPassword } from "@/actions/users";
 
 const formSchema = z
   .object({
@@ -33,6 +35,7 @@ const formSchema = z
   });
 
 export const UpdatePasswordModal = () => {
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,7 +47,15 @@ export const UpdatePasswordModal = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
+      startTransition(async () => {
+        try {
+          await updateUserPassword(values.oldPassword, values.newPassword);
+          toast.success("Password updated successfully.");
+        } catch (error) {
+          console.log(error);
+          toast.error(`Failed to update password: ${error}`);
+        }
+      });
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(values, null, 2)}</code>
@@ -77,6 +88,7 @@ export const UpdatePasswordModal = () => {
                       placeholder="enter old password"
                       type="password"
                       {...field}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage />
@@ -97,6 +109,7 @@ export const UpdatePasswordModal = () => {
                       placeholder="enter new password"
                       type="password"
                       {...field}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage />
@@ -115,13 +128,16 @@ export const UpdatePasswordModal = () => {
                       placeholder="confirm new password"
                       type="password"
                       {...field}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isPending}>
+              Submit
+            </Button>
           </form>
         </Form>
       </DialogContent>
