@@ -1,5 +1,4 @@
-import { Logout } from "@/components/logout";
-import { UpdatePasswordModal } from "./update-password-modal";
+import { UserMenu } from "./user-menu";
 
 export const Nav = () => {
   return (
@@ -14,10 +13,7 @@ export const Nav = () => {
       </div>
       <ul className="flex items-center gap-2">
         <li>
-          <UpdatePasswordModal />
-        </li>
-        <li>
-          <Logout />
+          <UserMenu />
         </li>
       </ul>
     </nav>

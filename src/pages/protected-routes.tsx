@@ -10,6 +10,7 @@ export const ProtectedRoutes = () => {
     const fetch = async () => {
       const data = await account.get();
       localStorage.setItem("user-department", JSON.stringify(data.labels[1]));
+      localStorage.setItem("name", JSON.stringify(data.name));
     };
 
     fetch();

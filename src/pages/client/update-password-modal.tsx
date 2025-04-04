@@ -20,7 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { updateUserPassword } from "@/actions/users";
 
 const formSchema = z
@@ -35,6 +35,7 @@ const formSchema = z
   });
 
 export const UpdatePasswordModal = () => {
+  const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,30 +47,23 @@ export const UpdatePasswordModal = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      startTransition(async () => {
-        try {
-          await updateUserPassword(values.oldPassword, values.newPassword);
-          toast.success("Password updated successfully.");
-        } catch (error) {
-          console.log(error);
-          toast.error(`Failed to update password: ${error}`);
-        }
-      });
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
+    startTransition(async () => {
+      try {
+        await updateUserPassword(values.oldPassword, values.newPassword);
+        toast.success("Password updated successfully.");
+        setOpen(false);
+      } catch (error) {
+        console.log(error);
+        toast.error(`Failed to update password: ${error}`);
+      }
+    });
   }
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Change Password</Button>
+        <Button variant="ghost" className="w-full justify-start">
+          Change Password
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -31,7 +31,7 @@ export const Logout = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"destructive"}>
+        <Button variant={"destructive"} className="w-full">
           <LogOut className="w-3 h-3" />
         </Button>
       </AlertDialogTrigger>
