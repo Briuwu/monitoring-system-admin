@@ -51,7 +51,7 @@ import { format as formatDate } from "date-fns";
 import { ID } from "appwrite";
 import { bucketId, endpointUrl, projectId, storage } from "@/appwrite";
 import { useNavigate } from "react-router";
-import { DatetimePicker } from "./ui/datetime-picker";
+// import { DatetimePicker } from "./ui/datetime-picker";
 import { Checkbox } from "./ui/checkbox";
 import { useAddActivityLog } from "@/hooks/logs";
 import { useCurrentUser } from "@/hooks/users";
@@ -67,8 +67,8 @@ const formSchema = z.object({
   typeOfCompliance: z.string().min(1, {
     message: "Please select a type of compliance.",
   }),
-  dateSubmitted: z.coerce.date(),
-  expiration: z.coerce.date(),
+  dateSubmitted: z.string(),
+  expiration: z.string(),
   personInCharge: z.string().min(1),
   department: z.string().min(1, {
     message: "Please select a department.",
@@ -100,7 +100,7 @@ const AddRequirementForm = ({ department }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      dateSubmitted: new Date(),
+      dateSubmitted: "",
       entity: "",
       complianceList: "",
       frequencyOfCompliance: "",
@@ -109,7 +109,7 @@ const AddRequirementForm = ({ department }: Props) => {
       department: department ? department : "",
       status: "",
       documentReference: "",
-      expiration: calculateExpirationDate(new Date(), ""),
+      expiration: calculateExpirationDate(new Date(), "").toString(),
     },
   });
 
@@ -127,7 +127,7 @@ const AddRequirementForm = ({ department }: Props) => {
       return;
     }
     const expiration = calculateExpirationDate(
-      dateSubmitted,
+      new Date(dateSubmitted),
       values.frequencyOfCompliance
     );
     startTransition(async () => {
@@ -349,56 +349,14 @@ const AddRequirementForm = ({ department }: Props) => {
           )}
         />
 
-        {/* <FormField
-          control={form.control}
-          name="dateSubmitted"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Date Submitted / Conducted</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                      disabled={isPending}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
         <FormField
           control={form.control}
           name="dateSubmitted"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Date Submitted / Conducted</FormLabel>
-              <DatetimePicker
-                {...field}
-                format={[["months", "days", "years"]]}
-              />
+
+              <Input type="date" {...field} className="w-fit" />
               <FormDescription>Month / Day / Year</FormDescription>
               <FormMessage />
             </FormItem>
@@ -423,7 +381,7 @@ const AddRequirementForm = ({ department }: Props) => {
                         <span>
                           {formatDateFn(
                             calculateExpirationDate(
-                              form.watch("dateSubmitted"),
+                              new Date(form.watch("dateSubmitted")),
                               form.watch("frequencyOfCompliance")
                             )
                           )}
@@ -444,10 +402,11 @@ const AddRequirementForm = ({ department }: Props) => {
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>Expiration Date</FormLabel>
-                    <DatetimePicker
+                    {/* <DatetimePicker
                       {...field}
                       format={[["months", "days", "years"]]}
-                    />
+                    /> */}
+                    <Input type="date" {...field} className="w-fit" />
                     <FormDescription>Month / Day / Year</FormDescription>
                     <FormMessage />
                   </FormItem>
