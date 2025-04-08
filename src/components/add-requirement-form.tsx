@@ -93,7 +93,7 @@ const AddRequirementForm = ({ department }: Props) => {
   const [files, setFiles] = useState<File[] | null>(null);
 
   const dropZoneConfig = {
-    maxFiles: 5,
+    maxFiles: 1,
     maxSize: 1024 * 1024 * 20,
     multiple: false,
   };
