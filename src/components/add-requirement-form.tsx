@@ -94,7 +94,7 @@ const AddRequirementForm = ({ department }: Props) => {
 
   const dropZoneConfig = {
     maxFiles: 5,
-    maxSize: 1024 * 1024 * 4,
+    maxSize: 1024 * 1024 * 20,
     multiple: false,
   };
   const form = useForm<z.infer<typeof formSchema>>({

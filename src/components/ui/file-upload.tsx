@@ -82,7 +82,7 @@ export const FileUploader = forwardRef<
         "application/msword": [".doc", ".docx"],
       },
       maxFiles = 1,
-      maxSize = 4 * 1024 * 1024,
+      maxSize = 20 * 1024 * 1024,
       multiple = false,
     } = dropzoneOptions;
 
