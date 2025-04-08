@@ -31,12 +31,30 @@ export const columns: ColumnDef<Requirement>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Date Submitted" />
     ),
+    cell: ({ row }) => {
+      const date = row.original.dateSubmitted;
+      const formattedDate = new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+      return <p>{formattedDate === "Invalid Date" ? "" : formattedDate}</p>;
+    },
   },
   {
     accessorKey: "expiration",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Expiration" />
     ),
+    cell: ({ row }) => {
+      const date = row.original.expiration;
+      const formattedDate = new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+      return <p>{formattedDate === "Invalid Date" ? "" : formattedDate}</p>;
+    },
   },
   {
     header: "Remaining Days",
@@ -67,6 +85,15 @@ export const columns: ColumnDef<Requirement>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Renewal" />
     ),
+    cell: ({ row }) => {
+      const date = row.original.renewal;
+      const formattedDate = new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+      return <p>{formattedDate === "Invalid Date" ? "" : formattedDate}</p>;
+    },
   },
   {
     header: "Person in Charge",
