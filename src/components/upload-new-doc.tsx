@@ -58,9 +58,9 @@ export function UploadNewDoc({
   const [files, setFiles] = useState<File[] | null>(null);
 
   const dropZoneConfig = {
-    maxFiles: 5,
-    maxSize: 1024 * 1024 * 4,
-    multiple: true,
+    maxFiles: 1,
+    maxSize: 1024 * 1024 * 20,
+    multiple: false,
   };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
