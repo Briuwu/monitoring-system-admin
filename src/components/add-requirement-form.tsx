@@ -51,10 +51,10 @@ import { format as formatDate } from "date-fns";
 import { ID } from "appwrite";
 import { bucketId, endpointUrl, projectId, storage } from "@/appwrite";
 import { useNavigate } from "react-router";
-// import { DatetimePicker } from "./ui/datetime-picker";
 import { Checkbox } from "./ui/checkbox";
 import { useAddActivityLog } from "@/hooks/logs";
 import { useCurrentUser } from "@/hooks/users";
+import { DatetimePicker } from "@/components/ui/datetime-picker";
 
 const formSchema = z.object({
   entity: z.string().min(1),
@@ -67,8 +67,8 @@ const formSchema = z.object({
   typeOfCompliance: z.string().min(1, {
     message: "Please select a type of compliance.",
   }),
-  dateSubmitted: z.string(),
-  expiration: z.string(),
+  dateSubmitted: z.coerce.date(),
+  expiration: z.coerce.date(),
   personInCharge: z.string().min(1),
   department: z.string().min(1, {
     message: "Please select a department.",
@@ -100,7 +100,7 @@ const AddRequirementForm = ({ department }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      dateSubmitted: "",
+      dateSubmitted: new Date(),
       entity: "",
       complianceList: "",
       frequencyOfCompliance: "",
@@ -109,7 +109,7 @@ const AddRequirementForm = ({ department }: Props) => {
       department: department ? department : "",
       status: "",
       documentReference: "",
-      expiration: "",
+      expiration: new Date(),
     },
   });
 
@@ -368,8 +368,10 @@ const AddRequirementForm = ({ department }: Props) => {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Date Submitted / Conducted</FormLabel>
-
-              <Input type="date" {...field} className="w-fit" />
+              <DatetimePicker
+                {...field}
+                format={[["months", "days", "years"]]}
+              />
               <FormDescription>Month / Day / Year</FormDescription>
               <FormMessage />
             </FormItem>
@@ -415,11 +417,10 @@ const AddRequirementForm = ({ department }: Props) => {
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>Expiration Date</FormLabel>
-                    {/* <DatetimePicker
+                    <DatetimePicker
                       {...field}
                       format={[["months", "days", "years"]]}
-                    /> */}
-                    <Input type="date" {...field} className="w-fit" />
+                    />
                     <FormDescription>Month / Day / Year</FormDescription>
                     <FormMessage />
                   </FormItem>
