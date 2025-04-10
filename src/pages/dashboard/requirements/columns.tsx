@@ -32,12 +32,14 @@ export const columns: ColumnDef<Requirement>[] = [
       <DataTableColumnHeader column={column} title="Date Submitted" />
     ),
     cell: ({ row }) => {
-      const date = row.original.dateSubmitted;
-      const formattedDate = new Date(date).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      });
+      const date = row.original.renewal;
+      const formattedDate = date
+        ? new Date(date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })
+        : "N/A";
       return <p>{formattedDate === "Invalid Date" ? "" : formattedDate}</p>;
     },
   },
@@ -47,12 +49,14 @@ export const columns: ColumnDef<Requirement>[] = [
       <DataTableColumnHeader column={column} title="Expiration" />
     ),
     cell: ({ row }) => {
-      const date = row.original.expiration;
-      const formattedDate = new Date(date).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      });
+      const date = row.original.renewal;
+      const formattedDate = date
+        ? new Date(date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })
+        : "N/A";
       return <p>{formattedDate === "Invalid Date" ? "" : formattedDate}</p>;
     },
   },
@@ -88,11 +92,13 @@ export const columns: ColumnDef<Requirement>[] = [
     ),
     cell: ({ row }) => {
       const date = row.original.renewal;
-      const formattedDate = new Date(date).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      });
+      const formattedDate = date
+        ? new Date(date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })
+        : "N/A";
       return <p>{formattedDate === "Invalid Date" ? "" : formattedDate}</p>;
     },
   },
