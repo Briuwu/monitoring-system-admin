@@ -149,6 +149,9 @@ function RequirementDetails({ isClient }: Props) {
           <div className="flex items-center justify-between">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold">
+                {requirement.complianceType
+                  ? `${requirement.complianceType} / `
+                  : ""}{" "}
                 {requirement.complianceList} - {requirement.typeOfCompliance}
               </h2>
               <p className="text-neutral-500">
@@ -243,6 +246,7 @@ function RequirementDetails({ isClient }: Props) {
                 typeOfCompliance,
                 frequencyOfCompliance,
                 expiration,
+                complianceType,
               } = requirement;
 
               updateRequirementStatus({
@@ -256,6 +260,7 @@ function RequirementDetails({ isClient }: Props) {
                 frequencyOfCompliance,
                 expiration,
                 onProcessedDate: formatDate(new Date(), "yyyy-MM-dd"),
+                complianceType,
               });
 
               addActivity({
@@ -287,6 +292,7 @@ function RequirementDetails({ isClient }: Props) {
                 frequencyOfCompliance,
                 expiration,
                 onProcessedDate,
+                complianceType,
               } = requirement;
 
               updateRequirementStatus({
@@ -300,6 +306,7 @@ function RequirementDetails({ isClient }: Props) {
                 frequencyOfCompliance,
                 expiration,
                 onProcessedDate,
+                complianceType,
               });
 
               addActivity({

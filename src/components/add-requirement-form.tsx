@@ -61,6 +61,7 @@ const formSchema = z.object({
   complianceList: z.string().min(1, {
     message: "Please enter a compliance list.",
   }),
+  complianceType: z.string(),
   frequencyOfCompliance: z.string().min(1, {
     message: "Please select a frequency of compliance.",
   }),
@@ -103,6 +104,7 @@ const AddRequirementForm = ({ department }: Props) => {
       dateSubmitted: new Date(),
       entity: "",
       complianceList: "",
+      complianceType: "",
       frequencyOfCompliance: "",
       typeOfCompliance: "",
       personInCharge: "",
@@ -214,6 +216,26 @@ const AddRequirementForm = ({ department }: Props) => {
 
         <FormField
           control={form.control}
+          name="complianceType"
+          render={({ field }) => (
+            <FormItem className="col-span-full">
+              <FormLabel>Law / Rule / Clause / D.O / M.C</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="list the law / rule / clause / d.o / m.c..."
+                  className="resize-none"
+                  {...field}
+                  rows={7}
+                  disabled={isPending}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="complianceList"
           render={({ field }) => (
             <FormItem className="col-span-full">
@@ -232,6 +254,7 @@ const AddRequirementForm = ({ department }: Props) => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="frequencyOfCompliance"

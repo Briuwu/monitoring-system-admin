@@ -3,6 +3,7 @@ export type Requirement = {
   entity: string;
   department: string;
   complianceList: string;
+  complianceType: string;
   documentReference: string;
   typeOfCompliance: string;
   frequencyOfCompliance: string;

@@ -61,6 +61,7 @@ const formSchema = z.object({
   status: z.string().min(1, {
     message: "Please select a status.",
   }),
+  complianceType: z.string(),
 });
 
 type Props = {
@@ -86,6 +87,7 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
       personInCharge: requirement.personInCharge,
       expiration: new Date(requirement.expiration),
       status: requirement.status,
+      complianceType: requirement.complianceType,
     },
   });
 
@@ -155,6 +157,26 @@ export const UpdateRequirementClientForm = ({ requirement }: Props) => {
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="complianceType"
+          render={({ field }) => (
+            <FormItem className="col-span-full">
+              <FormLabel>Law / Rule / Clause / D.O / M.C</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="list the law / rule / clause / d.o / m.c..."
+                  className="resize-none"
+                  {...field}
+                  rows={7}
+                  disabled={isPending}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="complianceList"

@@ -4,19 +4,23 @@ import { Requirement } from "@/lib/types";
 export function generateReport(requirements: Requirement[]) {
   const exportToExcel = () => {
     // Prepare the data for export
-    const exportData = requirements.map((requirement) => ({
-      "Compliance List": requirement.complianceList,
-      Department: requirement.department,
-      Entity: requirement.entity,
-      "Frequency of Compliance": requirement.frequencyOfCompliance,
-      "Type of Compliance": requirement.typeOfCompliance,
-      "Date Submitted": requirement.dateSubmitted,
-      Expiration: requirement.expiration,
-      Renewal: requirement.renewal,
-      "Person in Charge": requirement.personInCharge,
-      Status: requirement.status,
-      "Document Reference": requirement.documentReference,
-    }));
+    const exportData = requirements.map((requirement, index) => {
+      return {
+        "No.": index + 1,
+        Entity: requirement.entity,
+        "Law / Rule / Clause / D.O / M.C": requirement.complianceType,
+        "Compliance List": requirement.complianceList,
+        "Frequency of Compliance": requirement.frequencyOfCompliance,
+        "Date Submitted": requirement.dateSubmitted,
+        Expiration: requirement.expiration,
+        Department: requirement.department,
+        Renewal: requirement.renewal,
+        "Person in Charge": requirement.personInCharge,
+        Status: requirement.status,
+        "Type of Compliance": requirement.typeOfCompliance,
+        "Document Reference": requirement.documentReference,
+      };
+    });
 
     // Create worksheet and workbook
     const ws = XLSX.utils.json_to_sheet(exportData);
