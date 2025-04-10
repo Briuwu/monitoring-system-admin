@@ -11,6 +11,10 @@ export const columns: ColumnDef<Requirement>[] = [
     accessorKey: "entity",
   },
   {
+    header: "Law / Rule / Clause / D.O / M.C",
+    accessorKey: "complianceType",
+  },
+  {
     header: "Compliance List",
     accessorKey: "complianceList",
   },
