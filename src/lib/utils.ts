@@ -147,7 +147,7 @@ export const getDashboardData = (requirements: Requirement[]) => {
         case "active":
           acc.active.push(item);
           break;
-        case "inactive":
+        case "expired":
           acc.inactive.push(item);
           break;
         case "on process":
