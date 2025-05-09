@@ -128,7 +128,7 @@ export const dues = (requirements: Requirement[], status: string) => {
         ];
 
       return (
-        config && remainingDays > 0 && remainingDays < config.daysThreshold
+        config && remainingDays >= 0 && remainingDays < config.daysThreshold
       );
     })
     .sort(
