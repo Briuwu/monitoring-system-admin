@@ -1,20 +1,69 @@
+import fetchAuthUser from "@/lib/get-auth";
+import { TrophySpin } from "react-loading-indicators";
 import { account } from "@/appwrite";
-import { useEffect } from "react";
-
+import { useState, useEffect } from "react";
 import { Outlet, Navigate } from "react-router";
 
 export const ProtectedRoutes = () => {
-  const user = localStorage.getItem("session");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetch = async () => {
-      const data = await account.get();
-      localStorage.setItem("user-department", JSON.stringify(data.labels[1]));
-      localStorage.setItem("name", JSON.stringify(data.name));
+    const checkAuth = async () => {
+      try {
+        // Try to get user from localStorage first
+        const storedSession = localStorage.getItem("session");
+        let userData = storedSession ? JSON.parse(storedSession) : null;
+
+        if (userData) {
+          // Verify if the stored user data is still valid
+          const isValid = await fetchAuthUser(userData);
+          if (isValid) {
+            setIsAuthenticated(true);
+            setIsLoading(false);
+            return;
+          }
+        }
+
+        // If no valid stored session, try to get current session from Appwrite
+        try {
+          const session = await account.getSession("current");
+          if (session) {
+            localStorage.setItem("session", JSON.stringify(session.current));
+            setIsAuthenticated(true);
+          } else {
+            localStorage.removeItem("session");
+            setIsAuthenticated(false);
+          }
+        } catch (error) {
+          console.error("Session error:", error);
+          localStorage.removeItem("session");
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        console.error("Error Getting Authenticated User:", error);
+        localStorage.removeItem("session");
+        setIsAuthenticated(false);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    fetch();
+    checkAuth();
   }, []);
 
-  return user ? <Outlet /> : <Navigate to="/" />;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <TrophySpin
+          color="#57fa2b"
+          size="large"
+          text="Please Wait..."
+          textColor="#000000"
+        />
+      </div>
+    );
+  }
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 };

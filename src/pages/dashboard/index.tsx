@@ -10,7 +10,6 @@ function DashboardLayout() {
     const fetch = async () => {
       try {
         const data = await account.get();
-
         if (data.labels[0] !== "admin") window.location.href = "/client";
       } catch (error) {
         console.log(error);

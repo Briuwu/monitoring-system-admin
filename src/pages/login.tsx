@@ -1,12 +1,32 @@
+import { account } from "@/appwrite";
 import bg from "@/assets/bg.png";
 import LoginForm from "@/components/login-form";
+import fetchAuthUser from "@/lib/get-auth";
 import { useEffect } from "react";
 
 function LoginPage() {
+  let user = JSON.parse(localStorage.getItem("session") || "false");
   useEffect(() => {
-    if (localStorage.getItem("session")) {
-      window.location.href = "/dashboard";
-    }
+    const getAuth = async () => {
+      user = await fetchAuthUser(user);
+
+      if (!user) {
+        try {
+          const session = await account.getSession("current");
+          if (session && session.current) {
+            user = session.current;
+            localStorage.setItem("session", JSON.stringify(user));
+            window.location.href = "/dashboard";
+          }
+        } catch (error) {
+          console.error("Session error:", error);
+          user = false;
+        }
+      } else {
+        window.location.href = "/dashboard";
+      }
+    };
+    getAuth();
   }, []);
 
   return (
