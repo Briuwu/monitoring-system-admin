@@ -6,17 +6,11 @@ import { Outlet } from "react-router";
 
 function DashboardLayout() {
   const [isLoading, setIsLoading] = useState(true);
-  let user = JSON.parse(localStorage.getItem("session") || "false");
   useEffect(() => {
     const fetch = async () => {
       try {
-        if (user) {
-          const data = await account.get();
-          if (data.labels[0] !== "admin") window.location.href = "/client";
-        } else {
-          localStorage.clear();
-          window.location.reload();
-        }
+        const data = await account.get();
+        if (data.labels[0] !== "admin") window.location.href = "/client";
       } catch (error) {
         console.log(error);
       } finally {
