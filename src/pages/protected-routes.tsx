@@ -1,16 +1,35 @@
 import { account } from "@/appwrite";
+import fetchAuthUser from "@/lib/get-auth";
 import { useEffect } from "react";
 
 import { Outlet, Navigate } from "react-router";
 
 export const ProtectedRoutes = () => {
-  const user = localStorage.getItem("session");
+  let user = JSON.parse(localStorage.getItem("session") || "false");
 
   useEffect(() => {
     const fetch = async () => {
-      const data = await account.get();
-      localStorage.setItem("user-department", JSON.stringify(data.labels[1]));
-      localStorage.setItem("name", JSON.stringify(data.name));
+      try {
+        user = await fetchAuthUser(user);
+        if (!user) {
+          try {
+            const session = await account.getSession("current");
+            if (session && session.current) {
+              user = session.current;
+              localStorage.setItem("session", JSON.stringify(user));
+            } else {
+              localStorage.clear();
+              user = false;
+            }
+          } catch (error) {
+            console.error("Session error:", error);
+            user = false;
+          }
+        }
+      } catch (error) {
+        console.error("Error Getting Authenticated User:", error);
+        user = false;
+      }
     };
 
     fetch();
