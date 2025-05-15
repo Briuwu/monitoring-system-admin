@@ -33,6 +33,12 @@ const LazyActivityLogsPage = lazy(
 );
 
 function App() {
+  /**
+   * This is the main app component for the monitoring system.
+   * It is used to wrap the routes and the protected routes.
+   * It is used to check if the user is logged in and if the user is not logged in, it redirects to the login page.
+   * It is used to check if the user is an admin and if the user is not an admin, it redirects to the client page.
+   */
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />

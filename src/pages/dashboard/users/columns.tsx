@@ -11,6 +11,11 @@ import { Ellipsis, User as UserIcon } from "lucide-react";
 import { Link } from "react-router";
 import { User } from "@/lib/types";
 
+/**
+ * This is the main columns for the users table.
+ * It is used to display the users in the table.
+ */
+
 export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "firstName",

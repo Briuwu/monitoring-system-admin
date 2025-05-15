@@ -10,6 +10,10 @@ import {
 import { AddUserForm } from "./add-user-form";
 import { useState } from "react";
 
+/**
+ * This is the main add user component for the monitoring system.
+ * It is used to add a new user to the monitoring system.
+ */
 export const AddUser = () => {
   const [open, setOpen] = useState(false);
 

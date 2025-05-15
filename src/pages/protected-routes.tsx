@@ -8,12 +8,17 @@ export const ProtectedRoutes = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  /**
+   * This is the main protected routes for the monitoring system.
+   * It is used to check if the user is logged in and if the user is not logged in, it redirects to the login page.
+   * It is used to check if the user is an admin and if the user is not an admin, it redirects to the client page.
+   */
   useEffect(() => {
     const checkAuth = async () => {
       try {
         // Try to get user from localStorage first
         const storedSession = localStorage.getItem("session");
-        let userData = storedSession ? JSON.parse(storedSession) : null;
+        const userData = storedSession ? JSON.parse(storedSession) : null;
 
         if (userData) {
           // Verify if the stored user data is still valid

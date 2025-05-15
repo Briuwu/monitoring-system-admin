@@ -31,6 +31,10 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { departmentList } from "@/lib/constant";
 import { useAddUser } from "@/hooks/users";
 
+/**
+ * This is the main add user form for the monitoring system.
+ * It is used to add a new user to the monitoring system.
+ */
 const formSchema = z
   .object({
     firstName: z.string().min(2),
@@ -67,6 +71,10 @@ export const AddUserForm = ({ handleClose }: { handleClose: () => void }) => {
     },
   });
 
+  /**
+   * This is the main on submit function for the add user form.
+   * It is used to submit the form and create a new user.
+   */
   function onSubmit(values: z.infer<typeof formSchema>) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword, ...data } = values;

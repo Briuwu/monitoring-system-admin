@@ -4,6 +4,10 @@ import { Link, useParams } from "react-router";
 import { EditUserForm } from "./edit-user-form";
 import { Button } from "@/components/ui/button";
 
+/**
+ * This is the main user details component for the monitoring system.
+ * It is used to display the details of a user.
+ */
 function UserDetails() {
   const params = useParams();
   const { data: user, isLoading } = useFetchUser(params.userId!);

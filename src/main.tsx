@@ -7,6 +7,12 @@ import App from "./App.tsx";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+/**
+ * This is the main query client for the monitoring system.
+ * It is used to create a query client and the query client provider.
+ * It is used to configure the query client and the query client provider.
+ */
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

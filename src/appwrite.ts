@@ -1,3 +1,10 @@
+/**
+ * This is the main appwrite configuration file for the monitoring system.
+ * It is used to configure the appwrite client and the appwrite services.
+ * It is used to configure the appwrite project id and the appwrite endpoint url.
+ * It is used to configure the appwrite bucket id and the appwrite url.
+ */
+
 import { Account, Client, Storage } from "appwrite";
 
 export const projectId = import.meta.env.PROD

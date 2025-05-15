@@ -17,6 +17,10 @@ function UsersPage() {
   const [globalSearch, setGlobalSearch] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
 
+  /**
+   * This is the main handle filter function for the users page.
+   * It is used to filter the users based on the department and the global search.
+   */
   const handleFilter = useCallback(() => {
     let result = userList;
 
@@ -38,6 +42,10 @@ function UsersPage() {
     setFilteredData(result);
   }, [globalSearch, departmentFilter, userList]);
 
+  /**
+   * This is the main use effect for the users page.
+   * It is used to filter the users based on the department and the global search.
+   */
   useEffect(() => {
     handleFilter();
   }, [handleFilter]);

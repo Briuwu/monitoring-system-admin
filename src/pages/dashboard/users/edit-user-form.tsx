@@ -44,6 +44,11 @@ type Props = {
   user: User;
 };
 
+/**
+ * This is the main edit user form for the monitoring system.
+ * It is used to edit a user's information.
+ */
+
 export const EditUserForm = ({ user }: Props) => {
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
@@ -58,8 +63,10 @@ export const EditUserForm = ({ user }: Props) => {
     },
   });
 
-  // create a function that will delay for 1 seconds
-
+  /**
+   * This is the main on submit function for the edit user form.
+   * It is used to submit the form and update the user's information.
+   */
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { ...data } = values;
     startTransition(async () => {

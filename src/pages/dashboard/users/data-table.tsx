@@ -24,6 +24,11 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
+/**
+ * This is the main data table component for the monitoring system.
+ * It is used to display the data in the table.
+ */
+
 export function DataTable<TData, TValue>({
   columns,
   data,

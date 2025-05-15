@@ -6,6 +6,13 @@ import { useEffect } from "react";
 
 function LoginPage() {
   let user = JSON.parse(localStorage.getItem("session") || "false");
+
+  /**
+   * This is the main login page for the monitoring system.
+   * It is used to login the user and redirect to the dashboard.
+   * It is used to check if the user is logged in and if the user is not logged in, it redirects to the login page.
+   * It is used to check if the user is an admin and if the user is not an admin, it redirects to the client page.
+   */
   useEffect(() => {
     const getAuth = async () => {
       user = await fetchAuthUser(user);

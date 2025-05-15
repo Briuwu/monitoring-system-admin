@@ -6,6 +6,14 @@ import { Outlet } from "react-router";
 
 function DashboardLayout() {
   const [isLoading, setIsLoading] = useState(true);
+
+  /**
+   * This is the main layout for the dashboard.
+   * It is used to wrap the sidebar and the main content.
+   * It is used to check if the user is logged in and if the user is not logged in, it redirects to the login page.
+   * It is used to check if the user is an admin and if the user is not an admin, it redirects to the client page.
+   *
+   */
   useEffect(() => {
     const fetch = async () => {
       try {

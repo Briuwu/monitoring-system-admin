@@ -10,6 +10,12 @@ import {
 import { useFetchRequirements } from "@/hooks/requirements";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+/**
+ * This is the main calendar page for the monitoring system.
+ * It is used to display the calendar view of the requirements.
+ * It is used to display the requirements in the calendar view.
+ */
+
 export default function CalendarPage() {
   const { data: requirements, isLoading } = useFetchRequirements("");
 
