@@ -61,6 +61,11 @@ type Props = {
   }[];
 };
 
+/**
+ * This is the main component for the bar chart overview.
+ * It is used to display the bar chart overview.
+ */
+
 function BarChartOverview({ chartData }: Props) {
   return (
     <Card>
